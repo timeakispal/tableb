@@ -1,0 +1,113 @@
+body {
+	padding-top: 42px;
+}
+body, h1, h2, h3, h4, h5 {
+		font-family: "Poppins", sans-serif;
+}
+
+.smaller-fonts {
+  font-size: smaller;
+}
+
+.color-base {
+	background-color: #2C272E;
+}
+.color-base2 {
+	background-color: #2B1C21;
+}
+.color-base3 {
+	background-color: #B5ADB0;
+}
+.color-base4 {
+	background-color: #DA7667;
+}
+.color-text {
+	color: #DA7667!important;
+}
+.color-text2 {
+	color: #B5ADB0!important;
+}
+
+.navbar-border {
+	border: 1px solid transparent;
+	border-color: #e7e7e7;
+	border-width: 0 0 1px;
+}
+
+.cover-photo {
+		background-image: url("city3.jpg");
+		background-position: center top;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-color: #2C272E;
+    margin-top: -45px;
+}
+
+.padding-35 {
+		padding-top: 35px;
+		padding-bottom: 35px;
+}
+
+.padding-header {
+		padding-top: 125px;
+		padding-bottom: 65px;
+		padding-left: 30px;
+}
+
+.caption {
+    height: 100%;
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	display: none;
+}
+
+
+@media screen and (min-width: 767px) {
+	body {
+		padding-top: 83px;
+	}
+
+	.register-login {
+		width: 60%;
+		margin: 0 auto;
+		padding: 50px 10%;
+		text-align: center;
+	}
+
+	.w3-navbar {
+		padding: 20px 0;
+		-webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+		-moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+		transition: background .5s ease-in-out,padding .5s ease-in-out;
+	}
+
+	.top-nav-collapse {
+		padding: 5px;
+	}
+}

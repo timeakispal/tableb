@@ -1,0 +1,165 @@
+/* Remove the navbar's default margin-bottom and rounded borders */
+body {
+	font: 12px Montserrat, sans-serif;
+}
+
+* {
+	font-family:Montserrat, sans-serif;
+}
+
+.navbar {
+	margin-bottom: 0;
+	border-radius: 0;
+	letter-spacing: 2px;
+}
+
+
+/* Add a gray background color and some padding to the footer */
+footer {
+	background-color: #333;
+	padding: 25px;
+	left:0px;
+	bottom:0px;
+	width:100%;
+	color: #ccc;
+}
+
+.button {
+	display: inline-block;
+	border-radius: 4px;
+	background-color: #F57A6B;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 16px;
+	padding: 20px 0;
+	width: 100%;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.bg-1 {
+	background-color: #ff4c28;
+}
+
+.bg-2 {
+	background-color: #f8f8f8;
+	color: #333;
+}
+
+.bg-4 {
+	background-color: #222;
+	color: #fff;
+}
+
+.text-white {
+	color: #FFF;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	display: none;
+}
+input[type=date]::-webkit-datetime-edit {
+	padding: 5px;
+}
+
+@media screen and (min-width: 768px) {
+	.padding-25 {
+		padding-top: 25px;
+		padding-bottom: 15px;
+	}
+
+	/*.margin-big {
+		margin-top: 100px;
+		margin-bottom: 100px;
+	}*/
+
+	/*.border-1 {
+		border-width: 1px;
+		border-style: solid;
+		border-color: #ccc;
+	}*/
+
+	.bg-5 {
+		background-color: rgba(34, 27, 35, 0.7); /*#221b23*/
+		color: #FFF;
+	}
+
+	.button {
+		padding: 33px 0;
+	}
+
+	.background-img {
+		background-image: url('../city1.jpg');
+		background-size: cover;
+	}
+
+	.jumbotron {
+		margin-top: -50px;
+		padding-top: 20%;
+		padding-bottom: 15%;
+	}
+
+	.navbar-inverse {
+		border-style: none;
+		background-color: transparent;
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+
+	.navbar {
+		padding: 20px 0;
+		-webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+		-moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+		transition: background .5s ease-in-out,padding .5s ease-in-out;
+	}
+/*
+
+	.nav.navbar-nav.navbar-right li a {
+		color: #221b23;
+	}
+
+	#login-sign-in-link:hover{
+		color: #221b23;
+	}*/
+
+	#login-buttons a, .accounts-dialog a {
+		cursor: pointer;
+		text-decoration: none;
+		color: #221b23;
+		-webkit-text-size-adjust: 100%;
+	}
+
+
+	.top-nav-collapse {
+		padding: 0;
+		background-color: #221b23;
+		/*color: #9f9f9f;*/
+	}
+
+	/*.navbar-brand {
+		font-size: 35px;
+		font-weight: bold;
+	}*/
+}
+
+#login-sign-in-link{
+	visibility: hidden;
+}
+#login-sign-in-link:after{
+	visibility: visible;
+	content: 'SIGN IN';
+	margin-left: -70px;
+}
+
+#login-sign-in-link:hover{
+	color: #fff;
+}
+
+#login-buttons a, .accounts-dialog a {
+	cursor: pointer;
+	text-decoration: none;
+	color: #9f9f9f;
+	-webkit-text-size-adjust: 100%;
+}

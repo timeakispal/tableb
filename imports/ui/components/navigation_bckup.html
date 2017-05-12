@@ -1,0 +1,47 @@
+<template name="myNav">
+<!-- <nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Portfolio</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">{{> loginButtons}}</a></li>
+				<li><a href="#">HOME</a></li>
+				<li><a href="#">ABOUT</a></li>
+				<li><a href="#">HELP</a></li>
+			</ul>
+		</div>
+	</div>
+</nav> -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header page-scroll">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav  navbar-right">
+				<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+				<li class="hidden">
+					<a class="page-scroll" href="#page-top"></a>
+				</li>
+				<li><a class="page-scroll" href="#">{{> loginButtons}}</a></li>
+				<li><a class="page-scroll" href="#">HOME</a></li>
+				<li><a class="page-scroll" href="#">ABOUT</a></li>
+				<li><a class="page-scroll" href="#">HELP</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+</template>

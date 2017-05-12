@@ -1,0 +1,52 @@
+<template name="myNav">
+<div class="w3-top">
+	<ul class="w3-navbar w3-card-2 w3-white w3-text-grey w3-left-align navbar-border">
+	<div class="container smaller-fonts">
+	<li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+		<a class="w3-padding-large w3-hover-white w3-medium hide-elements" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+	</li>
+	<li><a href="{{pathFor route='home'}}" class="w3-padding-large w3-white hide-home">LOGO</a></li>
+	<li class="w3-hide-small w3-right"><a href="#" class="w3-padding-large w3-hover-white"><i class="fa fa-file-text"></i> ABOUT</a></li>
+	<li class="w3-hide-small w3-right"><a href="{{pathFor route='search'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-th"></i> SEARCH</a></li>
+	<li class="w3-hide-small w3-right"><a href="{{pathFor route='home'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-home"></i> HOME</a></li>
+
+	{{#if currentUser}}
+		<li class="w3-hide-small"></li>
+		
+		<li class="w3-hide-small w3-right">
+		<div class="w3-dropdown-hover">
+			<a class="w3-padding-large hide-elements w3-white w3-text-grey">{{firstName}} <i class="fa fa-user-circle w3-padding-right"></i></a>
+			<div class="w3-dropdown-content w3-border">
+				<a class="w3-medium" href="{{pathFor route='userProfile'}}"> My account</a>
+				<a class="w3-medium" href="#"><i class="fa fa-map-marker"></i> My reservations</a>
+				<a class="w3-medium" href="#"><i class="fa fa-heart-o"></i> Favorites</a>
+				<a class="w3-medium logout" href="#"><i class="fa fa-sign-out"></i> Log out</a>
+			</div>
+		</div>
+		</li>
+	{{else}}
+		<li class="w3-hide-small w3-right"><a href="{{pathFor route='user'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-sign-in"></i> LOG IN</a></li>
+	{{/if}}
+	</div>
+	</ul>
+
+	<!-- Navbar on small screens -->
+	<div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium">
+		<ul class="w3-navbar w3-left-align w3-medium w3-white">
+			<li><a class="w3-padding-large hide-elements" href="{{pathFor route='home'}}"><i class="fa fa-home"></i> Home</a></li>
+			<li><a class="w3-padding-large hide-elements" href="#" ><i class="fa fa-th"></i> Search</a></li>
+			<li><a class="w3-padding-large hide-elements" href="#" ><i class="fa fa-file-text"></i> About</a></li>
+			
+			{{#if currentUser}}
+				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-map-marker"></i> My reservations</a></li>
+				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-user"></i> My account</a></li>
+				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-heart"></i> Favorites</a></li>
+				<li><a class="w3-padding-large logout hide-elements" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+
+			{{else}}
+				<li><a href="{{pathFor route='user'}}" class="w3-padding-large hide-elements"><i class="fa fa-user"></i> Log in</a></li>
+			{{/if}}
+		</ul>
+	</div>
+</div>
+</template>

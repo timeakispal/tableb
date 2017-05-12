@@ -1,0 +1,55 @@
+<template name="home">
+<!--Main search cover photo-->
+<div class="jumbotron cover-photo">
+	<div class="container padding-header" id="header">
+		<h1 class="w3-jumbo w3-text-white"><b>Table Booking</b></h1>
+		<h1 class="w3-xxxlarge color-text"><b>Fast & Easy</b></h1>
+		<hr style="width:50px;border:5px solid" class="w3-round color-text">
+		{{> searchEngine}}
+	</div>
+</div>
+<!--END main search cover photo-->
+<!--Top 6 most popular restaurants-->
+<div class="container padding-35">
+<h1 class="w3-xxlarge text-5 w3-center"><b>Most popular restaurants</b></h1>
+<hr>
+{{#each Restaurants}}
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+        <img src="http://placehold.it/320x150" alt="">
+        <div class="caption">
+            <h4 class="pull-right">{{expensive}}</h4>
+            <h4><a href="#">{{name}}</a>
+            </h4>
+            <p>{{about}}</p>
+            <a id="restaurant-details" class="btn btn-default">Reserve >></a>
+            <hr>
+        </div>
+        <div class="ratings">
+            <p class="pull-right">18 reviews</p>
+            <p>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star-empty"></span>
+            </p>
+        </div>
+    </div>
+</div>
+{{/each}}
+	<!-- <div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>{{name}}<p class="w3-right">{{expensive}}</p></h4>
+			</div>
+			<div class="panel-body">
+				<p>{{about}}</p>
+				<a id="restaurant-details" class="btn btn-default">Reserve >></a>
+			</div>
+		</div>
+	</div> -->
+
+</div>
+<!--END of top 6 most popular restaurants-->
+</template>

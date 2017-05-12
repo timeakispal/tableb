@@ -1,0 +1,88 @@
+<template name="searchEngine">
+<div class="row w3-margin-bottom">
+	<form class="form-horizontal" id="search-form">
+	<div class="col-sm-7">
+		<div class="row">
+		<!-- <div class="col-sm-5"> -->
+			<div class="col-sm-6">
+			<div class="form-group">
+				<div class="col-sm-12">
+					<select class="w3-input w3-border" name="location" id="location">
+						<option disabled="disabled" selected="selected" value="">Select your location</option>
+						{{#each locations}}
+							<option {{selectedClass}} value="{{name}}">{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+			</div>
+			<div class="col-sm-6">
+			<div class="form-group">
+				<div class="col-sm-12">
+					<select class="w3-input w3-border" name="people" id="people">
+						<option disabled="disabled" selected="selected" value="">How many people</option>
+							<option value="1 person">1 person</option>
+						{{#each persons}}
+							<option value="{{this}}">{{this}} people</option>
+						{{/each}}
+							<option value="party">Larger group</option>
+					</select>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<input class="w3-input w3-border" type="date" min="2017-01-01" max="2018-12-31" name="when" id="when">
+					</div>
+				</div>
+			</div>
+		<!-- </div> -->
+		<!-- <div class="col-sm-2"> -->
+			<!-- <div class="form-group">
+				<div class="col-sm-12">
+					<select class="w3-input w3-border" name="people" id="people">
+						<option disabled="disabled" selected="selected" value="">How many people</option>
+							<option value="1 person">1 person</option>
+						{{#each persons}}
+							<option value="{{this}}">{{this}} people</option>
+						{{/each}}
+							<option value="party">Larger group</option>
+					</select>
+				</div>
+			</div> -->
+			<div class="col-sm-3">
+			<div class="form-group">
+			<div class="col-sm-12">
+				<select class="w3-input w3-border" name="hour" id="hour">
+					<option disabled="disabled" selected="selected" value="">Arrival hour</option>
+					{{#each hours}}
+						<option value="{{this}}">{{this}}</option>
+					{{/each}}
+				</select>
+			</div>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+			<div class="col-sm-12">
+				<select class="w3-input w3-border" name="hour" id="hour">
+					<option disabled="disabled" selected="selected" value="">Leaving hour</option>
+					{{#each hours}}
+						<option value="{{this}}">{{this}}</option>
+					{{/each}}
+				</select>
+			</div>
+			</div>
+			</div>
+		</div>
+		<!-- </div> -->
+		</div>
+		<div class="col-sm-2">
+			<input type="submit" class="w3-button w3-block padding-35 color-base4 w3-text-white w3-margin-bottom" value="SEARCH">
+		</div>
+	</form>
+</div>
+</template>
