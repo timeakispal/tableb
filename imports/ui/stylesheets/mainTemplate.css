@@ -35,51 +35,56 @@ body, h1, h2, h3, h4, h5 {
 }
 
 .cover-photo {
-		background-image: url("city3.jpg");
-		background-position: center top;
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-color: #2C272E;
-    margin-top: -45px;
+	background-image: url("city3.jpg");
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-color: #2C272E;
+	margin-top: -45px;
 }
 
 .padding-35 {
-		padding-top: 35px;
-		padding-bottom: 35px;
+	padding-top: 35px;
+	padding-bottom: 35px;
 }
 
 .padding-header {
-		padding-top: 125px;
-		padding-bottom: 65px;
-		padding-left: 30px;
+	padding-top: 125px;
+	padding-bottom: 65px;
+	padding-left: 30px;
 }
 
 .caption {
-    height: 100%;
-    overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 .caption h4 {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 .thumbnail img {
-    width: 100%;
+	width: 100%;
 }
 
 .ratings {
-    padding-right: 10px;
-    padding-left: 10px;
-    color: #d17581;
+	padding-right: 10px;
+	padding-left: 10px;
+	color: #d17581;
 }
 
 .thumbnail {
-    padding: 0;
+	padding: 0;
 }
 
 .thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
+	padding: 9px;
+	color: #333;
+}
+
+.button-padding {
+	padding-left: 1px;
+	padding-right: 1px;
 }
 
 input[type=date]::-webkit-inner-spin-button {

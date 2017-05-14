@@ -8,34 +8,36 @@
 <hr>
 {{#each Restaurants}}
 <div class="col-sm-4 col-lg-4 col-md-4">
-    <div class="thumbnail">
-        <img src="http://placehold.it/320x150" alt="">
-        <div class="caption">
-            <div class="row" style="min-height: 21px">
-                {{#each Tables}}
-                <div class="col-sm-4" style="border-width: 1px; border-style: solid;">
-                    {{this}}
-                </div>
-                {{/each}}
-            </div>
-            <h4 class="pull-right">{{expensive}}</h4>
-            <h4><a href="#">{{name}}</a>
-            </h4>
-            <p>{{about}}</p>
-            <a id="restaurant-details" class="btn btn-default">Reserve >></a>
-            <hr>
-        </div>
-        <div class="ratings">
-            <p class="pull-right">18 reviews</p>
-            <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-            </p>
-        </div>
-    </div>
+	<div class="thumbnail">
+		<img src="http://placehold.it/320x150" alt="">
+		<div class="caption">
+			<div class="w3-row" style="min-height: 33px">
+				{{#each Tables}}
+				<div class="w3-col s4 button-padding">
+					<div class="w3-button w3-block w3-round w3-small w3-text-white color-base4">
+						{{this}}
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			<h4 class="pull-right">{{expensive}}</h4>
+			<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
+			</h4>
+			<p>{{about}}</p>
+			<a id="restaurant-details" class="btn btn-default">Reserve >></a>
+			<hr>
+		</div>
+		<div class="ratings">
+			<p class="pull-right">18 reviews</p>
+			<p>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star"></span>
+				<span class="glyphicon glyphicon-star-empty"></span>
+			</p>
+		</div>
+	</div>
 </div>
 {{/each}}
 </div>

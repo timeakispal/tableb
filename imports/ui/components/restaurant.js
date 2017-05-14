@@ -23,11 +23,149 @@ if (Meteor.isClient) {
 		}
 	};
 
+	Template.restaurant.events({
+		'change #when': function(evt, t) {
+			var when = $(evt.target).val();
+			Session.set("setDate", when);
+			t.find('#arrival_hour').value = "";
+			t.find('#leaving_hour').value = "";
+		},
+		'change #people': function(evt) {
+			var people = $(evt.target).val();
+			Session.set("persons", people);
+		},
+		'change #arrival_hour': function(evt, t) {
+			var arrival_hour = $(evt.target).val();
+			Session.set("setHour", arrival_hour);
+			t.find('#leaving_hour').value = "";
+		},
+		'change #leaving_hour': function(evt) {
+			var leaving_hour = $(evt.target).val();
+		},
+
+		'submit #search-form' : function (e,t)
+		{
+			e.preventDefault();
+			var when = t.find('#when').value;
+			var people = t.find('#people').value;
+			var arrival_hour = t.find('#arrival_hour').value;
+			var leaving_hour = t.find('#leaving_hour').value;
+			Session.set("reservationDate", when);
+			Session.set("persons", people);
+			Session.set("reservationTime", arrival_hour);
+			Session.set("timeOfLeave", leaving_hour);
+		},
+	});
+
 	Template.restaurant.helpers({
+
 		RestaurantView: function() {
 			var restId = AmplifiedSession.get('Restaurant');
 			return Restaurants.find({_id: restId});
 		},
+
+		'currentDate': function() {
+			var today = new Date();
+			return moment(today).format('YYYY-MM-DD');
+		},
+
+		'maximumDate': function() {
+			var today = moment();
+			var maximumDate = moment(today).add(14, 'day');
+			return moment(maximumDate).format('YYYY-MM-DD');
+		},
+
+		'persons': function() {
+			var list = [];
+			for (var i = 2; i <= 8; i++) {
+				list.push(i);
+			}
+			return list;
+		},
+
+		'arrival_hours': function() {
+			var list = [];
+			var hour = 8;
+			var min = 30;
+
+			if (Session.get("setDate") == undefined) {
+				return list;
+			}
+
+			var d = new Date();
+			today = moment(d).format('YYYY-MM-DD');
+			if (Session.get("setDate") == today) {
+				hour = d.getHours();
+				min = d.getMinutes();
+			}
+			
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			} else {
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
+				} else {
+					list.push(hour + ":30");
+					hour++;
+				}
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			}
+			
+			return list;
+		},
+
+		'leaving_hours': function() {
+			var list = [];
+
+			if (Session.get("setHour") == undefined) {
+				return list;
+			}
+
+			var time = Session.get("setHour");
+			var clock = time.split(":");
+			var hour = Number(clock[0]) + 1;
+			var min = clock[1];
+
+			if (hour == 24) {
+				list.push("00:00");
+				return list;
+			}
+
+			list.push(hour + ":" + min);
+			
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			} else {
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
+				} else {
+					list.push(hour + ":30");
+					hour++;
+				}
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			}
+			
+			return list;
+		},
+
 		freeTables: function() {
 			var restId = AmplifiedSession.get('Restaurant');
 			var res_date = Session.get("reservationDate")

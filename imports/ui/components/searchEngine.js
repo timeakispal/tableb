@@ -63,18 +63,18 @@ if (Meteor.isClient) {
 		},
 
 		'selectedClass': function() {
-		    var restId = this.name;
-		    var searchLocation = Session.get('searchLocation');
-		    if (restId == searchLocation) {
-		        return "selected";
-		    } else {
-		    	return "";
-		    }
+			var restId = this.name;
+			var searchLocation = Session.get('searchLocation');
+			if (restId == searchLocation) {
+				return "selected";
+			} else {
+				return "";
+			}
 		},
 
 		'locations': function() {
-	        return Locations.find({}, {sort: {name: 1}});
-	    },
+			return Locations.find({}, {sort: {name: 1}});
+		},
 
 		'persons': function() {
 			var list = [];
