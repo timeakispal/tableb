@@ -5,17 +5,42 @@ Locations = new Mongo.Collection('myLocations');
 if (Meteor.isClient) {
 	
 	Template.searchEngine.events({
+		'change #location': function(evt) {
+			var location = $(evt.target).val();
+		},
+		'change #when': function(evt, t) {
+			var when = $(evt.target).val();
+			Session.set("setDate", when);
+			t.find('#arrival_hour').value = "";
+			t.find('#leaving_hour').value = "";
+		},
+		'change #people': function(evt) {
+			var people = $(evt.target).val();
+			Session.set("persons", people);
+		},
+		'change #arrival_hour': function(evt, t) {
+			var arrival_hour = $(evt.target).val();
+			Session.set("setHour", arrival_hour);
+			t.find('#leaving_hour').value = "";
+		},
+		'change #leaving_hour': function(evt) {
+			var leaving_hour = $(evt.target).val();
+		},
+
 		'submit #search-form' : function (e,t)
 		{
 			e.preventDefault();
 			var location = t.find('#location').value;
 			var when = t.find('#when').value;
 			var people = t.find('#people').value;
-			var hour = t.find('#hour').value;
+			var arrival_hour = t.find('#arrival_hour').value;
+			var leaving_hour = t.find('#leaving_hour').value;
 			Session.set("searchLocation", location);
 			Session.set("reservationDate", when);
 			Session.set("persons", people);
-			Session.set("reservationTime", hour);
+			Session.set("reservationTime", arrival_hour);
+			Session.set("timeOfLeave", leaving_hour);
+			
 			if (location !== "" && undefined != location) {
 				Router.go('search', {}, {query: 'location='+location});
 			} else {
@@ -26,7 +51,18 @@ if (Meteor.isClient) {
 
 	Template.searchEngine.helpers({
 
-		'selectedClass': function(){
+		'currentDate': function() {
+			var today = new Date();
+			return moment(today).format('YYYY-MM-DD');
+		},
+
+		'maximumDate': function() {
+			var today = moment();
+			var maximumDate = moment(today).add(14, 'day');
+			return moment(maximumDate).format('YYYY-MM-DD');
+		},
+
+		'selectedClass': function() {
 		    var restId = this.name;
 		    var searchLocation = Session.get('searchLocation');
 		    if (restId == searchLocation) {
@@ -36,11 +72,11 @@ if (Meteor.isClient) {
 		    }
 		},
 
-		'locations': function(){
+		'locations': function() {
 	        return Locations.find({}, {sort: {name: 1}});
 	    },
 
-		'persons': function(){
+		'persons': function() {
 			var list = [];
 			for (var i = 2; i <= 8; i++) {
 				list.push(i);
@@ -48,27 +84,81 @@ if (Meteor.isClient) {
 			return list;
 		},
 
-		'hours': function(){
+		'arrival_hours': function() {
 			var list = [];
+			var hour = 8;
+			var min = 30;
+
+			if (Session.get("setDate") == undefined) {
+				return list;
+			}
+
 			var d = new Date();
-			var now = d.getHours();
-			var min = d.getMinutes();
-			if (min >= 20 && min < 50) {
-				now++;
-				for (var i = now; i < 24; i++) {
+			today = moment(d).format('YYYY-MM-DD');
+			if (Session.get("setDate") == today) {
+				hour = d.getHours();
+				min = d.getMinutes();
+			}
+			
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
 					list.push(i + ":00");
 					list.push(i + ":30");
 				}
 			} else {
-				if (min >= 50) {
-					now++;
-					list.push(now + ":30");
-					now++;
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
 				} else {
-					list.push(now + ":30");
-					now++;
+					list.push(hour + ":30");
+					hour++;
 				}
-				for (var i = now; i < 24; i++) {
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			}
+			
+			return list;
+		},
+
+		'leaving_hours': function() {
+			var list = [];
+
+			if (Session.get("setHour") == undefined) {
+				return list;
+			}
+
+			var time = Session.get("setHour");
+			var clock = time.split(":");
+			var hour = Number(clock[0]) + 1;
+			var min = clock[1];
+
+			if (hour == 24) {
+				list.push("00:00");
+				return list;
+			}
+
+			list.push(hour + ":" + min);
+			
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			} else {
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
+				} else {
+					list.push(hour + ":30");
+					hour++;
+				}
+				for (var i = hour; i < 24; i++) {
 					list.push(i + ":00");
 					list.push(i + ":30");
 				}

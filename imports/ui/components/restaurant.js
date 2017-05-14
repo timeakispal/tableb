@@ -9,7 +9,7 @@ Template.restaurant.helpers({
 	},
 	freeTables: function() {
 		var restId = Session.get('selectedRestaurant');
-		return Tables.findOne({table_id: restId});
+		return Tables.findOne({restaurant_id: restId});
 		// for (var i = 0; i < table.reservations.length; i++) {
 		    // console.log(table);
 		// return table;
