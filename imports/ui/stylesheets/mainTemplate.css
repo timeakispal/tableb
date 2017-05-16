@@ -21,11 +21,18 @@ body, h1, h2, h3, h4, h5 {
 .color-base4 {
 	background-color: #DA7667;
 }
+.color-base5 {
+	background-color: #59434a;
+}
+
 .color-text {
 	color: #DA7667!important;
 }
 .color-text2 {
 	color: #B5ADB0!important;
+}
+.color-text3 {
+	background-color: #2B1C21;
 }
 
 .navbar-border {
