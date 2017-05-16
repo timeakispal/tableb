@@ -8,7 +8,16 @@ if (Meteor.isClient) {
 			var restName = this.name;
 			Session.set('selectedRestaurant', restId);
 			Router.go('restaurant', {}, {query: 'name='+restName});
-		}
+		},
+		'click #reserve': function(e, t) {
+		    e.preventDefault();
+		    
+		    var restId = $(e.currentTarget).attr("restId");
+		    var res_hour = this;
+			Session.set("reservationHour", String(res_hour));
+			Session.set("resRestaurant", restId);
+		    Modal.show('reservationModal');
+		},
 	});
 
 	Template.search.helpers({

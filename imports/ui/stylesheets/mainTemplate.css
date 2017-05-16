@@ -91,9 +91,19 @@ body, h1, h2, h3, h4, h5 {
 	color: #333;
 }
 
+.margin-minus-buttons {
+	margin-left: -2px;
+	margin-right: -2px;
+}
+
 .button-padding {
-	padding-left: 1px;
-	padding-right: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+hr.style7 {
+	border-top: 1px solid #847973;
+	border-bottom: 1px solid #fff;
 }
 
 input[type=date]::-webkit-inner-spin-button {

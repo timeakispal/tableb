@@ -43,7 +43,7 @@ if (Meteor.isClient) {
 			var leaving_hour = $(evt.target).val();
 		},
 
-		'submit #search-form' : function (e,t)
+		'submit #search-form' : function (e, t)
 		{
 			e.preventDefault();
 			var when = t.find('#when').value;
@@ -54,6 +54,15 @@ if (Meteor.isClient) {
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
+		},
+		'click #reserve': function(e, t) {
+		    e.preventDefault();
+		    
+		    var res_hour = this;
+			Session.set("reservationHour", String(res_hour));
+			var resti = AmplifiedSession.get('Restaurant');
+			Session.set("resRestaurant", resti);
+		    Modal.show('reservationModal');
 		},
 	});
 

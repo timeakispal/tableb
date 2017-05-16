@@ -7,7 +7,7 @@ Template.userProfile.rendered = function(){
 
 Template.userProfile.helpers({
 	userName: function() {
-		 return Meteor.user().username;
+		return Meteor.user().username;
 	},
 	email: function() {
 		return Meteor.user().emails[0].address;

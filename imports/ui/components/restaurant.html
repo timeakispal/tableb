@@ -63,23 +63,27 @@
 			<div class="thumbnail">
 				<img class="img-responsive" src="https://altco.ro/wp-content/uploads/Cretan-Malia-Park-Beach-Hotel-Restaurant.png" alt="">
 				<div class="caption-full">
-				<div class="w3-row">
-					{{#each freeTables}}
-					<div class="w3-col s4 button-padding">
-						<div class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
-							{{this}}
-						</div>
-					</div>
-					{{/each}}
-				</div>
+    				<div class="w3-row w3-padding-16 margin-minus-buttons">
+    					{{#each freeTables}}
+    					<div class="w3-col s4 button-padding">
+    						<div id="reserve" name="{{this}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
+    							{{this}}
+    						</div>
+    					</div>
+    					{{/each}}
+    				</div>
+                    <!-- The Modal -->
+                    {{> reservationModal}}
+
 					<h1><b>{{name}}</b></h1>
-					<hr style="width:50px;border:3px solid" class="w3-round color-text">
+					<hr>
 					<p>{{about}}</p>
 					<p>See more snippets like these online store reviews at <a target="_blank" href="http://bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
 					<p>Want to make these reviews work? Check out
 						<strong><a href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this building a review system tutorial</a>
 						</strong>over at maxoffsky.com!</p>
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                    <hr class="style7">
 				</div>
 				<div class="ratings">
 					<p class="pull-right">3 reviews</p>
