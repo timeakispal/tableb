@@ -22,9 +22,11 @@ body, h1, h2, h3, h4, h5 {
 	background-color: #DA7667;
 }
 .color-base5 {
-	background-color: #59434a;
+	background-color: #8ed482;
 }
-
+.color-base6 {
+	background-color: #504f4f;
+}
 .color-text {
 	color: #DA7667!important;
 }
