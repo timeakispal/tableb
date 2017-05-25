@@ -1,5 +1,6 @@
 import './reservationModal.html';
 
+
 Template.reservationModal.helpers({
 
 		reservedHour: function() {
@@ -8,19 +9,26 @@ Template.reservationModal.helpers({
 		},
 
 		reservedDate: function() {
-			var resDate = Session.get('reservationDate');
-			if (resDate == undefined || resDate == "") {
+			
+			if (Session.get('reservationDate') == undefined || Session.get('reservationDate') == "") {
 				var today = new Date();
-				resDate = moment(today).format('MMMM Do YYYY');
+				resDate = moment(today).format('YYYY-MM-DD');
+			} else {
+				var resDate = Session.get('reservationDate');
 			}
 
 			return moment(resDate).format('MMMM Do YYYY');
 		},
 
 		reservedRestaurant : function() {
-			var restId = Session.get('resRestaurant');
-			var restaurant = Restaurants.findOne({_id: restId});
-			return restaurant.name + ", " + restaurant.location;
+			if (Session.get('resRestaurant') == undefined || Session.get('resRestaurant') == '') {
+				return "";
+			} else {
+				var restId = Session.get('resRestaurant');
+				var restaurant = Restaurants.findOne({_id: restId});
+				return restaurant.name + ", " + restaurant.location;
+			}
+			
 		},
 
 		reservedPersons : function() {

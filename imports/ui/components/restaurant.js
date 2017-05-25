@@ -1,6 +1,6 @@
 import './restaurant.html';
 
-Tables = new Mongo.Collection('myTables');
+// Tables = new Mongo.Collection('myTables');
 
 if (Meteor.isClient) {
 

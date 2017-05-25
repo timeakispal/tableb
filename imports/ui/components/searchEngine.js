@@ -1,6 +1,6 @@
 import './searchEngine.html';
 
-Locations = new Mongo.Collection('myLocations');
+// Locations = new Mongo.Collection('myLocations');
 
 if (Meteor.isClient) {
 	

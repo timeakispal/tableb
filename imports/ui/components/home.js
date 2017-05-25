@@ -1,14 +1,15 @@
 import './home.html';
 // import './searchEngine.html';
 
-Restaurants = new Mongo.Collection('myRestaurants');
+// Restaurants = new Mongo.Collection('myRestaurants');
 
 Template.home.rendered = function(){
 	Session.set('searchLocation', "");
 };
 
 if (Meteor.isClient) {
-	
+	// Meteor.subscribe('restaurants');
+
 	Template.home.events({
 		'click #restaurant-details': function(){
 			var restId = this._id;

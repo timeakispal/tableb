@@ -8,7 +8,18 @@ Router.configure({
 	yieldTemplates: {
 		myNav: {to: 'nav'},
 		myFooter: {to: 'footer'},
+	},
+	// subscribe to our animals publication
+	// with a waitOn function in Iron Router
+	// ... now our application will wait to load 
+	// until we've successfully subscribed to the
+	// publication
+	waitOn: function () {
+		Meteor.subscribe('restaurants');
+		Meteor.subscribe('tables');
+		Meteor.subscribe('locations');
 	}
+
 });
 
 Router.route('/', {
