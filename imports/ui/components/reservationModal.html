@@ -6,43 +6,42 @@
         <div class="modal-header">
           <h4 class="modal-title">Table reservation for {{reservedHour}} on {{reservedDate}}</h4>
         </div>
-        
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="InputRestaurant">Location</label>
-              <h6>{{reservedRestaurant}}</h6>
-              <hr>
-            </div>
-            <div class="form-group">
-              <label for="InputPersons">Number of persons</label>
-              <h6>{{reservedPersons}}</h6>
-              <hr>
-            </div>
-            {{#if LeaveSet}}
-            <div class="form-group">
-              <label for="InputLeave">Time of leave</label>
-              <h6>{{reservedLeave}}</h6>
-              <hr>
-            </div>
-            {{/if}}
-            <div class="form-group">
-              <label for="InputEmail">Email address</label>
-              <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" value="{{email}}">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="InputPhoneNb">Phone number</label>
-              <input type="text" class="form-control" id="InputPhoneNb" placeholder="Phone number">
-            </div>
-          </form>
-        </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-lg">Reserve</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-        
+        <form id="reserve-form">
+          <div class="modal-body">
+              <div class="form-group">
+                <label for="InputRestaurant">Location</label>
+                <h6>{{reservedRestaurant}}</h6>
+                <hr>
+              </div>
+              <div class="form-group">
+                <label for="InputPersons">Number of persons</label>
+                <h6>{{reservedPersons}}</h6>
+                <hr>
+              </div>
+              {{#if LeaveSet}}
+              <div class="form-group">
+                <label for="InputLeave">Time of leave</label>
+                <h6>{{reservedLeave}}</h6>
+                <hr>
+              </div>
+              {{/if}}
+              <div class="form-group">
+                <label for="input-email">Email address</label>
+                <input required type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="Enter email" value="{{email}}">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              </div>
+              <div class="form-group">
+                <label for="input-phone">Phone number</label>
+                <input required type="text" class="form-control" id="input-phone" placeholder="Phone number">
+              </div>
+          </div>
+          
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-primary btn-lg">Reserve</button> -->
+            <input type="submit" class="btn btn-primary btn-lg" value="Reserve">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

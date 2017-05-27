@@ -13,6 +13,7 @@ Template.reservationModal.helpers({
 			if (Session.get('reservationDate') == undefined || Session.get('reservationDate') == "") {
 				var today = new Date();
 				resDate = moment(today).format('YYYY-MM-DD');
+				Session.set('reservationDate', resDate);
 			} else {
 				var resDate = Session.get('reservationDate');
 			}
@@ -55,6 +56,7 @@ Template.reservationModal.helpers({
 			}
 	 		return user.username;
 		},
+
 		email: function() {
 			var user = Meteor.user();
 			if (user == undefined || user == "") {
@@ -63,4 +65,29 @@ Template.reservationModal.helpers({
 
 			return Meteor.user().emails[0].address;
 		},
+});
+
+Template.reservationModal.events({
+	'submit #reserve-form' : function (e,t)
+	{
+		e.preventDefault();
+		var email = t.$('#input-email').val();
+		var phonenb = t.$('#input-phone').val();
+
+		var tableid = Session.get("reservationTable");
+		var date = Session.get("reservationDate");
+		// var location = Session.get("reservedRestaurant");
+		// var people = Session.get("reservedPersons");
+		var arrival_hour = Session.get("reservationHour");
+		var leaving_hour = Session.get("timeOfLeave");
+		if (leaving_hour == undefined || leaving_hour == "") {
+			var hour = Number(arrival_hour.split(":")[0]);
+			var min = String(arrival_hour.split(":")[1]);
+			hour += 3;
+			leaving_hour = hour + ":" + min;
+		}
+		
+		resDate = moment(date).format('YYYY-MM-DD');
+    	Meteor.call('insertReservation', tableid, email, phonenb, date, arrival_hour, leaving_hour);
+	},
 });

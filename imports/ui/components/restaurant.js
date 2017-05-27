@@ -32,7 +32,7 @@ if (Meteor.isClient) {
 		},
 		'change #people': function(evt) {
 			var people = $(evt.target).val();
-			Session.set("persons", people);
+			// Session.set("persons", people);
 		},
 		'change #arrival_hour': function(evt, t) {
 			var arrival_hour = $(evt.target).val();
@@ -58,8 +58,10 @@ if (Meteor.isClient) {
 		'click #reserve': function(e, t) {
 		    e.preventDefault();
 		    
-		    var res_hour = this;
+		    var res_hour = this.hour;
+		    var tableid = this.tableid;
 			Session.set("reservationHour", String(res_hour));
+			Session.set("reservationTable", tableid);
 			var resti = AmplifiedSession.get('Restaurant');
 			Session.set("resRestaurant", resti);
 		    Modal.show('reservationModal');
@@ -179,6 +181,7 @@ if (Meteor.isClient) {
 			var restId = AmplifiedSession.get('Restaurant');
 			var res_date = Session.get("reservationDate")
 			var time = Session.get("reservationTime");
+			var people = Session.get("persons");
 			var leave_time = 2400;
 
 			var d = new Date();
@@ -197,7 +200,7 @@ if (Meteor.isClient) {
 						leave_time = hour * 100;
 					}
 					leave_time += 100;
-					return allHours(restId, res_date, hour, min, leave_time);
+					return allHours(restId, res_date, people, hour, min, leave_time);
 
 				} else {
 					var clock = time.split(":");
@@ -218,11 +221,11 @@ if (Meteor.isClient) {
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
 					
-					return allHours(restId, res_date, clock[0], clock[1], leave_time);
+					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			} else {
 				if (time == undefined || time == "") {
-					return allHours(restId, res_date, 9, 0, leave_time);
+					return allHours(restId, res_date, people, 9, 0, leave_time);
 
 				} else {
 					var clock = time.split(":");
@@ -233,13 +236,13 @@ if (Meteor.isClient) {
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
 					
-					return allHours(restId, res_date, clock[0], clock[1], leave_time);
+					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			}
 		},
 	});
 
-	function allHours(restId, res_date, hour, min, leave_time) {
+	function allHours(restId, res_date, people, hour, min, leave_time) {
 		var list = [];
 		if (0 < min && min <= 30) {
 			time = hour * 100 + 30;
@@ -249,13 +252,15 @@ if (Meteor.isClient) {
 			}
 			time = hour * 100;
 		}
-
-		var table = Tables.findOne({restaurant_id: restId});
+		// kicserelni findall es foreachre
+		var nbpeople = Number(people.split(" ")[0]);
+		var table = Tables.findOne({restaurant_id: restId, seats: nbpeople});
 		if (table == undefined) {
 			// no tables that match the description
 			return list;
 		};
 
+		var tableid = table._id;
 		var reservations = table.reservations;
 		reservations.sort(compare);
 		var maxtime = time + 100;
@@ -273,10 +278,14 @@ if (Meteor.isClient) {
 					}
 					while (time <=  leave_time && leave_time <= reservations[i].start && time <= maxtime) {
 						if (time % 100 == 0) {
-							list.push(Math.floor(time/100) + ":00");
+							// list.push(Math.floor(time/100) + ":00");
+							var inputhour = Math.floor(time/100) + ":00";
+							list.push({tableid:tableid, hour:inputhour});
 							time += 30;
 						} else {
-							list.push(Math.floor(time/100) + ":30");
+							// list.push(Math.floor(time/100) + ":30");
+							var inputhour = Math.floor(time/100) + ":30";
+							list.push({tableid:tableid, hour:inputhour});
 							time += 70;
 						}
 					}
@@ -298,10 +307,14 @@ if (Meteor.isClient) {
 			if (time <= maxtime) {
 				while (time <= 2400 && time <= maxtime) {
 					if (time % 100 == 0) {
-						list.push(Math.floor(time/100) + ":00");
+						// list.push(Math.floor(time/100) + ":00");
+						var inputhour = Math.floor(time/100) + ":00";
+						list.push({tableid:tableid, hour:inputhour});
 						time += 30;
 					} else {
-						list.push(Math.floor(time/100) + ":30");
+						// list.push(Math.floor(time/100) + ":30");
+						var inputhour = Math.floor(time/100) + ":30";
+						list.push({tableid:tableid, hour:inputhour});
 						time += 70;
 					}
 				}

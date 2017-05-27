@@ -8,7 +8,7 @@
 					<div class="col-sm-3">
 						<div class="form-group">
 							<div class="col-sm-12">
-								<select class="w3-input w3-border" name="people" id="people">
+								<select required class="w3-input w3-border" name="people" id="people">
 									<option disabled="disabled" selected="selected" value="">How many people</option>
 										<option value="1 person">1 person</option>
 									{{#each persons}}
@@ -67,7 +67,7 @@
     					{{#each freeTables}}
     					<div class="w3-col s4 button-padding">
     						<div id="reserve" name="{{this}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
-    							{{this}}
+    							{{this.hour}}
     						</div>
     					</div>
     					{{/each}}
