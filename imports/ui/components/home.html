@@ -26,14 +26,20 @@
             <hr>
         </div>
         <div class="ratings">
-            <p class="pull-right">18 reviews</p>
-            <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-            </p>
+            <div class="row">
+                <div class="col-xs-6" style="padding-right:0">
+                    <p>
+                        {{#each ratings}}
+                            {{#if this}}
+                                <span class="glyphicon glyphicon-star"></span>
+                            {{else}}
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                            {{/if}}
+                        {{/each}}
+                    </p>
+                </div>
+                <div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
+            </div>
         </div>
     </div>
 </div>

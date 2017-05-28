@@ -65,19 +65,40 @@ Template.reservationModal.helpers({
 
 			return Meteor.user().emails[0].address;
 		},
+		phonenb: function() {
+			var userid = Meteor.userId();
+			var userinfo = userInfo.findOne({user_id: userid});
+			if (userinfo !== undefined) {
+				return userinfo.phonenb;
+			}
+			return "";
+		}
 });
 
 Template.reservationModal.events({
+	'change #input-email': function(evt, t) {
+		var email = $(evt.target).val();
+		Session.set("inputEmail", email);
+	},
+	'change #input-phone': function(evt, t) {
+		var phone = $(evt.target).val();
+		Session.set("inputPhone", phone);
+	},
 	'submit #reserve-form' : function (e,t)
 	{
 		e.preventDefault();
-		var email = t.$('#input-email').val();
-		var phonenb = t.$('#input-phone').val();
-
+		var email = Session.get("inputEmail");
+		if (email == undefined || email == "") {
+			email = $('#input-email').val();
+		}
+		var phonenb = Session.get("inputPhone");
+		if (phonenb == undefined || phonenb == "") {
+			phonenb = $('#input-phone').val();
+		}
+		// console.log("email:" + Session.get("inputEmail"));
+		// console.log("phone:" + Session.get("inputPhone"));
 		var tableid = Session.get("reservationTable");
 		var date = Session.get("reservationDate");
-		// var location = Session.get("reservedRestaurant");
-		// var people = Session.get("reservedPersons");
 		var arrival_hour = Session.get("reservationHour");
 		var leaving_hour = Session.get("timeOfLeave");
 		if (leaving_hour == undefined || leaving_hour == "") {
@@ -89,5 +110,7 @@ Template.reservationModal.events({
 		
 		resDate = moment(date).format('YYYY-MM-DD');
     	Meteor.call('insertReservation', tableid, email, phonenb, date, arrival_hour, leaving_hour);
+    	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');
+    	Modal.hide('insertReservationModal');
 	},
 });

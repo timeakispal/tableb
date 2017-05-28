@@ -1,5 +1,5 @@
 <template name="reservationModal">
-<div class="modal fade">
+<div class="modal fade" id="insertReservationModal" name="insertReservationModal">
     <div class="modal-dialog">
       <div class="modal-content">
         
@@ -27,12 +27,12 @@
               {{/if}}
               <div class="form-group">
                 <label for="input-email">Email address</label>
-                <input required type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="Enter email" value="{{email}}">
+                <input required type="email" class="form-control" name="input-email" id="input-email" aria-describedby="emailHelp" placeholder="Enter email" value="{{email}}">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
               </div>
               <div class="form-group">
                 <label for="input-phone">Phone number</label>
-                <input required type="text" class="form-control" id="input-phone" placeholder="Phone number">
+                <input required type="text" class="form-control" name="input-phone" id="input-phone" placeholder="Phone number" value="{{phonenb}}">
               </div>
           </div>
           

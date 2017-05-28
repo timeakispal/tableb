@@ -18,7 +18,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-12">
-							<select class="w3-input w3-border" name="people" id="people">
+							<select required class="w3-input w3-border" name="people" id="people">
 								<option disabled="disabled" selected="selected" value="">How many people</option>
 									<option value="1 person">1 person</option>
 								{{#each persons}}
@@ -34,7 +34,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<div class="col-sm-12">
-							<input class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when">
+							<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when">
 						</div>
 					</div>
 				</div>

@@ -14,6 +14,12 @@ Meteor.publish('tables', function() {
 Meteor.publish('locations', function() {
   return Locations.find();
 });
+Meteor.publish('userinfo', function() {
+  return userInfo.find();
+});
+Meteor.publish('reviews', function() {
+  return myReviews.find();
+});
 
 Meteor.methods({
 	'checkPassword': function(digest) {
@@ -32,8 +38,43 @@ Meteor.methods({
 	'insertReservation': function(tableid, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
 		var end = Number(leaving_hour.replace(":", ""));
-		var reservation = {"res_date": date, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
+		var reservation = {"res_date": date, "emai" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
 		var table = Tables.findOne({_id: tableid});
 		Tables.update({ '_id': table._id },{ $push: { reservations: reservation }});
+    },
+
+    'insertUserInfo' : function(userid, firstname, lastname, email, phonenb, avatar) {
+    	var user_info = userInfo.findOne({user_id: userid});
+    	if (user_info == undefined || user_info == "") {
+    		userInfo.insert({
+	            user_id: userid,
+	            firstname: firstname,
+	            lastname: lastname,
+	            phonenb: phonenb,
+	            image: avatar
+	        });
+    	} else {
+    		userInfo.update({ 'user_id': userid },{ $set: {firstname: firstname, lastname: lastname, phonenb: phonenb, image: avatar}});
+    	}
+    },
+
+    'insertReview' : function(userid, rest_id, review, stars, date_inserted) {
+    	var user = Meteor.user();
+    	var username = user.username;
+    	var user_info = userInfo.findOne({user_id: userid});
+    	if (user_info !== undefined) {
+    		if (user_info.firstname !== "") {
+    			username = user_info.firstname;
+    		}
+    	}
+
+    	myReviews.insert({
+            user_id: userid,
+            rest_id: rest_id,
+            name: username,
+            review: review,
+            stars: stars,
+            date_inserted: date_inserted
+        });
     }
 });

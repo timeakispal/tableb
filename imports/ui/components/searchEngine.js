@@ -16,7 +16,7 @@ if (Meteor.isClient) {
 		},
 		'change #people': function(evt) {
 			var people = $(evt.target).val();
-			Session.set("persons", people);
+			// Session.set("persons", people);
 		},
 		'change #arrival_hour': function(evt, t) {
 			var arrival_hour = $(evt.target).val();

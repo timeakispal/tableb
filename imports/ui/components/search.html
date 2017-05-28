@@ -15,7 +15,7 @@
 				{{#each Tables}}
 				<div class="w3-col s4 button-padding">
 					<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
-						{{this}}
+						{{this.hour}}
 					</div>
 				</div>
 				{{/each}}
@@ -29,7 +29,7 @@
 			<a id="restaurant-details" class="btn btn-default">Reserve >></a>
 			<hr>
 		</div>
-		<div class="ratings">
+		<!-- <div class="ratings">
 			<p class="pull-right">18 reviews</p>
 			<p>
 				<span class="glyphicon glyphicon-star"></span>
@@ -38,6 +38,22 @@
 				<span class="glyphicon glyphicon-star"></span>
 				<span class="glyphicon glyphicon-star-empty"></span>
 			</p>
+		</div> -->
+		<div class="ratings">
+			<div class="row">
+				<div class="col-xs-6" style="padding-right:0">
+					<p>
+						{{#each ratings}}
+							{{#if this}}
+								<span class="glyphicon glyphicon-star"></span>
+							{{else}}
+								<span class="glyphicon glyphicon-star-empty"></span>
+							{{/if}}
+						{{/each}}
+					</p>
+				</div>
+				<div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
+			</div>
 		</div>
 	</div>
 </div>

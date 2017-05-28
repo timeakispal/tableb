@@ -18,6 +18,8 @@ Router.configure({
 		Meteor.subscribe('restaurants');
 		Meteor.subscribe('tables');
 		Meteor.subscribe('locations');
+		Meteor.subscribe('userinfo');
+		Meteor.subscribe('reviews');
 	}
 
 });

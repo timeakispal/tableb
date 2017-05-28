@@ -66,6 +66,66 @@ if (Meteor.isClient) {
 			Session.set("resRestaurant", resti);
 		    Modal.show('reservationModal');
 		},
+		'click #star-1': function(e, t) {
+		    e.preventDefault();
+		    var list = [];
+			list.push(1);
+			for (var i = 2; i <= 5; i++) {
+				list.push(0);
+			}
+		    Session.set("stars", list);
+		},
+		'click #star-2': function(e, t) {
+		    e.preventDefault();
+		    var list = [];
+			for (var i = 1; i <= 2; i++) {
+				list.push(1);
+			}
+			for (var i = 3; i <= 5; i++) {
+				list.push(0);
+			}
+		    Session.set("stars", list);
+		},
+		'click #star-3': function(e, t) {
+		    e.preventDefault();
+		    var list = [];
+			for (var i = 1; i <= 3; i++) {
+				list.push(1);
+			}
+			for (var i = 4; i <= 5; i++) {
+				list.push(0);
+			}
+		    Session.set("stars", list);
+		},
+		'click #star-4': function(e, t) {
+		    e.preventDefault();
+		    var list = [];
+			for (var i = 1; i <= 4; i++) {
+				list.push(1);
+			}
+			list.push(0);
+		    Session.set("stars", list);
+		},
+		'click #star-5': function(e, t) {
+		    e.preventDefault();
+		    var list = [];
+			for (var i = 1; i <= 5; i++) {
+				list.push(1);
+			}
+		    Session.set("stars", list);
+		},
+
+		'submit #leave-review' : function (e, t)
+		{
+			e.preventDefault();
+			var review = t.find('#review').value;
+			var userid = Meteor.userId();
+			var restId = AmplifiedSession.get('Restaurant');
+			var stars = Session.get('stars');
+			var today = new Date();
+			var date_inserted = moment(today).format('YYYY-MM-DD');
+			Meteor.call('insertReview', userid, restId, review, stars, date_inserted);
+		},
 	});
 
 	Template.restaurant.helpers({
@@ -92,6 +152,74 @@ if (Meteor.isClient) {
 				list.push(i);
 			}
 			return list;
+		},
+
+		reviewsList: function() {
+			var restId = AmplifiedSession.get('Restaurant');
+			return myReviews.find({rest_id: restId}).fetch().reverse();;
+		},
+
+		'ratings': function() {
+			var restId = AmplifiedSession.get('Restaurant');
+			var reviews = myReviews.find({rest_id: restId}).fetch();
+
+			var star_nb = 0;
+			var rev_nb = 0;
+			for (var i = 0; i < reviews.length; i++) {
+				rev_nb++;
+				for (var j = 0; j < reviews[i].stars.length; j++) {
+					if (reviews[i].stars[j] == 1) {
+						star_nb++;
+					}
+				}
+			}
+
+			var result = star_nb/rev_nb;
+
+			result = Math.round(result);
+			if (result == 0) {
+				return [];
+			}
+			
+			var list = [];
+			for (var i = 1; i <= result; i++) {
+				console.log(1);
+				list.push(1);
+			}
+			for (var i = ++result; i <= 5; i++) {
+				console.log(0);
+				list.push(0);
+			}
+
+			return list;
+		},
+
+		'nb_reviews': function() {
+			var restId = AmplifiedSession.get('Restaurant');
+			var reviews = myReviews.find({rest_id: restId}).fetch();
+			return reviews.length;
+		},
+
+		'ratings_total': function() {
+			var restId = AmplifiedSession.get('Restaurant');
+			var reviews = myReviews.find({rest_id: restId}).fetch();
+
+			var star_nb = 0;
+			var rev_nb = 0;
+			for (var i = 0; i < reviews.length; i++) {
+				rev_nb++;
+				for (var j = 0; j < reviews[i].stars.length; j++) {
+					if (reviews[i].stars[j] == 1) {
+						star_nb++;
+					}
+				}
+			}
+
+			var result = star_nb/rev_nb;
+			if (star_nb == 0) {
+				return "";
+			}
+			return parseFloat(Math.round(result * 100) / 100).toFixed(2) + " stars";
 		},
 
 		'arrival_hours': function() {
