@@ -1,0 +1,25 @@
+<template name="myReservations">
+<div class="container">
+    <h1>My reservations</h1>
+    <hr>
+    {{#each Reservations}}
+    	
+	{{#each reservations}}
+		<div class="row">
+	    	<div class="col-sm-6 col-md-offset-3">
+				<div class="panel panel-default">
+					<div class="panel-body">
+							<h3>{{../restaurant_name}} <div class="pull-right">{{res_date}}</div></h3>
+							<hr>
+							<h5>Table of: {{../seats}} seats</h5>
+							<h5>Time of arrival: {{start_time}}</h5>
+							<h5>Time of leave: {{end_time}}</h5>
+						<a class="btn btn-danger btn-block">Delete</a>
+					</div>
+				</div>
+	    	</div>
+    	</div>
+	{{/each}}
+    {{/each}}
+</div>
+</template>

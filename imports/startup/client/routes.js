@@ -18,7 +18,7 @@ Router.configure({
 		Meteor.subscribe('restaurants');
 		Meteor.subscribe('tables');
 		Meteor.subscribe('locations');
-		Meteor.subscribe('userinfo');
+		// Meteor.subscribe('userinfo');
 		Meteor.subscribe('reviews');
 	}
 
@@ -27,24 +27,63 @@ Router.configure({
 Router.route('/', {
 	name: 'home',
 	template: 'home',
+	// waitOn: function () {
+	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('reviews')];
+	// }
 });
 
 Router.route('/user', {
 	name: 'user',
-	template: 'user'
+	template: 'user',
+	// waitOn: function () {
+	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
+	// }
 });
 
 Router.route('/search', {
 	name: 'search',
-	template: 'search'
+	template: 'search',
+	// waitOn: function () {
+	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
+	// }
 });
 
 Router.route('/restaurant', {
 	name: 'restaurant',
-	template: 'restaurant'
+	template: 'restaurant',
+	// waitOn: function () {
+	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
+	// }
 });
 
 Router.route('/userProfile', {
 	name: 'userProfile',
-	template: 'userProfile'
+	template: 'userProfile',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	waitOn: function () {
+		return Meteor.subscribe('userinfo');
+	}
+});
+
+Router.route('/myReservations', {
+	name: 'myReservations',
+	template: 'myReservations',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	// waitOn: function () {
+	// 	return Meteor.subscribe('tables');
+	// }
 });

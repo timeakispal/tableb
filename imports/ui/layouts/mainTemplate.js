@@ -12,5 +12,6 @@ import '../components/searchEngine.js';
 import '../components/restaurant.js';
 import '../components/userProfile.js';
 import '../components/reservationModal.js';
+import '../components/myReservations.js';
 
 import './mainTemplate.html';

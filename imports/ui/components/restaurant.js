@@ -132,6 +132,7 @@ if (Meteor.isClient) {
 
 		RestaurantView: function() {
 			var restId = AmplifiedSession.get('Restaurant');
+			console.log(restId);
 			return Restaurants.find({_id: restId});
 		},
 
