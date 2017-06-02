@@ -2,6 +2,7 @@ import { IronRouter } from 'meteor/iron:router';
 
 // // Import to load these templates
 import '../../ui/layouts/mainTemplate.js';
+import '../../ui/layouts/adminTemplate.js';
 
 Router.configure({
 	layoutTemplate: 'mainTemplate',
@@ -9,16 +10,13 @@ Router.configure({
 		myNav: {to: 'nav'},
 		myFooter: {to: 'footer'},
 	},
-	// subscribe to our animals publication
-	// with a waitOn function in Iron Router
-	// ... now our application will wait to load 
+	//the application will wait to load 
 	// until we've successfully subscribed to the
-	// publication
+	// publications
 	waitOn: function () {
 		Meteor.subscribe('restaurants');
 		Meteor.subscribe('tables');
 		Meteor.subscribe('locations');
-		// Meteor.subscribe('userinfo');
 		Meteor.subscribe('reviews');
 	}
 
@@ -35,25 +33,53 @@ Router.route('/', {
 Router.route('/user', {
 	name: 'user',
 	template: 'user',
-	// waitOn: function () {
-	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
-	// }
 });
 
 Router.route('/search', {
 	name: 'search',
 	template: 'search',
-	// waitOn: function () {
-	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
-	// }
 });
 
 Router.route('/restaurant', {
 	name: 'restaurant',
 	template: 'restaurant',
-	// waitOn: function () {
-	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('tables'), Meteor.subscribe('reviews') ];
-	// }
+});
+
+Router.route('/myRestaurant', {
+	name: 'myRestaurant',
+	template: 'myRestaurant',
+	layoutTemplate: 'adminTemplate',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+    //subscribe restaurantAdmins
+	waitOn: function () {
+		return Meteor.subscribe('restAdmins');
+	}
+});
+
+Router.route('/restaurantProfile', {
+	name: 'restaurantProfile',
+	template: 'restaurantProfile',
+	layoutTemplate: 'adminTemplate',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	waitOn: function () {
+		return Meteor.subscribe('restAdmins');
+	}
 });
 
 Router.route('/userProfile', {
@@ -83,7 +109,4 @@ Router.route('/myReservations', {
             this.render("user");
         }
     },
-	// waitOn: function () {
-	// 	return Meteor.subscribe('tables');
-	// }
 });

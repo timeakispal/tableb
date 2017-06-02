@@ -1,25 +1,33 @@
 <template name="myReservations">
-<div class="container">
+<div class="container padding-35">
     <h1>My reservations</h1>
-    <hr>
-    {{#each Reservations}}
-    	
-	{{#each reservations}}
-		<div class="row">
-	    	<div class="col-sm-6 col-md-offset-3">
-				<div class="panel panel-default">
-					<div class="panel-body">
-							<h3>{{../restaurant_name}} <div class="pull-right">{{res_date}}</div></h3>
-							<hr>
-							<h5>Table of: {{../seats}} seats</h5>
-							<h5>Time of arrival: {{start_time}}</h5>
-							<h5>Time of leave: {{end_time}}</h5>
-						<a class="btn btn-danger btn-block">Delete</a>
-					</div>
-				</div>
-	    	</div>
-    	</div>
-	{{/each}}
-    {{/each}}
+    <div class="table-responsive padding-35">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Restaurant</th>
+                    <th>Date</th>
+                    <th>Persons</th>
+                    <th>Time of arrival</th>
+                    <th>Time of leave</th>
+                    <th></th>
+                </tr>
+            </thead>
+		    {{#each Reservations}}
+				{{#each reservations}}
+	            <tbody>
+	                <tr>
+	                    <td>{{../restaurant_name}}</td>
+	                    <td>{{res_date}}</td>
+	                    <td>{{../seats}}</td>
+	                    <td>{{start_time}}</td>
+	                    <td>{{end_time}}</td>
+	                    <td><a class="btn btn-danger">Delete</a></td>
+	                </tr>
+				</tbody>
+				{{/each}}
+		    {{/each}}
+    	</table>
+	</div>
 </div>
 </template>

@@ -20,6 +20,9 @@ Meteor.publish('userinfo', function() {
 Meteor.publish('reviews', function() {
   return myReviews.find();
 });
+Meteor.publish('restAdmins', function() {
+  return restaurantAdmins.find();
+});
 
 Meteor.methods({
 	'checkPassword': function(digest) {

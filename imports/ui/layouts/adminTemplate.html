@@ -1,0 +1,42 @@
+<template name="adminTemplate">
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{pathFor route='myRestaurant'}}">Admin page</a>
+            </div>
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="{{pathFor route='restaurantProfile'}}"><i class="fa fa-fw fa-edit"></i> Restaurant's profile</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-file"></i> Reservations</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-bar-chart-o"></i> Reviews</a>
+                    </li>
+                    <li>
+                        <a href="#" class="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+            {{> yield}}
+        </div>
+    </div>
+</template>
