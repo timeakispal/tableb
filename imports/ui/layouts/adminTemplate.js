@@ -6,6 +6,8 @@ import { Template } from 'meteor/templating';
 import '../components/home.js';
 import '../components/restaurantProfile.js';
 import '../components/myRestaurant.js';
+import '../components/restaurantReviews.js';
+import '../components/restaurantTables.js';
 
 import './adminTemplate.html';
 

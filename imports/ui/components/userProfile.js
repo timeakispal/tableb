@@ -75,22 +75,22 @@ Template.userProfile.events({
 		Session.set("userName", val);
 	},
 
-	'change #avatar-image' : function(evt,t){ 
-	    var file = evt.target.files[0]; //assuming 1 file only
-	    console.log(file);
-	    if (!file) return;
+	// 'change #avatar-image' : function(evt,t){ 
+	//     var file = evt.target.files[0]; //assuming 1 file only
+	//     console.log(file);
+	//     if (!file) return;
 
-	    var reader = new FileReader(); //create a reader according to HTML5 File API
+	//     var reader = new FileReader(); //create a reader according to HTML5 File API
 
-	    // reader.onload = function(evt){          
-			var buffer = new Uint8Array(reader.result) // convert to binary
-			// Meteor.call('saveFile', buffer);
-			Session.set('saveFile', buffer);
-			console.log("buffer" + buffer);
-	    // }
+	//     // reader.onload = function(evt){          
+	// 		var buffer = new Uint8Array(reader.result) // convert to binary
+	// 		// Meteor.call('saveFile', buffer);
+	// 		Session.set('saveFile', buffer);
+	// 		console.log("buffer" + buffer);
+	//     // }
 
-	    // reader.readAsArrayBuffer(file); //read the file as arraybuffer
-	},
+	//     // reader.readAsArrayBuffer(file); //read the file as arraybuffer
+	// },
 
 	'click #save-changes': function() {
 		var userid = Meteor.userId();

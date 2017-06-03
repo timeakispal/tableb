@@ -82,6 +82,42 @@ Router.route('/restaurantProfile', {
 	}
 });
 
+Router.route('/restaurantReviews', {
+	name: 'restaurantReviews',
+	template: 'restaurantReviews',
+	layoutTemplate: 'adminTemplate',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	waitOn: function () {
+		return Meteor.subscribe('reviews');
+	}
+});
+
+Router.route('/restaurantTables', {
+	name: 'restaurantTables',
+	template: 'restaurantTables',
+	layoutTemplate: 'adminTemplate',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	waitOn: function () {
+		return Meteor.subscribe('tables');
+	}
+});
+
 Router.route('/userProfile', {
 	name: 'userProfile',
 	template: 'userProfile',

@@ -157,7 +157,7 @@ if (Meteor.isClient) {
 
 		reviewsList: function() {
 			var restId = AmplifiedSession.get('Restaurant');
-			return myReviews.find({rest_id: restId}).fetch().reverse();;
+			return myReviews.find({rest_id: restId}).fetch().reverse();
 		},
 
 		'ratings': function() {

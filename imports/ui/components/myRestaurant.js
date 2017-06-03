@@ -9,12 +9,16 @@ if (Meteor.isClient) {
 		}
 	};
 	Template.myRestaurant.helpers({
-		// RestaurantView: function() {
-		// 	var restId = AmplifiedSession.get('myRestaurant');
-		// 	var restaurants = Restaurants.find({_id: restId});
-		// 	var location = restaurants.location;
-		// 	Session.set('myLocation', location);
-		// 	return restaurants;
-		// },
+		'nb_reviews': function() {
+			var restId = Session.get('theRestaurant');
+			var reviews = myReviews.find({rest_id: restId}).fetch();
+			return reviews.length;
+		},
+
+		'nb_tables': function() {
+			var restId = Session.get('theRestaurant');
+			var tables = Tables.find({restaurant_id: restId}).fetch();
+			return tables.length;
+		},
 	});
 }

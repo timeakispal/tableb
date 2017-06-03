@@ -79,5 +79,42 @@ Meteor.methods({
             stars: stars,
             date_inserted: date_inserted
         });
-    }
+    },
+
+    'updateRestInfo' : function(rest_id, email, phonenb, location, address, about) {
+        var restaurant = Restaurants.findOne({_id: rest_id});
+        Restaurants.update({ '_id': restaurant._id },{ $set: {email: email, phone_nb: phonenb, location: location, address: address, about: about}});
+    },
+
+    'removePlayer' : function(review_id, rest_id) {
+        var currentUserId = Meteor.userId();
+        if(currentUserId){
+            myReviews.remove({ _id: review_id, rest_id: rest_id });
+        }
+    },
+
+    'insertTable' : function(rest_id, rest_name, number, seats) {
+        Tables.insert({
+            restaurant_id: rest_id,
+            restaurant_name: rest_name,
+            number: number,
+            seats: seats,
+            reservations : []
+        });
+    },
+
+    'removeTable' : function(table_id) {
+        var currentUserId = Meteor.userId();
+        if(currentUserId){
+            Tables.remove({ _id: table_id});
+        }
+    },
+
+    'updateTable' : function(table_id, seats) {
+        var currentUserId = Meteor.userId();
+        if(currentUserId){
+            Tables.update({ '_id': table_id },{ $set: {seats: seats}});
+        }
+    },
+
 });
