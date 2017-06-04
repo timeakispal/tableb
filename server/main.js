@@ -117,10 +117,11 @@ Meteor.methods({
         }
     },
 
-    'removeReservation' : function(res_date, persons, email, phonenb, start_time, end_time) {
+    'removeReservation' : function(table_id, res_date, persons, email, phonenb, start_time, end_time) {
         var currentUserId = Meteor.userId();
         if(currentUserId){
-            Tables.update({ restaurant_id: "CzsFwGCodqkg7qcBq" },{ $pull: { 'reservations': { 'res_date': res_date, 'email': email, 'start_time': start_time } } });
+            var table = Tables.findOne({_id: table_id});
+            Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_date': res_date, 'email': email, 'phonenb': phonenb, 'start_time': start_time } } });
         }
     },
 

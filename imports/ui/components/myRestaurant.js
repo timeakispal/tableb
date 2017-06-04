@@ -20,5 +20,18 @@ if (Meteor.isClient) {
 			var tables = Tables.find({restaurant_id: restId}).fetch();
 			return tables.length;
 		},
+
+		'nb_res': function() {
+			var restId = Session.get('theRestaurant');
+			var tables = Tables.find({restaurant_id : restId}).fetch();
+
+			var nb = 0;
+			
+			for (var i = 0; i < tables.length; i++) {
+				nb += tables[i].reservations.length;
+			}
+
+			return nb;
+		},
 	});
 }

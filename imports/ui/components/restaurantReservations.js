@@ -37,17 +37,16 @@ if (Meteor.isClient) {
 	});
 
 	Template.restaurantReservations.events({
-		'click #reservation': function(){
+		'click .reservation': function(e){
+			var table_id = e.currentTarget.id;
 			var res_date = this.res_date;
 			var persons = this.persons;
 			var email = this.email;
 			var phonenb = this.phonenb;
 			var start_time = this.start_time;
 			var end_time = this.end_time;
-			// var rest_id = this.rest_id;
-			// console.log(t);
 
-			Meteor.call('removeReservation', res_date, persons, email, phonenb, start_time, end_time);
+			Meteor.call('removeReservation', table_id, res_date, persons, email, phonenb, start_time, end_time);
 		},
 	});
 }

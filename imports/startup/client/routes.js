@@ -166,4 +166,7 @@ Router.route('/myReservations', {
             this.render("user");
         }
     },
+    waitOn: function () {
+		return Meteor.subscribe('userinfo');
+	}
 });
