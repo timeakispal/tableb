@@ -18,8 +18,8 @@
         </div>
     </div>
 	<div class="row w3-margin-bottom">
-	<div class="col-lg-12">
-	<h3>Add new table</h3>
+	<div class="col-sm-5">
+	<!-- <h3>Add new table</h3>
     <hr>
 	    <div class="col-sm-3">
 	    	<form role="form">
@@ -44,11 +44,59 @@
 			    {{alertMessage}}
 			</div>
 		</div>
-	{{/if}}
+	{{/if}} -->
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add new table</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>Number of seats</label>
+                        <select required class="w3-input w3-border" name="people" id="people">
+                                <option value="1 person">1 person</option>
+                            {{#each persons}}
+                                <option value="{{this}}">{{this}} people</option>
+                            {{/each}}
+                        </select>
+                    </div>
+            
+                    <button type="submit" id="submit-table" class="btn btn-success">Add</button>
+                    <button type="reset" class="btn btn-default">Reset</button>
+                </form>
+            </div>
+        </div>
 	</div>
+    {{#if showTable}}
+    <div class="col-sm-5">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">Edit table</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>Seats for table number {{tablenumber}}</label>
+                        <input id="seats" class="form-control" value="{{tableseats}}">
+                    </div>
+                    <button type="submit" id="update-table" class="btn btn-warning">Save</button>
+                    <a id="close-edit" class="btn btn-default">Close</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    {{#if showAlert}}
+        <div class="col-sm-12 w3-padding-16">
+            <div id="alertMessage" class="alert {{alertType}} alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a> 
+                {{alertMessage}}
+            </div>
+        </div>
+    {{/if}}
     </div>
 
-    {{#if showTable}}
+   <!--  {{#if showTable}}
     <div class="row padding-35">
     <div class="col-lg-12">
     <h3>Edit table</h3>
@@ -64,7 +112,7 @@
 	    </div>
     </div>
     </div>
-	{{/if}}
+	{{/if}} -->
 
     <div class="table-responsive padding-35">
         <table class="table table-hover">

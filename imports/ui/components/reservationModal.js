@@ -70,8 +70,9 @@ Template.reservationModal.helpers({
 			var userinfo = userInfo.findOne({user_id: userid});
 			if (userinfo !== undefined) {
 				return userinfo.phonenb;
+				console.log("phone" + serinfo.phonenb);
 			}
-			return "";
+			return "phone";
 		}
 });
 
@@ -101,6 +102,7 @@ Template.reservationModal.events({
 		var date = Session.get("reservationDate");
 		var arrival_hour = Session.get("reservationHour");
 		var leaving_hour = Session.get("timeOfLeave");
+		var persons = Session.get("persons");
 		if (leaving_hour == undefined || leaving_hour == "") {
 			var hour = Number(arrival_hour.split(":")[0]);
 			var min = String(arrival_hour.split(":")[1]);
@@ -109,7 +111,7 @@ Template.reservationModal.events({
 		}
 		
 		resDate = moment(date).format('YYYY-MM-DD');
-    	Meteor.call('insertReservation', tableid, email, phonenb, date, arrival_hour, leaving_hour);
+    	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');
     	Modal.hide('insertReservationModal');
 	},

@@ -1,0 +1,98 @@
+<template name="restaurantReservations">
+<div class="container-fluid w3-margin-bottom">
+	<!-- Page Heading -->
+	<div class="row">
+	    <div class="col-lg-12">
+	        <h1 class="page-header">
+                Reservations
+                <small>{{restaurantName}}</small>
+            </h1>
+	        <ol class="breadcrumb">
+	            <li>
+	                <i class="fa fa-dashboard"></i>  <a href="{{pathFor route='myRestaurant'}}">Dashboard</a>
+	            </li>
+	            <li class="active">
+	                <i class="fa fa-edit"></i> Reservations
+	            </li>
+	        </ol>
+	    </div>
+	</div>
+<!-- /.row -->
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reserved tables</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive padding-35">
+                    {{#each Reservations}}
+                    {{#if this.reservations.length}}
+                    <h4>Table number: {{number}}</h4>
+                    <h5>Seats: {{seats}}</h5>
+				        <table class="table table-hover">
+				            <thead>
+				                <tr>
+				                    <th>Reservation date</th>
+				                    <th>Persons</th>
+				                    <th>Email</th>
+				                    <th>Phone number</th>
+				                    <th>Time of arrival</th>
+				                    <th>Time of leave</th>
+				                    <th></th>
+				                </tr>
+				            </thead>
+				            	{{#each this.reservations}}
+				                <tbody>
+				                    <tr>
+				                        <td>{{res_date}}</td>
+				                        <td>{{persons}}</td>
+				                        <td>{{email}}</td>
+				                        <td>{{phonenb}}</td>
+				                        <td>{{start_time}}</td>
+				                        <td>{{end_time}}</td>
+				                        <td><a id="reservation" class="btn btn-danger">Delete</a></td>
+				                    </tr>
+				                </tbody>
+				                {{/each}}
+				        </table>
+			        {{/if}}
+			        {{/each}}
+				    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Free tables</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive padding-35">
+                    
+                    <table class="table table-hover">
+			            <thead>
+			                <tr>
+			                   	<th>Table number</th>
+			                    <th>Seats</th>
+			                </tr>
+			            </thead>
+		                <tbody>
+		                {{#each Reservations}}
+		                {{#unless this.reservations.length}}
+		                    <tr>
+		                        <td>{{number}}</td>
+		                        <td>{{seats}}</td>
+		                    </tr>
+			        	{{/unless}}
+			        	{{/each}}
+
+		                </tbody>
+			        </table>
+				    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</template>

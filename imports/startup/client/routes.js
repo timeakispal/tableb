@@ -43,6 +43,9 @@ Router.route('/search', {
 Router.route('/restaurant', {
 	name: 'restaurant',
 	template: 'restaurant',
+	waitOn: function () {
+		return Meteor.subscribe('userinfo');
+	}
 });
 
 Router.route('/myRestaurant', {
@@ -103,6 +106,24 @@ Router.route('/restaurantReviews', {
 Router.route('/restaurantTables', {
 	name: 'restaurantTables',
 	template: 'restaurantTables',
+	layoutTemplate: 'adminTemplate',
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("user");
+        }
+    },
+	waitOn: function () {
+		return Meteor.subscribe('tables');
+	}
+});
+
+Router.route('/restaurantReservations', {
+	name: 'restaurantReservations',
+	template: 'restaurantReservations',
 	layoutTemplate: 'adminTemplate',
 	onBeforeAction: function(){
         var currentUser = Meteor.userId();

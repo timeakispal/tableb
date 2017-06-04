@@ -84,6 +84,10 @@ if (Meteor.isClient) {
 			Session.set('alertType', 'alert-success');
 		},
 
+		'click #close-edit': function(e, t){
+			Session.set('showTable', false);
+		},
+
 		'click #table-remove': function(){
 			var table_id = this._id;
 			Meteor.call('removeTable', table_id);

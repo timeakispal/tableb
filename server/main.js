@@ -38,10 +38,10 @@ Meteor.methods({
 		}
 	},
 
-	'insertReservation': function(tableid, email, phonenb, date, arrival_hour, leaving_hour) {
+	'insertReservation': function(tableid, persons, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
 		var end = Number(leaving_hour.replace(":", ""));
-		var reservation = {"res_date": date, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
+		var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
 		var table = Tables.findOne({_id: tableid});
 		Tables.update({ '_id': table._id },{ $push: { reservations: reservation }});
     },
@@ -114,6 +114,13 @@ Meteor.methods({
         var currentUserId = Meteor.userId();
         if(currentUserId){
             Tables.update({ '_id': table_id },{ $set: {seats: seats}});
+        }
+    },
+
+    'removeReservation' : function(res_date, persons, email, phonenb, start_time, end_time) {
+        var currentUserId = Meteor.userId();
+        if(currentUserId){
+            Tables.update({ restaurant_id: "CzsFwGCodqkg7qcBq" },{ $pull: { 'reservations': { 'res_date': res_date, 'email': email, 'start_time': start_time } } });
         }
     },
 

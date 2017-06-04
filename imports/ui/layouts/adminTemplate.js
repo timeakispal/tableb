@@ -8,6 +8,7 @@ import '../components/restaurantProfile.js';
 import '../components/myRestaurant.js';
 import '../components/restaurantReviews.js';
 import '../components/restaurantTables.js';
+import '../components/restaurantReservations.js';
 
 import './adminTemplate.html';
 
