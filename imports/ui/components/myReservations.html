@@ -14,18 +14,18 @@
                 </tr>
             </thead>
 		    {{#each Reservations}}
-				{{#each reservations}}
+				<!-- {{#each reservations}} -->
 	            <tbody>
 	                <tr>
-	                    <td>{{../restaurant_name}}</td>
+	                    <td>{{restaurant_name}}</td>
 	                    <td>{{res_date}}</td>
 	                    <td>{{persons}}</td>
 	                    <td>{{start_time}}</td>
 	                    <td>{{end_time}}</td>
-	                    <td><a id="{{../_id}}" class="reservation btn btn-danger">Delete</a></td>
+	                    <td><a id="{{id}}" class="reservation btn btn-danger">Delete</a></td>
 	                </tr>
 				</tbody>
-				{{/each}}
+				<!-- {{/each}} -->
 		    {{/each}}
     	</table>
 	</div>

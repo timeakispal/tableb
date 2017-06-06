@@ -118,9 +118,7 @@ input[type=date]::-webkit-inner-spin-button {
 	}
 
 	.register-login {
-		width: 60%;
-		margin: 0 auto;
-		padding: 50px 10%;
+        padding-top: 50px;
 		text-align: center;
 	}
 

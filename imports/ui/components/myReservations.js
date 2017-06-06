@@ -6,7 +6,18 @@ Template.myReservations.helpers({
 		var day_before = moment(today).subtract(1, 'day');
 		moment(day_before).format('YYYY-MM-DD');
 		var email = Meteor.user().emails[0].address
-		return Tables.find({'reservations.email': email});
+		var tables = Tables.find({'reservations.email': email}).fetch();
+		var list = [];
+		for (var i = 0; i < tables.length; i++) {
+			for (var j = 0; j < tables[i].reservations.length; j++) {
+				if (tables[i].reservations[j].email == email) {
+					tables[i].reservations[j].restaurant_name = tables[i].restaurant_name;
+					tables[i].reservations[j].id = tables[i]._id;
+					list.push(tables[i].reservations[j]);
+				}
+			}
+		}
+		return list;
 	},
 });
 

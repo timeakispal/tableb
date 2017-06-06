@@ -99,7 +99,7 @@ Router.route('/restaurantReviews', {
         }
     },
 	waitOn: function () {
-		return Meteor.subscribe('reviews');
+		return [Meteor.subscribe('reviews'), Meteor.subscribe('restAdmins')];
 	}
 });
 
@@ -117,7 +117,7 @@ Router.route('/restaurantTables', {
         }
     },
 	waitOn: function () {
-		return Meteor.subscribe('tables');
+		return [Meteor.subscribe('tables'), Meteor.subscribe('restAdmins')];
 	}
 });
 
@@ -135,7 +135,7 @@ Router.route('/restaurantReservations', {
         }
     },
 	waitOn: function () {
-		return Meteor.subscribe('tables');
+		return [Meteor.subscribe('tables'), Meteor.subscribe('restAdmins')];
 	}
 });
 

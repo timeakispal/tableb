@@ -21,12 +21,16 @@ if (Meteor.isClient) {
 		Session.set('showAlert', false);
 	};
 	Template.restaurantProfile.helpers({
-		restaurantName: function() {
+		'admin': function() {
+			var userid = Meteor.userId();
+			return restaurantAdmins.findOne({admin_id: userid});
+		},
+		'restaurantName': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
 			var restaurants = Restaurants.findOne({_id: restId});
 			return restaurants.name;
 		},
-		RestaurantView: function() {
+		'RestaurantView': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
 			var restaurants = Restaurants.find({_id: restId});
 			var location = restaurants.location;
@@ -47,13 +51,13 @@ if (Meteor.isClient) {
 			return Locations.find({}, {sort: {name: 1}});
 		},
 
-		alertMessage: function() {
+		'alertMessage': function() {
 			return Session.get('alertMessage');
 		},
-		showAlert: function() {
+		'showAlert': function() {
 			return Session.get('showAlert');
 		},
-		alertType: function() {
+		'alertType': function() {
 			return Session.get('alertType');
 		},
 	});

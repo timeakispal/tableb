@@ -9,6 +9,11 @@ if (Meteor.isClient) {
 		}
 	};
 	Template.myRestaurant.helpers({
+		'admin': function() {
+			var userid = Meteor.userId();
+			return restaurantAdmins.findOne({admin_id: userid});
+		},
+
 		'nb_reviews': function() {
 			var restId = Session.get('theRestaurant');
 			var reviews = myReviews.find({rest_id: restId}).fetch();

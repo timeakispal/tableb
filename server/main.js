@@ -42,8 +42,8 @@ Meteor.methods({
 		var start = Number(arrival_hour.replace(":", ""));
 		var end = Number(leaving_hour.replace(":", ""));
 		var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
-		var table = Tables.findOne({_id: tableid});
-		Tables.update({ '_id': table._id },{ $push: { reservations: reservation }});
+		// var table = Tables.findOne({_id: tableid});
+		Tables.update({ '_id': tableid },{ $push: { reservations: reservation }});
     },
 
     'insertUserInfo' : function(userid, firstname, lastname, email, phonenb, avatar) {

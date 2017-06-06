@@ -1,4 +1,5 @@
 <template name="restaurantReservations">
+{{#if admin}}
 <div class="container-fluid w3-margin-bottom">
 	<!-- Page Heading -->
 	<div class="row">
@@ -95,4 +96,9 @@
         </div>
     </div>
 </div>
+{{else}}
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> There are no admin rights for your account!
+    </div>
+{{/if}}
 </template>

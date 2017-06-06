@@ -22,13 +22,17 @@ if (Meteor.isClient) {
 	};
 
 	Template.restaurantReservations.helpers({
-		restaurantName: function() {
+		'admin': function() {
+			var userid = Meteor.userId();
+			return restaurantAdmins.findOne({admin_id: userid});
+		},
+		'restaurantName': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
 			var restaurants = Restaurants.findOne({_id: restId});
 			return restaurants.name;
 		},
 
-		Reservations: function() {
+		'Reservations': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
 			var tables = Tables.find({restaurant_id : restId}).fetch();
 			return tables;

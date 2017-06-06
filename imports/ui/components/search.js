@@ -17,6 +17,7 @@ if (Meteor.isClient) {
 			// Session.set("reservationHour", String(res_hour));
 			var res_hour = this.hour;
 		    var tableid = this.tableid;
+		    console.log(tableid);
 			Session.set("reservationHour", String(res_hour));
 			Session.set("reservationTable", tableid);
 			Session.set("resRestaurant", restId);
@@ -130,11 +131,21 @@ if (Meteor.isClient) {
 				}
 			} else {
 				if (time == undefined || time == "") {
-					return allHours(restId, res_date, people, 9, 0, leave_time);
+					return allHours(restId, res_date, people, 9, 0, 11);
 
 				} else {
 					var clock = time.split(":");
 					var timeLeave = Session.get("timeOfLeave");
+
+					if (0 < clock[1] && clock[1] <= 30) {
+						leave_time = clock[0] * 100 + 30;
+					} else {
+						if (30 < clock[1]) {
+							clock[0]++;
+						}
+						leave_time = clock[0] * 100;
+					}
+					leave_time += 200;
 					
 					if (timeLeave !== undefined && timeLeave !== "") {
 						var clock2 = timeLeave.split(":");
@@ -150,6 +161,14 @@ if (Meteor.isClient) {
 
 	function allHours(restId, res_date, people, hour, min, leave_time) {
 		var list = [];
+		var time;
+
+		if (leave_time % 100 == 0) {
+			Session.set("leavingHour", Math.floor(leave_time/100) + ":00");
+		} else {
+			Session.set("leavingHour", Math.floor(leave_time/100) + ":30");
+		}
+
 		if (0 < min && min <= 30) {
 			time = hour * 100 + 30;
 		} else {
@@ -159,84 +178,134 @@ if (Meteor.isClient) {
 			time = hour * 100;
 		}
 
-		// kicserelni findall es foreachre
+		var time_bckup = time;
 		var nbpeople = Number(people.split(" ")[0]);
-		var table = Tables.findOne({restaurant_id: restId, seats: nbpeople});
-		if (table == undefined) {
+		var nbpeople_max = String(nbpeople + 2);
+		nbpeople = String(nbpeople);
+		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
+		
+		if (table !== undefined && table.length > 0) {
+			var tableid = table[0]._id;
+			console.log(tableid);
+			// no tables that have reservation on that date
+			while (list.length < 3) {
+				if (time % 100 == 0) {
+					// list.push(Math.floor(time/100) + ":00");
+					var inputhour = Math.floor(time/100) + ":00";
+					list.push({tableid:tableid, hour:inputhour});
+					time += 30;
+				} else {
+					// list.push(Math.floor(time/100) + ":30");
+					var inputhour = Math.floor(time/100) + ":30";
+					list.push({tableid:tableid, hour:inputhour});
+					time += 70;
+				}
+			}
+
+			return list;
+		}
+
+
+		table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		if (table == undefined || table.length < 1) {
 			// no tables that match the description
 			return list;
 		};
+		
+		for (var k = 0; k < table.length; k++) {
+			var list_temp = [];
+			time = time_bckup;
+			var tableid = table[k]._id;
+			var reservations = table[k].reservations;
+			for (var i = 0; i < reservations.length; i++) {
+				if (reservations[i].res_date == res_date) {
+					list_temp.push({start: reservations[i].start, end: reservations[i].end});
+				}
+			}
 
-		var tableid = table._id;
-		var reservations = table.reservations;
-		reservations.sort(compare);
-		var maxtime = time + 100;
-		if (time >= 2300) {
-			maxtime = 2330;
-		}
+			list_temp.sort(compare);
+			console.log(list_temp);
+			var maxtime = time + 100;
+			if (time >= 2300) {
+				maxtime = 2330;
+			}
 
-		var leavehour = 0;
-		var inputhour = 0;
-		for (var i = 0; i < reservations.length; i++) {
-			if (reservations[i].res_date == res_date) {
-				console.log("date equals");
-				if (maxtime <= reservations[i].start && maxtime >= leavehour) {
+			var leavehour = 0;
+			for (var i = 0; i < list_temp.length; i++) {
+				if (maxtime <= list_temp[i].start && maxtime >= leavehour) {
 					if (leavehour >= time && leavehour <= maxtime) {
 						time = leavehour;
 					}
-					while (time <=  leave_time && leave_time <= reservations[i].start && time <= maxtime) {
+					while (time <=  leave_time && leave_time <= list_temp[i].start && time <= maxtime) {
 						if (time % 100 == 0) {
 							// list.push(Math.floor(time/100) + ":00");
-							inputhour = Math.floor(time/100) + ":00";
+							var inputhour = Math.floor(time/100) + ":00";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 30;
 						} else {
 							// list.push(Math.floor(time/100) + ":30");
-							inputhour = Math.floor(time/100) + ":30";
+							var inputhour = Math.floor(time/100) + ":30";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 70;
 						}
 					}
 				}
 			
-				leavehour = reservations[i].end;
-
-			} else {
-				leavehour = 0;
-			}
-		
-		}
-
-		if (time <= leavehour || leavehour <= maxtime) {
-			if (time <= leavehour) {
-				time = leavehour;
-			}
+				leavehour = list_temp[i].end;
 			
-			if (time <= maxtime) {
-				while (time <= 2400 && time <= maxtime) {
-					if (time % 100 == 0) {
-						// list.push(Math.floor(time/100) + ":00");
-						inputhour = Math.floor(time/100) + ":00";
-						list.push({tableid:tableid, hour:inputhour});
-						time += 30;
-					} else {
-						// list.push(Math.floor(time/100) + ":30");
-						inputhour = Math.floor(time/100) + ":30";
-						list.push({tableid:tableid, hour:inputhour});
-						time += 70;
+			}
+
+			if (time <= leavehour || leavehour <= maxtime) {
+				if (time <= leavehour) {
+					time = leavehour;
+				}
+				
+				if (time <= maxtime) {
+					while (time <= 2400 && time <= maxtime) {
+						if (time % 100 == 0) {
+							// list.push(Math.floor(time/100) + ":00");
+							var inputhour = Math.floor(time/100) + ":00";
+							list.push({tableid:tableid, hour:inputhour});
+							time += 30;
+						} else {
+							// list.push(Math.floor(time/100) + ":30");
+							var inputhour = Math.floor(time/100) + ":30";
+							list.push({tableid:tableid, hour:inputhour});
+							time += 70;
+						}
 					}
 				}
 			}
+
+			if (list.length >= 3) { break; }
 		}
 		
-
-		return list;
+		list.sort(compare_hour);
+		var n = {}, unique_list = [];
+		for(var i = 0; i < list.length; i++) 
+		{
+			if (!n[list[i].hour]) 
+			{
+				n[list[i].hour] = true; 
+				unique_list.push(list[i]); 
+			}
+		}
+		return unique_list.slice(0,3);
 	}
 
 	function compare(a, b) {
 		if (a.start < b.start)
 			return -1;
 		if (a.start > b.start)
+			return 1;
+
+		return 0;
+	}
+
+	function compare_hour(a, b) {
+		if (a.hour < b.hour)
+			return -1;
+		if (a.hour > b.hour)
 			return 1;
 
 		return 0;
