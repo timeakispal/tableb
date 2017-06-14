@@ -72,15 +72,55 @@ if (Meteor.isClient) {
 			}
 		},
 
+		'selectedDate': function() {
+			var date_res = Session.get("reservationDate");
+			if (date_res !== undefined && date_res !== "") {
+				return date_res;
+			}
+			return "";
+		},
+
+		'selectedClassPeople': function() {
+			var restId = this.value;
+			var searchPersons = Session.get('persons');
+			if (restId == searchPersons) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassArrival': function() {
+			var restId = this;
+			var searchArrival = Session.get('reservationTime');
+			if (restId == searchArrival) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassLeave': function() {
+			var restId = this;
+			var searchLeave = Session.get('timeOfLeave');
+			if (restId == searchLeave) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
 		'locations': function() {
 			return Locations.find({}, {sort: {name: 1}});
 		},
 
 		'persons': function() {
 			var list = [];
+			list.push({value:1, string: "1 person"});
 			for (var i = 2; i <= 8; i++) {
-				list.push(i);
+				list.push({value: i, string: i + " people"});
 			}
+			list.push({value:"party", string: "Larger group"});
 			return list;
 		},
 

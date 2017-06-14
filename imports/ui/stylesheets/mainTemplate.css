@@ -96,9 +96,18 @@ body, h1, h2, h3, h4, h5 {
 	margin-right: -2px;
 }
 
+.margin-minus-row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .button-padding {
 	padding-left: 2px;
 	padding-right: 2px;
+}
+
+.hidden-alert {
+    display: none
 }
 
 hr.style7 {

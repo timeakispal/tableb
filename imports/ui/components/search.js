@@ -13,27 +13,91 @@ if (Meteor.isClient) {
 		    e.preventDefault();
 		    
 		    var restId = $(e.currentTarget).attr("restId");
-		 	// var res_hour = this;
-			// Session.set("reservationHour", String(res_hour));
 			var res_hour = this.hour;
 		    var tableid = this.tableid;
-		    console.log(tableid);
 			Session.set("reservationHour", String(res_hour));
 			Session.set("reservationTable", tableid);
 			Session.set("resRestaurant", restId);
 		    Modal.show('reservationModal');
 		},
+		'change #name-asc': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Name-asc', x);
+			t.find('#name-desc').checked = false;
+			Session.set('Name-desc', false);
+			t.find('#ratings-desc').checked = false;
+			Session.set('Ratings-desc', false);
+			t.find('#expensiveness').checked = false;
+			Session.set('Expensiveness', false);
+
+		},
+		'change #name-desc': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Name-desc', x);
+			t.find('#name-asc').checked = false;
+			Session.set('Name-asc', false);
+			t.find('#ratings-desc').checked = false;
+			Session.set('Ratings-desc', false);
+			t.find('#expensiveness').checked = false;
+			Session.set('Expensiveness', false);
+
+
+		},
+		'change #ratings-desc': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Ratings-desc', x);
+			t.find('#name-desc').checked = false;
+			Session.set('Name-desc', false);
+			t.find('#name-asc').checked = false;
+			Session.set('Name-asc', false);
+			t.find('#expensiveness').checked = false;
+			Session.set('Expensiveness', false);
+
+		},
+		'change #expensiveness': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Expensiveness', x);
+			t.find('#name-desc').checked = false;
+			Session.set('Name-desc', false);
+			t.find('#ratings-desc').checked = false;
+			Session.set('Ratings-desc', false);
+			t.find('#name-asc').checked = false;
+			Session.set('Name-asc', false);
+
+		},
 	});
 
 	Template.search.helpers({
 		'Restaurants': function() {
-			var location = Session.get("searchLocation");
-			if (location == "" || undefined == location) {
+			var location_str = Session.get("searchLocation");
+			var name_asc = Session.get("Name-asc");
+			var name_desc = Session.get("Name-desc");
+			var ratings_desc = Session.get("Ratings-desc");
+			var expensiveness = Session.get("Expensiveness");
+
+			var sort_str = "";
+			if (name_asc) { sort_str = "name: 1";}
+			if (name_desc) { sort_str = "name: -1";}
+			// if (ratings_desc) { sort = "name: -1";}
+			if (expensiveness) { sort_str = "expensive: 1";}
+
+			if (location_str == "" || undefined == location_str) {
+				if (name_asc) { return Restaurants.find({}, {sort: {name: 1}});}
+				if (name_desc) { return Restaurants.find({}, {sort: {name: -1}});}
+				// if (ratings_desc) { return Restaurants.find({}, {sort: {name: -1}});}
+				if (expensiveness) { return Restaurants.find({}, {sort: {expensive: 1}});}
 				return Restaurants.find();
 			} else {
-				var query = { location: location };
-				return Restaurants.find(query);
+				// var query = { location: location_str, sort: {sort_str}};
+				// return Restaurants.find({location: location_str, {sort: }});
+				if (name_asc) { return Restaurants.find({location: location_str}, {sort: {name: 1}});}
+				if (name_desc) { return Restaurants.find({location: location_str}, {sort: {name: -1}});}
+				// if (ratings_desc) { return Restaurants.find({location: location_str, {sort: {name: -1}}});}
+				if (expensiveness) { return Restaurants.find({location: location_str}, {sort: {expensive: 1}});}
+				return Restaurants.find({location: location_str});
 			}
+
+			// return Restaurants.find({}, {sort: {expensive: -1, name: 1}, limit: 6})
 			
 		},
 		'searchLocation': function() {
@@ -179,14 +243,13 @@ if (Meteor.isClient) {
 		}
 
 		var time_bckup = time;
-		var nbpeople = Number(people.split(" ")[0]);
+		var nbpeople = Number(people);
 		var nbpeople_max = String(nbpeople + 2);
 		nbpeople = String(nbpeople);
 		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
 		
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
-			console.log(tableid);
 			// no tables that have reservation on that date
 			while (list.length < 3) {
 				if (time % 100 == 0) {
@@ -224,7 +287,6 @@ if (Meteor.isClient) {
 			}
 
 			list_temp.sort(compare);
-			console.log(list_temp);
 			var maxtime = time + 100;
 			if (time >= 2300) {
 				maxtime = 2330;

@@ -24,6 +24,30 @@ Meteor.publish('restAdmins', function() {
   return restaurantAdmins.find();
 });
 
+var d = new Date();
+var time = moment().format("HH:mm");
+var minutes = time.split(":")[1];
+
+Meteor.startup(function() {
+    var d = new Date();
+    var today = moment(d).format('YYYY-MM-DD');
+    console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+    Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+});
+
+Meteor.setInterval(function() {
+    var d = new Date();
+    var today = moment(d).format('YYYY-MM-DD');
+    // var time = moment().format("HH:mm");
+    // var minutes = time.split(":")[1];
+    console.log("time:" + time + "minutes:" + minutes);
+    if (time == "00:" + minutes) {
+        console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+        Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+    }
+  console.log("test");
+}, 600000);
+
 Meteor.methods({
 	'checkPassword': function(digest) {
 		check(digest, String);

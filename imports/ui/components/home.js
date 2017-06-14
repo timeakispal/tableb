@@ -5,6 +5,10 @@ import './home.html';
 
 Template.home.rendered = function(){
 	Session.set('searchLocation', "");
+	Session.set('reservationDate', "");
+	Session.set('persons', "");
+	Session.set('reservationTime', "");
+	Session.set('timeOfLeave', "");
 };
 
 if (Meteor.isClient) {

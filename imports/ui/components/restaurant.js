@@ -58,7 +58,6 @@ if (Meteor.isClient) {
 		    e.preventDefault();
 		    var res_hour = this.hour;
 		    var tableid = this.tableid;
-		    console.log(tableid);
 			Session.set("reservationHour", String(res_hour));
 			Session.set("reservationTable", tableid);
 			var resti = AmplifiedSession.get('Restaurant');
@@ -145,11 +144,51 @@ if (Meteor.isClient) {
 			return moment(maximumDate).format('YYYY-MM-DD');
 		},
 
+		'selectedDate': function() {
+			var date_res = Session.get("reservationDate");
+			if (date_res !== undefined && date_res !== "") {
+				return date_res;
+			}
+			return "";
+		},
+
+		'selectedClassPeople': function() {
+			var restId = this.value;
+			var searchPersons = Session.get('persons');
+			if (restId == searchPersons) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassArrival': function() {
+			var restId = this;
+			var searchArrival = Session.get('reservationTime');
+			if (restId == searchArrival) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassLeave': function() {
+			var restId = this;
+			var searchLeave = Session.get('timeOfLeave');
+			if (restId == searchLeave) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
 		'persons': function() {
 			var list = [];
+			list.push({value:1, string: "1 person"});
 			for (var i = 2; i <= 8; i++) {
-				list.push(i);
+				list.push({value: i, string: i + " people"});
 			}
+			list.push({value:"party", string: "Larger group"});
 			return list;
 		},
 
@@ -404,7 +443,7 @@ if (Meteor.isClient) {
 		
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
-			console.log(tableid);
+
 			// no tables that have reservation on that date
 			while (list.length < 3) {
 				if (time % 100 == 0) {
@@ -442,7 +481,7 @@ if (Meteor.isClient) {
 			}
 
 			list_temp.sort(compare);
-			console.log(list_temp);
+
 			var maxtime = time + 100;
 			if (time >= 2300) {
 				maxtime = 2330;

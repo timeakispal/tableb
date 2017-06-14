@@ -10,11 +10,9 @@
 							<div class="col-sm-12">
 								<select required class="w3-input w3-border" name="people" id="people">
 									<option disabled="disabled" selected="selected" value="">How many people</option>
-										<option value="1 person">1 person</option>
 									{{#each persons}}
-										<option value="{{this}}">{{this}} people</option>
+										<option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
 									{{/each}}
-										<option value="party">Larger group</option>
 								</select>
 							</div>
 						</div>
@@ -22,7 +20,7 @@
 					<div class="col-sm-3">
 						<div class="form-group">
 							<div class="col-sm-12">
-								<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when">
+								<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
 							</div>
 						</div>
 					</div>
@@ -32,7 +30,7 @@
 								<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
 									<option disabled="disabled" selected="selected" value="">Arrival</option>
 									{{#each arrival_hours}}
-										<option value="{{this}}">{{this}}</option>
+										<option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
 									{{/each}}
 								</select>
 							</div>
@@ -45,7 +43,7 @@
 									<option disabled="disabled" selected="selected" value="">Leave</option>
 									<option value="">Don't know</option>
 									{{#each leaving_hours}}
-										<option value="{{this}}">{{this}}</option>
+										<option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
 									{{/each}}
 								</select>
 							</div>

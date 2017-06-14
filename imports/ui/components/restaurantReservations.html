@@ -46,24 +46,75 @@
 				            	{{#each this.reservations}}
 				                <tbody>
 				                    <tr>
-				                        <td>{{res_date}}</td>
-				                        <td>{{persons}}</td>
-				                        <td>{{email}}</td>
-				                        <td>{{phonenb}}</td>
-				                        <td>{{start_time}}</td>
-				                        <td>{{end_time}}</td>
-				                        <td><a id="{{../_id}}" class="reservation btn btn-danger">Delete</a></td>
+				                        <td>{{this.res_date}}</td>
+				                        <td>{{this.persons}}</td>
+				                        <td>{{this.email}}</td>
+				                        <td>{{this.phonenb}}</td>
+				                        <td>{{this.start_time}}</td>
+				                        <td>{{this.end_time}}</td>
+				                        <td><a id="{{../_id}}" class="remove-reservation btn btn-danger">Delete</a></td>
 				                    </tr>
 				                </tbody>
 				                {{/each}}
 				        </table>
+				    <h5>Add new reservation to this table</h5>
+				    <div class="row margin-minus-row" id="submit-new-reservation">
+				    <form class="form-horizontal" id="reservation-form">
+						<div class="col-sm-7">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when">
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
+												<option disabled="disabled" selected="selected" value="">Arrival</option>
+												{{#each arrival_hours}}
+													<option value="{{this}}">{{this}}</option>
+												{{/each}}
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
+												<option disabled="disabled" selected="selected" value="">Leave</option>
+												<option value="">Don't know</option>
+												{{#each leaving_hours}}
+													<option value="{{this}}">{{this}}</option>
+												{{/each}}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+						<button type="submit" id="add-reservation" class="btn btn-success">ADD</button>
+						</div>
+					</form>
+					</div>
+
+					<div class="alert {{alertTypeRes}} alert-dismissable hidden-alert {{_id}}">
+					  	<a class="panel-close close" data-dismiss="alert">×</a> 
+					    {{alertMessageRes}}
+					</div>
+
+			        <hr>
 			        {{/if}}
 			        {{/each}}
 				    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">Free tables</h3>
@@ -76,6 +127,7 @@
 			                <tr>
 			                   	<th>Table number</th>
 			                    <th>Seats</th>
+			                    <th>Add new reservation to this table</th>
 			                </tr>
 			            </thead>
 		                <tbody>
@@ -84,6 +136,49 @@
 		                    <tr>
 		                        <td>{{number}}</td>
 		                        <td>{{seats}}</td>
+		                        <td>
+		                        	<form class="form-horizontal" id="free-table-form">
+										<div class="col-sm-7">
+											<div class="row">
+												<div class="col-sm-4">
+													<div class="form-group">
+														<div class="col-sm-12">
+															<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when">
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-4">
+													<div class="form-group">
+														<div class="col-sm-12">
+															<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
+																<option disabled="disabled" selected="selected" value="">Arrival</option>
+																{{#each arrival_hours}}
+																	<option value="{{this}}">{{this}}</option>
+																{{/each}}
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-4">
+													<div class="form-group">
+														<div class="col-sm-12">
+															<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
+																<option disabled="disabled" selected="selected" value="">Leave</option>
+																<option value="">Don't know</option>
+																{{#each leaving_hours}}
+																	<option value="{{this}}">{{this}}</option>
+																{{/each}}
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+										<button type="submit" id="add-reservation" class="btn btn-success">ADD</button>
+										</div>
+									</form>
+		                        </td>
 		                    </tr>
 			        	{{/unless}}
 			        	{{/each}}

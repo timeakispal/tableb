@@ -1,6 +1,36 @@
 <template name="search">
 <div class="container padding-35" id="header">
 	{{> searchEngine}}
+	<div class="row w3-maring-bottom">
+		<!-- <div class="col-sm-12"> -->
+			<div class="form-group">
+		        
+		        <div class="col-sm-2">
+		        <label>Order by:</label>
+		        </div>
+		        <div class="col-sm-2">
+		        <label class="checkbox-inline">
+		            <input type="checkbox" id="name-asc">Name A-Z
+		        </label>
+		        </div>
+		        <div class="col-sm-2">
+		        <label class="checkbox-inline">
+		            <input type="checkbox" id="name-desc">Name Z-A
+		        </label>
+		        </div>
+		        <div class="col-sm-2 hidden">
+		        <label class="checkbox-inline">
+		            <input type="checkbox" id="ratings-desc">Ratings
+		        </label>
+		        </div>
+		        <div class="col-sm-3">
+		        <label class="checkbox-inline">
+		            <input type="checkbox" id="expensiveness">Expensiveness ASC
+		        </label>
+		        </div>
+		    </div>
+	    <!-- </div> -->
+	</div>
 </div>
 <!-- =========== -->
 <div class="container">
@@ -29,16 +59,6 @@
 			<a id="restaurant-details" class="btn btn-default">Reserve >></a>
 			<hr>
 		</div>
-		<!-- <div class="ratings">
-			<p class="pull-right">18 reviews</p>
-			<p>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star"></span>
-				<span class="glyphicon glyphicon-star-empty"></span>
-			</p>
-		</div> -->
 		<div class="ratings">
 			<div class="row">
 				<div class="col-xs-6" style="padding-right:0">
