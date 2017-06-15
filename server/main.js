@@ -24,29 +24,27 @@ Meteor.publish('restAdmins', function() {
   return restaurantAdmins.find();
 });
 
-var d = new Date();
-var time = moment().format("HH:mm");
-var minutes = time.split(":")[1];
+// DELETE ALL RESERVATIONS FROM THE PAST
+// var d = new Date();
+// var time = moment().format("HH:mm");
+// var minutes = time.split(":")[1];
 
-Meteor.startup(function() {
-    var d = new Date();
-    var today = moment(d).format('YYYY-MM-DD');
-    console.log("Delete reservations from earlier than " + moment(d).format('llll'));
-    Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
-});
+// Meteor.startup(function() {
+//     var d = new Date();
+//     var today = moment(d).format('YYYY-MM-DD');
+//     console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+//     Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+// });
 
-Meteor.setInterval(function() {
-    var d = new Date();
-    var today = moment(d).format('YYYY-MM-DD');
-    // var time = moment().format("HH:mm");
-    // var minutes = time.split(":")[1];
-    console.log("time:" + time + "minutes:" + minutes);
-    if (time == "00:" + minutes) {
-        console.log("Delete reservations from earlier than " + moment(d).format('llll'));
-        Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
-    }
-  console.log("test");
-}, 600000);
+// Meteor.setInterval(function() {
+//     var d = new Date();
+//     var today = moment(d).format('YYYY-MM-DD');
+//     console.log("time:" + time + " - minutes:" + minutes);
+//     if (time == "00:" + minutes) {
+//         console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+//         Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+//     }
+// }, 43200000);
 
 Meteor.methods({
 	'checkPassword': function(digest) {
@@ -85,7 +83,7 @@ Meteor.methods({
     	}
     },
 
-    'insertReview' : function(userid, rest_id, review, stars, date_inserted) {
+    'insertReview' : function(userid, rest_id, review, stars, date_inserted, stars_nb) {
     	var user = Meteor.user();
     	var username = user.username;
     	var user_info = userInfo.findOne({user_id: userid});
@@ -103,6 +101,9 @@ Meteor.methods({
             stars: stars,
             date_inserted: date_inserted
         });
+
+        var restaurant = Restaurants.findOne({_id: rest_id});
+        Restaurants.update({ '_id': restaurant._id }, { $inc: { stars_total: stars_nb} });
     },
 
     'updateRestInfo' : function(rest_id, email, phonenb, location, address, about) {

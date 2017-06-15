@@ -75,30 +75,51 @@ if (Meteor.isClient) {
 			var ratings_desc = Session.get("Ratings-desc");
 			var expensiveness = Session.get("Expensiveness");
 
-			var sort_str = "";
-			if (name_asc) { sort_str = "name: 1";}
-			if (name_desc) { sort_str = "name: -1";}
-			// if (ratings_desc) { sort = "name: -1";}
-			if (expensiveness) { sort_str = "expensive: 1";}
-
 			if (location_str == "" || undefined == location_str) {
 				if (name_asc) { return Restaurants.find({}, {sort: {name: 1}});}
 				if (name_desc) { return Restaurants.find({}, {sort: {name: -1}});}
-				// if (ratings_desc) { return Restaurants.find({}, {sort: {name: -1}});}
+				if (ratings_desc) { 
+					return Restaurants.find({}, {sort: {stars_total: -1}});
+					// return Restaurants.find({}, {sort: {name: -1}});
+					// var dist_rest = myReviews.distinct("rest_id");
+					// var dist_rest = [];
+					// myReviews.find({}, {fields: {rest_id: 1} }).map(function(doc) {
+					// 	dist_rest.push(doc.rest_id);
+					// });
+					// dist_rest = _.uniq(dist_rest);
+					
+					// var list_reviews = [];
+					// dist_rest.map(function(doc) {
+					// 	list_reviews.push({id: doc, ratings: 0});
+					// });
+
+					// for (var i = 0; i < dist_rest.length; i++) {
+					// 	var total = 0;
+
+					// 	myReviews.find({"rest_id": dist_rest[i]}).map(function(doc) {
+					// 		for (var j = 0; j < 5; j++) {
+					// 			total += doc.stars[j];
+					// 		}
+
+					// 		list_reviews.map(function(elem) {
+					// 			if (elem.hasOwnProperty('id') && elem.id == dist_rest[i]) {
+					// 		        elem.ratings = total;
+					// 		    }
+					// 		});
+					// 	});
+					// }
+
+					// console.log(list_reviews);
+				}
 				if (expensiveness) { return Restaurants.find({}, {sort: {expensive: 1}});}
 				return Restaurants.find();
 			} else {
-				// var query = { location: location_str, sort: {sort_str}};
-				// return Restaurants.find({location: location_str, {sort: }});
 				if (name_asc) { return Restaurants.find({location: location_str}, {sort: {name: 1}});}
 				if (name_desc) { return Restaurants.find({location: location_str}, {sort: {name: -1}});}
-				// if (ratings_desc) { return Restaurants.find({location: location_str, {sort: {name: -1}}});}
+				if (ratings_desc) { return Restaurants.find({}, {sort: {stars_total: -1}});}
 				if (expensiveness) { return Restaurants.find({location: location_str}, {sort: {expensive: 1}});}
 				return Restaurants.find({location: location_str});
 			}
-
-			// return Restaurants.find({}, {sort: {expensive: -1, name: 1}, limit: 6})
-			
 		},
 		'searchLocation': function() {
 			var location = Session.get("searchLocation");

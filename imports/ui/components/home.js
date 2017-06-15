@@ -26,7 +26,7 @@ if (Meteor.isClient) {
 	Template.home.helpers({
 
 	    'Restaurants': function(){
-	        return Restaurants.find({}, {sort: {expensive: -1, name: 1}, limit: 6});
+	        return Restaurants.find({}, {sort: {stars_total: -1, name: 1}, limit: 6});
 	    },
 
 	    'ratings': function() {

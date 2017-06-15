@@ -72,6 +72,7 @@ if (Meteor.isClient) {
 				list.push(0);
 			}
 		    Session.set("stars", list);
+		    Session.set("stars_nb", 1);
 		},
 		'click #star-2': function(e, t) {
 		    e.preventDefault();
@@ -83,6 +84,7 @@ if (Meteor.isClient) {
 				list.push(0);
 			}
 		    Session.set("stars", list);
+		    Session.set("stars_nb", 2);
 		},
 		'click #star-3': function(e, t) {
 		    e.preventDefault();
@@ -94,6 +96,7 @@ if (Meteor.isClient) {
 				list.push(0);
 			}
 		    Session.set("stars", list);
+		    Session.set("stars_nb", 3);
 		},
 		'click #star-4': function(e, t) {
 		    e.preventDefault();
@@ -103,6 +106,7 @@ if (Meteor.isClient) {
 			}
 			list.push(0);
 		    Session.set("stars", list);
+		    Session.set("stars_nb", 4);
 		},
 		'click #star-5': function(e, t) {
 		    e.preventDefault();
@@ -111,6 +115,7 @@ if (Meteor.isClient) {
 				list.push(1);
 			}
 		    Session.set("stars", list);
+		    Session.set("stars_nb", 5);
 		},
 
 		'submit #leave-review' : function (e, t)
@@ -120,9 +125,10 @@ if (Meteor.isClient) {
 			var userid = Meteor.userId();
 			var restId = AmplifiedSession.get('Restaurant');
 			var stars = Session.get('stars');
+			var stars_nb = Session.get('stars_nb');
 			var today = new Date();
 			var date_inserted = moment(today).format('YYYY-MM-DD');
-			Meteor.call('insertReview', userid, restId, review, stars, date_inserted);
+			Meteor.call('insertReview', userid, restId, review, stars, date_inserted, stars_nb);
 		},
 	});
 
