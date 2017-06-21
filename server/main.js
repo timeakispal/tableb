@@ -23,28 +23,66 @@ Meteor.publish('reviews', function() {
 Meteor.publish('restAdmins', function() {
   return restaurantAdmins.find();
 });
+Meteor.publish('transactions', function() {
+  return myTransactions.find();
+});
 
 // DELETE ALL RESERVATIONS FROM THE PAST
-// var d = new Date();
-// var time = moment().format("HH:mm");
-// var minutes = time.split(":")[1];
+var d = new Date();
+var time = moment().format("HH:mm");
+var minutes = time.split(":")[1];
 
-// Meteor.startup(function() {
-//     var d = new Date();
-//     var today = moment(d).format('YYYY-MM-DD');
-//     console.log("Delete reservations from earlier than " + moment(d).format('llll'));
-//     Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
-// });
+Meteor.setInterval(function() {
+    var d = new Date();
+    var today = moment(d).format('YYYY-MM-DD');
+    console.log("time:" + time + " - minutes:" + minutes);
+    if (time == "00:" + minutes) {
+        console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+        Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+    }
+}, 43200000);
 
-// Meteor.setInterval(function() {
-//     var d = new Date();
-//     var today = moment(d).format('YYYY-MM-DD');
-//     console.log("time:" + time + " - minutes:" + minutes);
-//     if (time == "00:" + minutes) {
-//         console.log("Delete reservations from earlier than " + moment(d).format('llll'));
-//         Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
-//     }
-// }, 43200000);
+Meteor.startup(function () {  
+    Tables._ensureIndex({ "restaurant_id": 1});
+    Tables._ensureIndex({ "number": 1});
+    Tables._ensureIndex({ "seats": 1});
+    myReviews._ensureIndex({ "rest_id": 1});
+    myReviews._ensureIndex({ "user_id": 1});
+
+    var d = new Date();
+    var today = moment(d).format('YYYY-MM-DD');
+    console.log("Delete reservations from earlier than " + moment(d).format('llll'));
+    Tables.update({}, { $pull: { 'reservations': { 'res_date': {$lt: today}} } }, { multi: true });
+
+    var dateThreshold = new Date();
+
+    var t = myTransactions.findOne( { state: "pending", lastModified: { $lt: dateThreshold } } );
+    if (t !== undefined && t !== "") {
+
+        myTransactions.update(
+           { _id: t._id, state: "pending" },
+           {
+             $set: { state: "canceling" },
+             $currentDate: { lastModified: true }
+           }
+        );
+        cancelTransaction();
+    }
+
+    t = myTransactions.findOne( { state: "applied", lastModified: { $lt: dateThreshold } } );
+    if (t !== undefined && t !== "") {
+        myTransactions.update(
+           { _id: t._id, state: "applied" },
+           {
+             $set: { state: "canceling" },
+             $currentDate: { lastModified: true }
+           }
+        );
+        cancelTransaction();
+    }
+
+    console.log("Canceled any transaction that was pending " + moment(d).format('llll'));
+});
 
 Meteor.methods({
 	'checkPassword': function(digest) {
@@ -63,9 +101,61 @@ Meteor.methods({
 	'insertReservation': function(tableid, persons, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
 		var end = Number(leaving_hour.replace(":", ""));
-		var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
-		// var table = Tables.findOne({_id: tableid});
-		Tables.update({ '_id': tableid },{ $push: { reservations: reservation }});
+        var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
+		var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
+		var table = Tables.findOne({_id: tableid});
+		
+        myTransactions.insert(
+            { 'table_id': tableid, 'restaurant_id': table.restaurant_id, 'res_date': date, 'arrival_time': arrival_hour, 'persons': persons, 'email': email, 'state': "initial", 'lastModified': new Date() }
+        );
+
+        var t = myTransactions.findOne( { 'state': "initial", 'table_id': tableid, 'res_date': date, 'arrival_time': arrival_hour, 'persons': persons } );
+
+        myTransactions.update(
+            { '_id': t._id, state: "initial" },
+            {
+              $set: { 'state': "pending" },
+              $currentDate: { 'lastModified': true }
+            }
+        );
+
+        Tables.update(
+           { '_id': t.table_id, 'pendingTransactions': { $ne: t._id } },
+           { $push: { 'pendingTransactions': t._id, 'reservations': reservation } }
+        );
+
+        Restaurants.update(
+           { _id: t.restaurant_id, 'pendingTransactions': { $ne: t._id } },
+           { $push: { 'pendingTransactions': t._id, 'reservations': reservation_table } }
+        );
+
+        myTransactions.update(
+           { '_id': t._id, state: "pending" },
+           {
+             $set: { 'state': "applied" },
+             $currentDate: { 'lastModified': true }
+           }
+        );
+
+        Tables.update(
+           { '_id': t.table_id, 'pendingTransactions': t._id },
+           { $pull: { 'pendingTransactions': t._id } }
+        );
+
+        Restaurants.update(
+           { '_id': t.restaurant_id, 'pendingTransactions': t._id },
+           { $pull: { 'pendingTransactions': t._id } }
+        );
+
+        myTransactions.update(
+           { '_id': t._id, 'state': "applied" },
+           {
+             $set: { 'state': "done" },
+             $currentDate: { 'lastModified': true }
+           }
+        );
+
+        // Tables.update({ '_id': tableid },{ $push: { reservations: reservation }});
     },
 
     'insertUserInfo' : function(userid, firstname, lastname, email, phonenb, avatar) {
@@ -151,3 +241,17 @@ Meteor.methods({
     },
 
 });
+
+function cancelTransaction() {
+    var t = myTransactions.findOne( { state: "canceling" } );
+    Tables.update({ _id: t.table_id },{ $pull: { 'reservations': { 'res_date': t.res_date, 'email': t.email, 'persons': t.persons, 'start_time': t.arrival_time } } });
+
+    Restaurants.update({ _id: t.restaurant_id },{ $pull: { 'reservations': { 'table_id' : t.table_id, 'res_date': t.res_date, 'email': t.email, 'start_time': t.arrival_time } } });
+    myTransactions.update(
+       { _id: t._id, state: "canceling" },
+       {
+         $set: { state: "cancelled" },
+         $currentDate: { lastModified: true }
+       }
+    );
+}

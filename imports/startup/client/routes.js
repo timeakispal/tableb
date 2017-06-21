@@ -18,6 +18,7 @@ Router.configure({
 		Meteor.subscribe('tables');
 		Meteor.subscribe('locations');
 		Meteor.subscribe('reviews');
+		Meteor.subscribe('transactions');
 	}
 
 });
