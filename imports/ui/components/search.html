@@ -39,7 +39,12 @@
 {{#each Restaurants}}
 <div class="col-sm-4 col-lg-4 col-md-4">
 	<div class="thumbnail">
-		<img src="http://placehold.it/320x150" alt="">
+		<!-- <img src="http://placehold.it/320x150" alt=""> -->
+		{{#if avatar}}
+        <img class="img-responsive" src="{{avatar.url}}" alt="">
+        {{else}}
+        <img src="http://placehold.it/320x150" alt="">
+        {{/if}}
 		<div class="caption">
 			<div class="w3-row margin-minus-buttons" style="min-height: 33px">
 				{{#each Tables}}

@@ -33,3 +33,5 @@ houston:admin
 anychart:anychart
 
 underscore
+cfs:standard-packages
+cfs:gridfs

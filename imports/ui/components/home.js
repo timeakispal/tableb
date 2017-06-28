@@ -67,5 +67,15 @@ if (Meteor.isClient) {
 			var reviews = myReviews.find({rest_id: restId}).fetch();
 			return reviews.length;
 		},
+
+		avatar: function () {
+			var restId = this._id;
+			var restaurant = Restaurants.findOne({_id: restId});
+			var image_addr = restaurant.header_image;
+			var image_id = image_addr.split("/")[4];
+			// console.log(image_id);
+	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+	    	return image;
+	  	},
 	});
 }

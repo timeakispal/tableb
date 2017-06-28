@@ -242,6 +242,15 @@ if (Meteor.isClient) {
 			return reviews.length;
 		},
 
+		avatar: function () {
+			var restId = AmplifiedSession.get('Restaurant');
+			var restaurant = Restaurants.findOne({_id: restId});
+			var image_addr = restaurant.header_image;
+			var image_id = image_addr.split("/")[4];
+	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+	    	return image;
+	  	},
+
 		'ratings_total': function() {
 			var restId = AmplifiedSession.get('Restaurant');
 			var reviews = myReviews.find({rest_id: restId}).fetch();

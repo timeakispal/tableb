@@ -59,7 +59,11 @@
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="thumbnail">
-				<img class="img-responsive" src="restaurant-all.jpg" alt="">
+				{{#if avatar}}
+		        <img class="img-responsive" src="{{avatar.url}}" alt="">
+		        {{else}}
+		        <img src="http://placehold.it/600x250" alt="">
+		        {{/if}}
 				<div class="caption-full">
     				<div class="w3-row w3-padding-16 margin-minus-buttons">
     					{{#each freeTables}}

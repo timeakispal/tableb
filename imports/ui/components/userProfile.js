@@ -6,6 +6,15 @@ Template.userProfile.rendered = function(){
 };
 
 Template.userProfile.helpers({
+	avatar: function () {
+		var image_addr = Meteor.user().profile.image;
+		var image_id = image_addr.split("/")[4];
+		// console.log(image_id);
+    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+    	return image;
+  	},
+
+
 	userName: function() {
 		if (Meteor.user() !== undefined) {
 			return Meteor.user().username;
@@ -92,6 +101,23 @@ Template.userProfile.events({
 	//     // reader.readAsArrayBuffer(file); //read the file as arraybuffer
 	// },
 
+	'change .myFileInput': function(event, template) {
+		FS.Utility.eachFile(event, function(file) {
+			Images.insert(file, function (err, fileObj) {
+				if (err){
+				// handle error
+				} else {
+				// handle success depending what you need to do
+					var userId = Meteor.userId();
+					var imagesURL = {
+					  "profile.image": "/cfs/files/images/" + fileObj._id
+					};
+					Meteor.users.update(userId, {$set: imagesURL});
+				}
+			});
+		});
+	},
+
 	'click #save-changes': function() {
 		var userid = Meteor.userId();
 		var firstname = Session.get("firstName");
@@ -110,13 +136,12 @@ Template.userProfile.events({
 		if (phonenb == undefined || phonenb == "") {
 			phonenb = $('#phonenb').val();
 		}
-		var avatar = Session.get("saveFile");
 
 		var digest = Package.sha.SHA256($('#password').val());
 		Session.set('showAlert', true);
 		Meteor.call('checkPassword', digest, function(err, result) {
 		if (result) {
-			Meteor.call('insertUserInfo', userid, firstname, lastname, email, phonenb, avatar)
+			Meteor.call('insertUserInfo', userid, firstname, lastname, email, phonenb)
 			Session.set('alertMessage', 'The changes were saved!');
 			Session.set('alertType', 'alert-success');
 		} else {

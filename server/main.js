@@ -27,6 +27,8 @@ Meteor.publish('transactions', function() {
   return myTransactions.find();
 });
 
+Meteor.publish("images", function(){ return Images.find(); });
+
 // DELETE ALL RESERVATIONS FROM THE PAST
 var d = new Date();
 var time = moment().format("HH:mm");
@@ -158,18 +160,17 @@ Meteor.methods({
         // Tables.update({ '_id': tableid },{ $push: { reservations: reservation }});
     },
 
-    'insertUserInfo' : function(userid, firstname, lastname, email, phonenb, avatar) {
+    'insertUserInfo' : function(userid, firstname, lastname, email, phonenb) {
     	var user_info = userInfo.findOne({user_id: userid});
     	if (user_info == undefined || user_info == "") {
     		userInfo.insert({
 	            user_id: userid,
 	            firstname: firstname,
 	            lastname: lastname,
-	            phonenb: phonenb,
-	            image: avatar
+	            phonenb: phonenb
 	        });
     	} else {
-    		userInfo.update({ 'user_id': userid },{ $set: {firstname: firstname, lastname: lastname, phonenb: phonenb, image: avatar}});
+    		userInfo.update({ 'user_id': userid },{ $set: {firstname: firstname, lastname: lastname, phonenb: phonenb}});
     	}
     },
 
@@ -237,6 +238,13 @@ Meteor.methods({
         if(currentUserId){
             var table = Tables.findOne({_id: table_id});
             Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_date': res_date, 'email': email, 'phonenb': phonenb, 'start_time': start_time } } });
+        }
+    },
+
+    'updateHeaderImage' : function(rest_id, imagesURL) {
+        var currentUserId = Meteor.userId();
+        if(currentUserId){
+            Restaurants.update({ '_id': rest_id },{ $set: imagesURL});
         }
     },
 

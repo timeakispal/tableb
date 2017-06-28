@@ -19,6 +19,7 @@ Router.configure({
 		Meteor.subscribe('locations');
 		Meteor.subscribe('reviews');
 		Meteor.subscribe('transactions');
+		Meteor.subscribe('images');
 	}
 
 });

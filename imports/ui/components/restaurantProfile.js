@@ -60,6 +60,16 @@ if (Meteor.isClient) {
 		'alertType': function() {
 			return Session.get('alertType');
 		},
+
+		avatar: function () {
+			var restId = AmplifiedSession.get('myRestaurant');
+			var restaurant = Restaurants.findOne({_id: restId});
+			var image_addr = restaurant.header_image;
+			var image_id = image_addr.split("/")[4];
+			// console.log(image_id);
+	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+	    	return image;
+	  	},
 	});
 
 	Template.restaurantProfile.events({
@@ -81,6 +91,25 @@ if (Meteor.isClient) {
 		'change #about': function(evt, t) {
 			var val = $(evt.target).val();
 			Session.set("about", val);
+		},
+
+		'change .myFileInput': function(event, template) {
+			FS.Utility.eachFile(event, function(file) {
+				Images.insert(file, function (err, fileObj) {
+					if (err){
+					// handle error
+					} else {
+					// handle success depending what you need to do
+						var restId = AmplifiedSession.get('myRestaurant');
+						var imagesURL = {
+						  "header_image": "/cfs/files/images/" + fileObj._id
+						};
+						// Meteor.Restaurants.update(restId, {$set: imagesURL});
+						Meteor.call('updateHeaderImage', restId, imagesURL);
+
+					}
+				});
+			});
 		},
 
 		'click #submit-restaurant': function (e,t) {

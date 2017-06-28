@@ -3,18 +3,21 @@
     <h1>Edit Profile</h1>
     <hr>
   <div class="row">
-      <!-- left column -->
-      <!-- <div class="col-md-3">
-        <div class="text-center">
-          <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
-          <h6>Upload a different photo...</h6>
-          
-          <input id="avatar-image" type="file" class="form-control">
+    <div class="col-sm-4">
+      <!-- {{#each images}} -->
+      {{#if avatar}}
+        <div class="thumbnail2">
+          <!-- <a href="{{this.url}}"> -->
+          <img src="{{avatar.url}}" class="portrait"/>
+          <!-- </a> -->
         </div>
-      </div> -->
+      <!-- {{/each}} -->
+      {{/if}}
+      <h6>Upload/Change profile picture...</h6>
       
-      <!-- edit form column -->
-      <div class="col-md-8 col-md-offset-2 personal-info">
+      <input type="file" name="avatar" class="myFileInput">
+    </div>    
+      <div class="col-sm-8 personal-info">
       {{#if showAlert}} 
         <div id="alertMessage" class="alert {{alertType}} alert-dismissable">
           <a class="panel-close close" data-dismiss="alert">×</a> 
@@ -48,14 +51,14 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Username:</label>
-            <div class="col-md-8">
+            <label class="col-lg-3 control-label">Username:</label>
+            <div class="col-lg-8">
               <input readonly id="username" class="form-control" type="text" value="{{userName}}">
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-3 control-label">Password:</label>
-            <div class="col-md-8">
+            <label class="col-lg-3 control-label">Password:</label>
+            <div class="col-lg-8">
               <input class="form-control" type="password" id="password">
             </div>
           </div>

@@ -21,13 +21,24 @@
 <!-- /.row -->
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-7">
+        <div class="w3-padding-32">
+            <!-- {{#each images}} -->
+            {{#if avatar}}
+            <img class="img-responsive" src="{{avatar.url}}" alt="">
+            {{else}}
+            <img class="img-responsive" src="http://placehold.it/600x300" alt="">
+            {{/if}}
+            <h6>Upload/Change profile picture...</h6>
+
+            <input type="file" name="avatar" class="myFileInput">
+        </div>
         <form role="form">
         {{#each RestaurantView}}
-        	<div class="form-group">
+        	<!-- <div class="form-group">
                 <label>Name</label>
                 <p class="form-control-static">{{name}}</p>
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label>Email address</label>
@@ -93,8 +104,8 @@
             <button type="reset" class="btn btn-default">Reset</button>
     	{{/each}}
         </form>
-        </div>
     </div>
+</div>
 <!-- /.row -->
 </div>
 {{else}}
