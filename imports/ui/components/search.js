@@ -173,7 +173,6 @@ if (Meteor.isClient) {
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
 			var image_id = image_addr.split("/")[4];
-			// console.log(image_id);
 	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
 	    	return image;
 	  	},
@@ -181,7 +180,7 @@ if (Meteor.isClient) {
 		'Tables' : function() {
 			var list = [];
 			var restId = this._id;
-			var res_date = Session.get("reservationDate")
+			var res_date = Session.get("reservationDate");
 			var time = Session.get("reservationTime");
 			var people = Session.get("persons");
 			var leave_time = 2400;
@@ -285,12 +284,10 @@ if (Meteor.isClient) {
 			// no tables that have reservation on that date
 			while (list.length < 3) {
 				if (time % 100 == 0) {
-					// list.push(Math.floor(time/100) + ":00");
 					var inputhour = Math.floor(time/100) + ":00";
 					list.push({tableid:tableid, hour:inputhour});
 					time += 30;
 				} else {
-					// list.push(Math.floor(time/100) + ":30");
 					var inputhour = Math.floor(time/100) + ":30";
 					list.push({tableid:tableid, hour:inputhour});
 					time += 70;
@@ -332,12 +329,10 @@ if (Meteor.isClient) {
 					}
 					while (time <=  leave_time && leave_time <= list_temp[i].start && time <= maxtime) {
 						if (time % 100 == 0) {
-							// list.push(Math.floor(time/100) + ":00");
 							var inputhour = Math.floor(time/100) + ":00";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 30;
 						} else {
-							// list.push(Math.floor(time/100) + ":30");
 							var inputhour = Math.floor(time/100) + ":30";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 70;
@@ -357,12 +352,10 @@ if (Meteor.isClient) {
 				if (time <= maxtime) {
 					while (time <= 2400 && time <= maxtime) {
 						if (time % 100 == 0) {
-							// list.push(Math.floor(time/100) + ":00");
 							var inputhour = Math.floor(time/100) + ":00";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 30;
 						} else {
-							// list.push(Math.floor(time/100) + ":30");
 							var inputhour = Math.floor(time/100) + ":30";
 							list.push({tableid:tableid, hour:inputhour});
 							time += 70;

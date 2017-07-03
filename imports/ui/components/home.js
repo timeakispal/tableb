@@ -1,18 +1,14 @@
 import './home.html';
-// import './searchEngine.html';
-
-// Restaurants = new Mongo.Collection('myRestaurants');
 
 Template.home.rendered = function(){
 	Session.set('searchLocation', "");
-	Session.set('reservationDate', "");
+	Session.set('setDate', "");
 	Session.set('persons', "");
 	Session.set('reservationTime', "");
 	Session.set('timeOfLeave', "");
 };
 
 if (Meteor.isClient) {
-	// Meteor.subscribe('restaurants');
 
 	Template.home.events({
 		'click #restaurant-details': function(){
@@ -73,7 +69,6 @@ if (Meteor.isClient) {
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
 			var image_id = image_addr.split("/")[4];
-			// console.log(image_id);
 	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
 	    	return image;
 	  	},

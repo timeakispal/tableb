@@ -1,7 +1,5 @@
 import './searchEngine.html';
 
-// Locations = new Mongo.Collection('myLocations');
-
 if (Meteor.isClient) {
 	
 	Template.searchEngine.events({
@@ -73,7 +71,8 @@ if (Meteor.isClient) {
 		},
 
 		'selectedDate': function() {
-			var date_res = Session.get("reservationDate");
+			var date_res = Session.get("setDate");
+
 			if (date_res !== undefined && date_res !== "") {
 				return date_res;
 			}
