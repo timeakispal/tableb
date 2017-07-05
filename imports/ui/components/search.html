@@ -28,11 +28,23 @@
 		            <input type="checkbox" id="expensiveness">Expensiveness ASC
 		        </label>
 		        </div>
+		        <div class="col-sm-3">
+		        <label class="checkbox-inline">
+		            <input type="checkbox" id="map-view">Map view
+		        </label>
+		        </div>
 		    </div>
 	    <!-- </div> -->
 	</div>
 </div>
 <!-- =========== -->
+{{#if MapView}}
+<div class="container">
+<h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
+<hr>
+{{> map}}
+</div>
+{{else}}
 <div class="container">
 <h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
 <hr>
@@ -84,4 +96,71 @@
 </div>
 {{/each}}
 </div>
+{{/if}}
+</template>
+
+<template name="map">
+	<div class="row">
+		<div class="col-sm-5">
+			<!-- <ol class="places"> -->
+			    <!-- {{#each places}}
+			        <li>{{name}}</li>
+			    {{/each}} -->
+			    {{#each places}}
+				<!-- <div class="col-sm-4 col-lg-4 col-md-4"> -->
+				<!-- <li> -->
+					<div class="thumbnail">
+						<!-- <img src="http://placehold.it/320x150" alt=""> -->
+						<!-- {{#if avatar}}
+				        <img class="img-responsive" src="{{avatar.url}}" alt="">
+				        {{else}}
+				        <img src="http://placehold.it/320x150" alt="">
+				        {{/if}} -->
+						<div class="caption">
+							<div class="w3-row margin-minus-buttons" style="min-height: 33px">
+								{{#each Tables}}
+								<div class="w3-col s4 button-padding">
+									<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
+										{{this.hour}}
+									</div>
+								</div>
+								{{/each}}
+							</div>
+				            <!-- The Modal -->
+				            {{> reservationModal}}
+							<h4 class="pull-right">{{expensive}}</h4>
+							<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
+							</h4>
+							<p>{{about}}</p>
+							<a id="restaurant-details" class="btn btn-default">Reserve >></a>
+							<hr>
+						</div>
+						<div class="ratings">
+							<div class="row">
+								<div class="col-xs-6" style="padding-right:0">
+									<p>
+										{{#each ratings}}
+											{{#if this}}
+												<span class="glyphicon glyphicon-star"></span>
+											{{else}}
+												<span class="glyphicon glyphicon-star-empty"></span>
+											{{/if}}
+										{{/each}}
+									</p>
+								</div>
+								<div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
+							</div>
+						</div>
+					</div>
+				<!-- </div> -->
+				<!-- </li> -->
+				{{/each}}
+			<!-- </ol> -->
+		</div>
+		<div class="col-sm-7">
+		    <div class="map">
+		        {{> googleMap name="map" options=mapOptions}}
+		    </div>
+    	</div>
+    </div>
 </template>

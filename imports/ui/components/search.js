@@ -1,6 +1,81 @@
 import './search.html';
 
 if (Meteor.isClient) {
+	var lookup = [];
+
+	Meteor.startup(function() {
+        GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
+    });
+
+    Template.map.onCreated(function() {
+        var self = this;
+
+        GoogleMaps.ready('map', function(map) {
+            self.autorun(function() {
+                getBox();
+                var handle = Meteor.subscribe('places', Session.get('box'));
+                
+                if (handle.ready()) {
+                    var places = Restaurants.find().fetch();
+
+                    _.each(places, function(place) {
+                        var lat = place.location.coordinates[0];
+                        var lng = place.location.coordinates[1];
+                        var contentString = '<div id="content">'+
+							'<h3>'+ place.name +'</h3>'+
+							'<div id="bodyContent">'+
+							'<p>Short about text</p>'+
+							'</div>'+
+							'</div>';
+
+						var infowindow = new google.maps.InfoWindow({
+							content: contentString
+						});
+                        if (!_.contains(lookup, lat+','+lng)) {
+                            var marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(lat, lng),
+                                map: GoogleMaps.maps.map.instance,
+                                title: place.name
+                            });
+                            marker.addListener('mouseover', function() {
+							    infowindow.open(map, marker);
+							});
+							marker.addListener('mouseout', function() {
+							    infowindow.close(map, marker);
+							});
+                            lookup.push(lat+','+lng);
+                        }
+                    });
+                }
+            });
+
+            google.maps.event.addListener(map.instance, 'dragend', function(e){
+                getBox();
+            });
+
+            google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
+                getBox();
+            });
+        });
+    });
+
+
+    Template.map.helpers({
+        mapOptions: function() {
+            // Initialize the map
+            if (GoogleMaps.loaded()) {
+                return {
+                    // Amsterdam city center coordinates
+                    // 46.7834818,23.5464724
+                    center: new google.maps.LatLng(46.7834818, 23.5464724),
+                    zoom: 12
+                };
+            }
+        },
+        places: function() {
+            return Restaurants.find();
+        }
+    });
 
 	Template.search.events({
 		'click #restaurant-details': function(){
@@ -65,9 +140,16 @@ if (Meteor.isClient) {
 			Session.set('Name-asc', false);
 
 		},
+		'change #map-view': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Mapview', x);
+		},
 	});
 
 	Template.search.helpers({
+		'MapView': function() {
+			return Session.get("Mapview");
+		},
 		'Restaurants': function() {
 			var location_str = Session.get("searchLocation");
 			var name_asc = Session.get("Name-asc");
@@ -253,6 +335,13 @@ if (Meteor.isClient) {
 			
 		},
 	});
+
+	function getBox() {
+        var bounds = GoogleMaps.maps.map.instance.getBounds();
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+        Session.set('box', [[sw.lat(),sw.lng()], [ne.lat(),ne.lng()]]);
+    }
 
 	function allHours(restId, res_date, people, hour, min, leave_time) {
 		var list = [];

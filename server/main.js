@@ -27,6 +27,18 @@ Meteor.publish('transactions', function() {
   return myTransactions.find();
 });
 
+Meteor.publish('places', function(box) {
+  var find = {
+      location: {
+          $geoWithin: {
+              $box: box
+          }
+      }
+  };
+
+  return Restaurants.find(find);
+});
+
 Meteor.publish("images", function(){ return Images.find(); });
 
 // DELETE ALL RESERVATIONS FROM THE PAST
