@@ -1,6 +1,158 @@
 <template name="search">
+<div class="row" style="background-color: #f5f5f5">
+    <div class="container smaller-fonts" style="padding-top: 7px; padding-bottom: 7px">
+        <ol class="breadcrumb w3-right" style="margin-bottom: 0px">
+            <li>
+                <i class="fa fa-home"></i>  <a href="{{pathFor route='home'}}">Home</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-th"></i> Search results
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row w3-margin-bottom color-base2">
+	<div class="container padding-35">
+	<form class="form-horizontal" id="search-form">
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-sm-3" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="location" id="location">
+								<option disabled="disabled" selected="selected" value="">Select your location</option>
+								{{#each locations}}
+									<option {{selectedClass}} value="{{name}}">{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select required class="w3-input w3-border" name="people" id="people">
+								<option disabled="disabled" selected="selected" value="">How many people</option>
+								{{#each persons}}
+									<option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+			<!-- </div> -->
+			<!-- <div class="row"> -->
+				<div class="col-sm-2" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
+								<option disabled="disabled" selected="selected" value="">Arrival</option>
+								{{#each arrival_hours}}
+									<option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
+								<option disabled="disabled" selected="selected" value="">Leave</option>
+								<option value="">Don't know</option>
+								{{#each leaving_hours}}
+									<option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<input type="submit" class="w3-button w3-block w3-text-black w3-margin-bottom" value="SEARCH" style="background-color: #f77d64">
+		</div>
+	</form>
+	</div>
+</div>
 <div class="container padding-35" id="header">
-	{{> searchEngine}}
+<!-- <div class="row w3-margin-bottom">
+	<form class="form-horizontal" id="search-form">
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-sm-3" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="location" id="location">
+								<option disabled="disabled" selected="selected" value="">Select your location</option>
+								{{#each locations}}
+									<option {{selectedClass}} value="{{name}}">{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select required class="w3-input w3-border" name="people" id="people">
+								<option disabled="disabled" selected="selected" value="">How many people</option>
+								{{#each persons}}
+									<option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2" style="padding-right: 0px">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
+								<option disabled="disabled" selected="selected" value="">Arrival</option>
+								{{#each arrival_hours}}
+									<option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
+								<option disabled="disabled" selected="selected" value="">Leave</option>
+								<option value="">Don't know</option>
+								{{#each leaving_hours}}
+									<option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<input type="submit" class="w3-button w3-block color-base4 w3-text-black w3-margin-bottom" value="SEARCH">
+		</div>
+	</form>
+</div> -->
+	<!-- {{> searchEngine}} -->
 	<div class="row w3-maring-bottom">
 		<!-- <div class="col-sm-12"> -->
 			<div class="form-group">
@@ -74,6 +226,37 @@
 			</h4>
 			<p>{{about}}</p>
 			<a id="restaurant-details" class="btn btn-default">Reserve >></a>
+			{{#if wifi}}
+                <span class="fa fa-wifi" title="wifi"></span>
+            {{else}}
+                <span class="fa fa-wifi color-text-icons" title="wifi"></span>
+            {{/if}}
+            {{#if food}}
+                <span class="fa fa-cutlery" title="food"></span>
+            {{else}}
+                <span class="fa fa-cutlery color-text-icons" title="food"></span>
+            {{/if}}
+            {{#if parking}}
+                <span class="mdi mdi-parking" title="parking"></span>
+            {{else}}
+                <span class="fa fa-parking color-text-icons" title="parking"></span>
+            {{/if}}
+            {{#if terrace}}
+                <span class="fa fa-tree" title="terrace"></span>
+            {{else}}
+                <span class="fa fa-tree color-text-icons" title="terrace"></span>
+            {{/if}}
+            {{#if pet_friendly}}
+                <span class="fa fa-paw" title="pet-friendly"></span>
+            {{else}}
+                <span class="fa fa-paw color-text-icons" title="pet-friendly"></span>
+            {{/if}}
+            {{#if creditcard_accepted}}
+                <span class="fa fa-credit-card" title="credit card accepted"></span>
+            {{else}}
+                <span class="fa fa-credit-card color-text-icons" title="credit card accepted"></span>
+            {{/if}}
+
 			<hr>
 		</div>
 		<div class="ratings">

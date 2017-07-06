@@ -1,14 +1,16 @@
 import './search.html';
 
 if (Meteor.isClient) {
-	var lookup = [];
+	var markers = [];
 
 	Meteor.startup(function() {
         GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
     });
 
-    Template.map.onCreated(function() {
+    Template.map.onRendered(function() {
         var self = this;
+        var lookup = [];
+		var markers_ = [];
 
         GoogleMaps.ready('map', function(map) {
             self.autorun(function() {
@@ -17,7 +19,8 @@ if (Meteor.isClient) {
                 
                 if (handle.ready()) {
                     var places = Restaurants.find().fetch();
-
+                    var infowindow = null;
+                    var i = 0;
                     _.each(places, function(place) {
                         var lat = place.location.coordinates[0];
                         var lng = place.location.coordinates[1];
@@ -25,27 +28,32 @@ if (Meteor.isClient) {
 							'<h3>'+ place.name +'</h3>'+
 							'<div id="bodyContent">'+
 							'<p>Short about text</p>'+
+							'<a id="rest-details" class="btn btn-default" name="'+i+'">Reserve >></a>'+
 							'</div>'+
 							'</div>';
-
-						var infowindow = new google.maps.InfoWindow({
-							content: contentString
-						});
+						i++;
                         if (!_.contains(lookup, lat+','+lng)) {
                             var marker = new google.maps.Marker({
                                 position: new google.maps.LatLng(lat, lng),
                                 map: GoogleMaps.maps.map.instance,
-                                title: place.name
+                                title: place.name,
+                                id: 1234
                             });
                             marker.addListener('mouseover', function() {
+                            	if (infowindow) {
+							        infowindow.close();
+							    }
+							    infowindow = new google.maps.InfoWindow({
+							content: contentString
+						});
 							    infowindow.open(map, marker);
 							});
-							marker.addListener('mouseout', function() {
-							    infowindow.close(map, marker);
-							});
+							markers_.push(place);
                             lookup.push(lat+','+lng);
                         }
                     });
+
+                    markers = markers_;
                 }
             });
 
@@ -67,7 +75,7 @@ if (Meteor.isClient) {
                 return {
                     // Amsterdam city center coordinates
                     // 46.7834818,23.5464724
-                    center: new google.maps.LatLng(46.7834818, 23.5464724),
+                    center: new google.maps.LatLng(46.7644904,23.5855855),
                     zoom: 12
                 };
             }
@@ -78,6 +86,13 @@ if (Meteor.isClient) {
     });
 
 	Template.search.events({
+		'click #rest-details': function(e, t){
+			e.preventDefault();
+		    
+		    var index = $(e.currentTarget).attr("name");
+		    Session.set('selectedRestaurant', markers[index]._id);
+			Router.go('restaurant', {}, {query: 'name='+markers[index].name});
+		},
 		'click #restaurant-details': function(){
 			var restId = this._id;
 			var restName = this.name;

@@ -1,11 +1,20 @@
 <template name="myNav">
 <div class="w3-top">
-	<ul class="w3-navbar w3-card-2 w3-white w3-text-grey w3-left-align navbar-border">
+<!-- <div class="row" style="background-color: #f77d64">
+<div class="container" style="padding-top: 7px; padding-bottom: 7px">
+bla bla
+</div>
+</div> -->
+	<ul class="w3-navbar w3-white w3-text-grey w3-left-align navbar-border" style="padding-top: 25px;">
 	<div class="container smaller-fonts">
 	<li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
 		<a class="w3-padding-large w3-hover-white w3-medium hide-elements" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
 	</li>
-	<li><a href="{{pathFor route='home'}}" class="w3-padding-large w3-white hide-home">LOGO</a></li>
+	<!-- <li style="background-image: url('logo.JPG');"><a href="{{pathFor route='home'}}" class="hide-home">LOGO</a></li> -->
+	<a class="navbar-brand" rel="home" href="{{pathFor route='home'}}">
+        <img style="max-width:130px; margin-top: -30px;"
+             src="logo.png">
+    </a>
 	<li class="w3-hide-small w3-right"><a href="#" class="w3-padding-large w3-hover-white"><i class="fa fa-file-text"></i> ABOUT</a></li>
 	<li class="w3-hide-small w3-right"><a href="{{pathFor route='search'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-th"></i> SEARCH</a></li>
 	<li class="w3-hide-small w3-right"><a href="{{pathFor route='home'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-home"></i> HOME</a></li>
