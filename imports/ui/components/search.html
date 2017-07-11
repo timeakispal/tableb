@@ -1,6 +1,10 @@
 <template name="search">
-<div class="row" style="background-color: #f5f5f5">
-    <div class="container smaller-fonts" style="padding-top: 7px; padding-bottom: 7px">
+<div class="row hidden-row" style="background-color: #f5f5f5">
+    <div class="container" style="padding-top: 7px; padding-bottom: 7px">
+    <div class="col-xs-5">
+    	<p style="margin: 0px; float:left; padding: 8px 15px 8px 0px;">Search results{{searchLocation}}</p>
+    </div>
+    <div class="col-xs-7 smaller-fonts">
         <ol class="breadcrumb w3-right" style="margin-bottom: 0px">
             <li>
                 <i class="fa fa-home"></i>  <a href="{{pathFor route='home'}}">Home</a>
@@ -10,79 +14,94 @@
             </li>
         </ol>
     </div>
+    </div>
 </div>
-<div class="row w3-margin-bottom color-base2">
+<div class="row" style="background-color: #404040">
 	<div class="container padding-35">
-	<form class="form-horizontal" id="search-form">
-		<div class="col-sm-10">
-			<div class="row">
-				<div class="col-sm-3" style="padding-right: 0px">
-					<div class="form-group">
-						<div class="col-sm-12">
-							<select class="w3-input w3-border" name="location" id="location">
-								<option disabled="disabled" selected="selected" value="">Select your location</option>
-								{{#each locations}}
-									<option {{selectedClass}} value="{{name}}">{{name}}</option>
-								{{/each}}
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3" style="padding-right: 0px">
-					<div class="form-group">
-						<div class="col-sm-12">
-							<select required class="w3-input w3-border" name="people" id="people">
-								<option disabled="disabled" selected="selected" value="">How many people</option>
-								{{#each persons}}
-									<option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
-								{{/each}}
-							</select>
-						</div>
-					</div>
-				</div>
-			<!-- </div> -->
-			<!-- <div class="row"> -->
-				<div class="col-sm-2" style="padding-right: 0px">
-					<div class="form-group">
-						<div class="col-sm-12">
-							<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-2" style="padding-right: 0px">
-					<div class="form-group">
-						<div class="col-sm-12">
-							<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
-								<option disabled="disabled" selected="selected" value="">Arrival</option>
-								{{#each arrival_hours}}
-									<option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
-								{{/each}}
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<div class="col-sm-12">
-							<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
-								<option disabled="disabled" selected="selected" value="">Leave</option>
-								<option value="">Don't know</option>
-								{{#each leaving_hours}}
-									<option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
-								{{/each}}
-							</select>
-						</div>
-					</div>
-				</div>
+	<div class="col-lg-11">
+    <form>
+        <div class="row">
+            <div class="col-sm-2" style="padding: 0px 0px 0px 15px">
+                <select class="form-control" style="border-radius: 7px 0px 0px 7px;">
+                    <option>Select</option>
+                </select>
+            </div>
+            <div class="col-sm-2" style="padding: 0px">
+                <select class="form-control" style="border-radius:0px;">
+                    <option>Select</option>
+                </select>
+            </div>
+            <div class="col-sm-2" style="padding: 0px">
+                <input class="form-control" type="date" required="required">
+            </div>
+            <div class="col-sm-2" style="padding: 0px">
+                <select class="form-control" style="border-radius:0px;">
+                    <option>Select</option>
+                </select>
+            </div>
+            <div class="col-sm-2" style="padding: 0px">
+                <select class="form-control" style="border-radius: 0px;">
+                    <option>Select</option>
+                </select>
+            </div>
+            <!-- <div class="col-sm-2" style="padding: 0px">
+				<input type="submit" value="SEARCH" class="button">
+			</div> -->
+			<div class="col-sm-2" style="padding-left: 0px">
+				<input type="submit" class="w3-button w3-block color-base4 w3-text-white" style="border-radius: 0px 7px 7px 0px; padding: 9px 16px; " value="SEARCH">
 			</div>
-		</div>
-		<div class="col-sm-2">
-			<input type="submit" class="w3-button w3-block w3-text-black w3-margin-bottom" value="SEARCH" style="background-color: #f77d64">
-		</div>
-	</form>
+        </div>
+    </form>
+	</div>
 	</div>
 </div>
-<div class="container padding-35" id="header">
+
+<div class="row w3-margin-bottom smaller-fonts" style="background-color: #FBFBFC; border-bottom: 1px solid #eee">
+    <div class="container w3-padding-8">
+    <div class="col-md-6">
+    	<div class="row">
+    	<div class="col-xs-4">
+      		<p style="padding-right: 35px; font-weight: bold; margin-bottom: 0px">FILTERS:</p>
+        </div>
+      	<div class="col-xs-4" style="border-right:2px solid #ccc;">
+        <label class="checkbox-inline">
+          	<input type="checkbox" id="name-asc">Name <span class="fa fa-sort-alpha-asc"></span>
+        </label>
+        </div>
+        <div class="col-xs-4" style="border-right:2px solid #ccc;">
+		        <label class="checkbox-inline">
+            <input type="checkbox" id="name-desc">Name <span class="fa fa-sort-alpha-desc"></span>
+        </label>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+    	<div class="row">
+        <div class="col-xs-4" style="border-right:2px solid #ccc;">
+        <label class="checkbox-inline">
+            <input type="checkbox" id="ratings-desc">Ratings <span class="fa fa-sort-amount-desc"></span>
+        </label>
+        </div>
+        <div class="col-xs-4" style="border-right:2px solid #ccc;">
+		<label class="checkbox-inline">
+            <input type="checkbox" id="expensiveness">Expensiveness <span class="fa fa-sort-amount-asc"></span>
+        </label>
+        </div>
+
+        <div class="col-xs-4" style="padding-right: 0px">
+        
+          <div class="map-view">
+            <input type="checkbox" value="1" id="map-view" name=""/>
+            <label for="map-view"></label>
+            <div></div>
+          </div>
+          <p style="margin: -18px 0px 0px 58px;">Map view</p>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- <div class="container padding-35" id="header"> -->
 <!-- <div class="row w3-margin-bottom">
 	<form class="form-horizontal" id="search-form">
 		<div class="col-sm-10">
@@ -153,9 +172,9 @@
 	</form>
 </div> -->
 	<!-- {{> searchEngine}} -->
-	<div class="row w3-maring-bottom">
+	<!-- <div class="row w3-maring-bottom"> -->
 		<!-- <div class="col-sm-12"> -->
-			<div class="form-group">
+			<!-- <div class="form-group">
 		        
 		        <div class="col-sm-2">
 		        <label>Order by:</label>
@@ -179,27 +198,27 @@
 		        <label class="checkbox-inline">
 		            <input type="checkbox" id="expensiveness">Expensiveness ASC
 		        </label>
-		        </div>
-		        <div class="col-sm-3">
+		        </div> -->
+		        <!-- <div class="col-sm-3">
 		        <label class="checkbox-inline">
 		            <input type="checkbox" id="map-view">Map view
 		        </label>
-		        </div>
-		    </div>
+		        </div> -->
+		    <!-- </div> -->
 	    <!-- </div> -->
-	</div>
-</div>
+	<!-- </div> -->
+<!-- </div> -->
 <!-- =========== -->
 {{#if MapView}}
 <div class="container">
-<h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
-<hr>
+<!-- <h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
+<hr> -->
 {{> map}}
 </div>
 {{else}}
 <div class="container">
-<h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
-<hr>
+<!-- <h1 class="w3-xxlarge w3-center" id="results"><b>Search results{{searchLocation}}</b></h1>
+<hr> -->
 {{#each Restaurants}}
 <div class="col-sm-4 col-lg-4 col-md-4">
 	<div class="thumbnail">
