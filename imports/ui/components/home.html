@@ -1,90 +1,213 @@
 <template name="home">
 <!--Main search cover photo-->
-<div class="jumbotron cover-photo">
+<!-- <div class="jumbotron cover-photo">
 	<div class="container padding-header" id="header">
 		<h1 class="w3-jumbo w3-text-white"><b>Book a table</b></h1>
 		<h1 class="w3-xxxlarge color-text"><b>book-at-able</b></h1>
 		<hr style="width:50px;border:5px solid" class="w3-round color-text">
 		{{> searchEngine}}
 	</div>
+</div> -->
+
+<div class="w3-top color-base-black">
+<div class="w3-bar w3-text-white">
+	<div class="w3-row" style="padding-left:10px; padding-right:5px">
+		<div class="w3-col l5 w3-right w3-hide-medium w3-hide-small">
+			<div class="w3-row">
+				<div class="w3-col s12 w3-padding">
+					<div class="w3-small">
+						<a href="#" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right w3-wide">Help</a>
+						<a href="#" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right w3-wide">About</a>
+						<div class="w3-dropdown w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right" style="max-height:35px">
+							<button class="dropbtn w3-wide">Log In</button>
+							<div class="w3-dropdown-content">
+								<a href="#">Link 1</a>
+								<a href="#">Link 2</a>
+								<a href="#">Link 3</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="w3-col l9 padding-20">
+
+	        <div class="w3-row">
+				<div class="col-xs-1" style="padding: 0px">
+					<a href="" class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-2x color-text" aria-hidden="true"></i></a>
+				</div>
+	        </div>
+		</div>
+	</div>
 </div>
+
+<div id="navDemo" class="w3-bar-block color-base-black color-text w3-hide w3-hide-large">
+  <a href="#" class="w3-bar-item w3-button hide-elements">Home</a>
+<hr>
+  <a href="#" class="w3-bar-item w3-button hide-elements">Log In / User</a>
+<hr>
+	<a href="#" class="w3-bar-item w3-button hide-elements">About</a>
+	<a href="#" class="w3-bar-item w3-button hide-elements">Help</a>
+	<br>
+</div>
+
+</div>
+
+<div class="bgimg-1 cover-photo">
+  <div class="container padding-header" id="header">
+	<div class="w3-padding-16 w3-hide-small">
+		<div class="w3-row w3-padding-16"><span class="border">Book a table</span><br></div>
+		<div class="w3-row w3-padding-16"><span class="border">BOOK-AT-ABLE</span></div>
+	</div>
+	  <div class="w3-row" style="padding: 20px; border-radius:7px; background-color: rgba(0,0,0,0.5)">
+		  <form id="search-form">
+			  <div class="col-xs-2 w3-hide-small" style="padding: 0px">
+				  <select class="form-control border-7-left" name="location" id="location">
+					  <option disabled="disabled" selected="selected" value="">Select your location</option>
+					  {{#each locations}}
+						  <option {{selectedClass}} value="{{name}}">{{name}}</option>
+					  {{/each}}
+				  </select>
+			  </div>
+			  <div class="col-xs-2 w3-hide-small" style="padding: 0px">
+				  <select required class="form-control" style="border-radius:0px;" name="people" id="people">
+					  <option disabled="disabled" selected="selected" value="">How many people</option>
+					  {{#each persons}}
+						  <option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+					  {{/each}}
+				  </select>
+			  </div>
+			  <div class="col-xs-2 w3-hide-small" style="padding: 0px">
+				  <input required class="form-control" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
+			  </div>
+			  <div class="col-xs-2 w3-hide-small" style="padding: 0px">
+				  <select class="form-control" style="border-radius:0px;" name="arrival_hour" id="arrival_hour">
+					  <option disabled="disabled" selected="selected" value="">Arrival</option>
+					  {{#each arrival_hours}}
+						  <option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
+					  {{/each}}
+				  </select>
+			  </div>
+			  <div class="col-xs-2 w3-hide-small" style="padding: 0px">
+				  <select class="form-control" style="border-radius: 0px;" name="leaving_hour" id="leaving_hour">
+					  <option disabled="disabled" selected="selected" value="">Leave</option>
+					  <option value="">Don't know</option>
+					  {{#each leaving_hours}}
+						  <option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
+					  {{/each}}
+				  </select>
+			  </div>
+			  <div class="col-xs-2 w3-hide-small" style="padding:0px">
+				  <button type="submit" class="search-btn w3-button w3-block color-base5 w3-text-black border-7-right" style="padding: 9px"><i class="fa fa-search" aria-hidden="true"></i></button>
+			  </div>
+		  </form>
+
+		  <form class="w3-hide-medium w3-hide-large"  id="search-form">
+			  <div class="w3-row">
+				  <div class="col-sm-2 padding-8">
+					  <select class="form-control" style="border-radius:0px;">
+						  <option>Select</option>
+					  </select>
+				  </div>
+				  <div class="col-sm-2 padding-8">
+					  <select class="form-control" style="border-radius:0px;">
+						  <option>Select</option>
+					  </select>
+				  </div>
+				  <div class="col-sm-2 padding-8">
+					  <input class="form-control" type="date" required="required">
+				  </div>
+				  <div class="col-sm-2 padding-8">
+					  <select class="form-control" style="border-radius:0px;">
+						  <option>Select</option>
+					  </select>
+				  </div>
+				  <div class="col-sm-2 padding-8">
+					  <select class="form-control" style="border-radius: 0px;">
+						  <option>Select</option>
+					  </select>
+				  </div>
+				  <div class="col-sm-2 padding-8">
+					  <a class="search-btn w3-button w3-block color-base5 w3-text-black" style="border-radius:0px;padding: 9px"><i class="fa fa-search" aria-hidden="true"></i></a>
+				  </div>
+			  </div>
+		  </form>
+	  </div>
+  </div>
+</div>
+
+
+
 <!--END main search cover photo-->
 <!--Top 6 most popular restaurants-->
 <div class="container padding-35">
-<h1 class="w3-xxlarge text-5 w3-center"><b>Most popular restaurants</b></h1>
-<hr>
-{{#each Restaurants}}
-<div class="col-sm-4 col-lg-4 col-md-4">
-    <div class="thumbnail">
-        <!-- <div class="jumbotron" style="background-image: url('{{avatar.url}}'); height: 150px"> -->
-          <!-- <a href="{{this.url}}"> -->
-            <!-- <img src="{{avatar.url}}" class="image-header"/> -->
-          <!-- </a> -->
-        <!-- </div> -->
-        {{#if avatar}}
-        <img class="img-responsive" src="{{avatar.url}}" alt="">
-        {{else}}
-        <img class="img-responsive" src="http://placehold.it/600x300" alt="">
-        {{/if}}
-        <div class="caption">
-            <h4 class="pull-right">{{expensive}}</h4>
-            <h4><a href="#">{{name}}</a>
-            </h4>
-            <p>{{about}}</p>
-            <a id="restaurant-details" class="btn btn-default">Reserve >></a>
-            {{#if wifi}}
-                <span class="fa fa-wifi" title="wifi"></span>
-            {{else}}
-                <span class="fa fa-wifi color-text-icons" title="wifi"></span>
-            {{/if}}
-            {{#if food}}
-                <span class="fa fa-cutlery" title="food"></span>
-            {{else}}
-                <span class="fa fa-cutlery color-text-icons" title="food"></span>
-            {{/if}}
-            {{#if parking}}
-                <span class="mdi mdi-parking" title="parking"></span>
-            {{else}}
-                <span class="fa fa-parking color-text-icons" title="parking"></span>
-            {{/if}}
-            {{#if terrace}}
-                <span class="fa fa-tree" title="terrace"></span>
-            {{else}}
-                <span class="fa fa-tree color-text-icons" title="terrace"></span>
-            {{/if}}
-            {{#if pet_friendly}}
-                <span class="fa fa-paw" title="pet-friendly"></span>
-            {{else}}
-                <span class="fa fa-paw color-text-icons" title="pet-friendly"></span>
-            {{/if}}
-            {{#if creditcard_accepted}}
-                <span class="fa fa-credit-card" title="credit card accepted"></span>
-            {{else}}
-                <span class="fa fa-credit-card color-text-icons" title="credit card accepted"></span>
-            {{/if}}
-
-
-            <hr>
-        </div>
-        <div class="ratings">
-            <div class="row">
-                <div class="col-xs-6" style="padding-right:0">
-                    <p>
-                        {{#each ratings}}
-                            {{#if this}}
-                                <span class="fa fa-star"></span>
-                            {{else}}
-                                <span class="fa fa-star-o"></span>
-                            {{/if}}
-                        {{/each}}
-                    </p>
-                </div>
-                <div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
-            </div>
-        </div>
-    </div>
-</div>
-{{/each}}
+	<h1 class="w3-xxlarge text-5 w3-center"><b>Most popular restaurants</b></h1>
+	<hr>
+	{{#each Restaurants}}
+	<div class="col-sm-4 col-lg-4 col-md-4">
+	    <div class="thumbnail">
+	        {{#if avatar}}
+	        <img class="img-responsive" src="{{avatar.url}}" alt="">
+	        {{else}}
+	        <img class="img-responsive" src="http://placehold.it/600x300" alt="">
+	        {{/if}}
+	        <div class="caption">
+	            <h4 class="pull-right">{{expensive}}</h4>
+	            <h4><a href="#">{{name}}</a>
+	            </h4>
+	            <p>{{about}}</p>
+	            <a id="restaurant-details" class="btn btn-default">Reserve >></a>
+	            {{#if wifi}}
+	                <span class="fa fa-wifi" title="wifi"></span>
+	            {{else}}
+	                <span class="fa fa-wifi color-text-icons" title="wifi"></span>
+	            {{/if}}
+	            {{#if food}}
+	                <span class="fa fa-cutlery" title="food"></span>
+	            {{else}}
+	                <span class="fa fa-cutlery color-text-icons" title="food"></span>
+	            {{/if}}
+	            {{#if parking}}
+	                <span class="mdi mdi-parking" title="parking"></span>
+	            {{else}}
+	                <span class="fa fa-parking color-text-icons" title="parking"></span>
+	            {{/if}}
+	            {{#if terrace}}
+	                <span class="fa fa-tree" title="terrace"></span>
+	            {{else}}
+	                <span class="fa fa-tree color-text-icons" title="terrace"></span>
+	            {{/if}}
+	            {{#if pet_friendly}}
+	                <span class="fa fa-paw" title="pet-friendly"></span>
+	            {{else}}
+	                <span class="fa fa-paw color-text-icons" title="pet-friendly"></span>
+	            {{/if}}
+	            {{#if creditcard_accepted}}
+	                <span class="fa fa-credit-card" title="credit card accepted"></span>
+	            {{else}}
+	                <span class="fa fa-credit-card color-text-icons" title="credit card accepted"></span>
+	            {{/if}}
+	            <hr>
+	        </div>
+	        <div class="ratings">
+	            <div class="row">
+	                <div class="col-xs-6" style="padding-right:0">
+	                    <p>
+	                        {{#each ratings}}
+	                            {{#if this}}
+	                                <span class="fa fa-star"></span>
+	                            {{else}}
+	                                <span class="fa fa-star-o"></span>
+	                            {{/if}}
+	                        {{/each}}
+	                    </p>
+	                </div>
+	                <div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	{{/each}}
 </div>
 <!--END of top 6 most popular restaurants-->
 </template>

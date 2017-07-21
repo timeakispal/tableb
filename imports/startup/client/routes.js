@@ -2,6 +2,7 @@ import { IronRouter } from 'meteor/iron:router';
 
 // // Import to load these templates
 import '../../ui/layouts/mainTemplate.js';
+import '../../ui/layouts/homeTemplate.js';
 import '../../ui/layouts/adminTemplate.js';
 
 Router.configure({
@@ -10,7 +11,7 @@ Router.configure({
 		myNav: {to: 'nav'},
 		myFooter: {to: 'footer'},
 	},
-	//the application will wait to load 
+	//the application will wait to load
 	// until we've successfully subscribed to the
 	// publications
 	waitOn: function () {
@@ -27,6 +28,19 @@ Router.configure({
 Router.route('/', {
 	name: 'home',
 	template: 'home',
+	layoutTemplate: 'homeTemplate',
+	yieldTemplates: {
+		myFooter: {to: 'footer'},
+	},
+
+	waitOn: function () {
+		Meteor.subscribe('restaurants');
+		Meteor.subscribe('tables');
+		Meteor.subscribe('locations');
+		Meteor.subscribe('reviews');
+		Meteor.subscribe('transactions');
+		Meteor.subscribe('images');
+	}
 	// waitOn: function () {
 	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('reviews')];
 	// }
