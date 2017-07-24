@@ -16,7 +16,7 @@
     </div>
     </div>
 </div>
-<div class="row" style="background-color: #404040">
+<!-- <div class="row" style="background-color: #404040">
 	<div class="container padding-35">
 	<div class="col-lg-11">
     <form>
@@ -44,9 +44,6 @@
                     <option>Select</option>
                 </select>
             </div>
-            <!-- <div class="col-sm-2" style="padding: 0px">
-				<input type="submit" value="SEARCH" class="button">
-			</div> -->
 			<div class="col-sm-2" style="padding-left: 0px">
 				<input type="submit" class="w3-button w3-block color-base4 w3-text-white" style="border-radius: 0px 7px 7px 0px; padding: 9px 16px; " value="SEARCH">
 			</div>
@@ -54,9 +51,53 @@
     </form>
 	</div>
 	</div>
-</div>
+</div> -->
 
-<div class="row w3-margin-bottom smaller-fonts" style="background-color: #FBFBFC; border-bottom: 1px solid #eee">
+<form class="w3-hide-medium w3-hide-large search-small"  id="search-form">
+    <div class="w3-row">
+        <div class="col-sm-2 padding-8">
+            <select class="form-control" style="border-radius:0px;" name="location" id="location">
+                <option disabled="disabled" selected="selected" value="">Select your location</option>
+                {{#each locations}}
+                    <option {{selectedClass}} value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <select required class="form-control" style="border-radius:0px;" name="people" id="people">
+                <option disabled="disabled" selected="selected" value="">How many people</option>
+                {{#each persons}}
+                    <option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <input required class="form-control" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
+        </div>
+        <div class="col-sm-2 padding-8">
+            <select class="form-control" style="border-radius:0px;" name="arrival_hour" id="arrival_hour">
+                <option disabled="disabled" selected="selected" value="">Arrival</option>
+                {{#each arrival_hours}}
+                    <option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <select class="form-control" style="border-radius: 0px;" name="leaving_hour" id="leaving_hour">
+                <option disabled="disabled" selected="selected" value="">Leave</option>
+                <option value="">Don't know</option>
+                {{#each leaving_hours}}
+                    <option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <button type="submit" class="search-btn w3-button w3-block w3-blue w3-text-white"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</form>
+
+<div class="row filters w3-margin-bottom smaller-fonts">
     <div class="container w3-padding-8">
     <div class="col-md-6">
     	<div class="row">
@@ -89,7 +130,7 @@
         </div>
 
         <div class="col-xs-4" style="padding-right: 0px">
-        
+
           <div class="map-view">
             <input type="checkbox" value="1" id="map-view" name=""/>
             <label for="map-view"></label>
@@ -175,7 +216,7 @@
 	<!-- <div class="row w3-maring-bottom"> -->
 		<!-- <div class="col-sm-12"> -->
 			<!-- <div class="form-group">
-		        
+
 		        <div class="col-sm-2">
 		        <label>Order by:</label>
 		        </div>
@@ -303,66 +344,51 @@
 
 <template name="map">
 	<div class="row">
-		<div class="col-sm-5">
-			<!-- <ol class="places"> -->
-			    <!-- {{#each places}}
-			        <li>{{name}}</li>
-			    {{/each}} -->
-			    {{#each places}}
-				<!-- <div class="col-sm-4 col-lg-4 col-md-4"> -->
-				<!-- <li> -->
-					<div class="thumbnail">
-						<!-- <img src="http://placehold.it/320x150" alt=""> -->
-						<!-- {{#if avatar}}
-				        <img class="img-responsive" src="{{avatar.url}}" alt="">
-				        {{else}}
-				        <img src="http://placehold.it/320x150" alt="">
-				        {{/if}} -->
-						<div class="caption">
-							<div class="w3-row margin-minus-buttons" style="min-height: 33px">
-								{{#each Tables}}
-								<div class="w3-col s4 button-padding">
-									<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
-										{{this.hour}}
-									</div>
-								</div>
-								{{/each}}
-							</div>
-				            <!-- The Modal -->
-				            {{> reservationModal}}
-							<h4 class="pull-right">{{expensive}}</h4>
-							<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
-							</h4>
-							<p>{{about}}</p>
-							<a id="restaurant-details" class="btn btn-default">Reserve >></a>
-							<hr>
-						</div>
-						<div class="ratings">
-							<div class="row">
-								<div class="col-xs-6" style="padding-right:0">
-									<p>
-										{{#each ratings}}
-											{{#if this}}
-												<span class="glyphicon glyphicon-star"></span>
-											{{else}}
-												<span class="glyphicon glyphicon-star-empty"></span>
-											{{/if}}
-										{{/each}}
-									</p>
-								</div>
-								<div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
-							</div>
-						</div>
-					</div>
-				<!-- </div> -->
-				<!-- </li> -->
-				{{/each}}
-			<!-- </ol> -->
-		</div>
-		<div class="col-sm-7">
+        <div class="col-sm-7">
 		    <div class="map">
 		        {{> googleMap name="map" options=mapOptions}}
 		    </div>
     	</div>
+		<div class="col-sm-5">
+		    {{#each places}}
+				<div class="thumbnail">
+					<div class="caption">
+						<div class="w3-row margin-minus-buttons" style="min-height: 33px">
+							{{#each Tables}}
+							<div class="w3-col s4 button-padding">
+								<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
+									{{this.hour}}
+								</div>
+							</div>
+							{{/each}}
+						</div>
+			            <!-- The Modal -->
+			            {{> reservationModal}}
+						<h4 class="pull-right">{{expensive}}</h4>
+						<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
+						</h4>
+						<p>{{about}}</p>
+						<a id="restaurant-details" class="btn btn-default">Reserve >></a>
+						<hr>
+					</div>
+					<div class="ratings">
+						<div class="row">
+							<div class="col-xs-6" style="padding-right:0">
+								<p>
+									{{#each ratings}}
+										{{#if this}}
+											<span class="glyphicon glyphicon-star"></span>
+										{{else}}
+											<span class="glyphicon glyphicon-star-empty"></span>
+										{{/if}}
+									{{/each}}
+								</p>
+							</div>
+							<div class="col-xs-6" style="padding-left:0"><p class="pull-right">{{nb_reviews}} reviews</p></div>
+						</div>
+					</div>
+				</div>
+			{{/each}}
+		</div>
     </div>
 </template>

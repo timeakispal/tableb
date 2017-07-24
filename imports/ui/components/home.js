@@ -11,6 +11,12 @@ Template.home.rendered = function(){
 if (Meteor.isClient) {
 
 	Template.home.events({
+		'click .logout': function(event){
+	        event.preventDefault();
+	        Meteor.logout();
+	        Router.go('home');
+	    },
+		
 		'click .hide-elements' : function(event){
 	    	var x = document.getElementById("navDemo");
 		    if (x.className.indexOf("w3-show") == -1) {
@@ -72,6 +78,11 @@ if (Meteor.isClient) {
 	});
 
 	Template.home.helpers({
+		firstName: function() {
+	      var usernm = Meteor.user().username;
+		  return usernm[0].toUpperCase() + usernm.slice(1);
+	    },
+
 		'currentDate': function() {
 			var today = new Date();
 			return moment(today).format('YYYY-MM-DD');

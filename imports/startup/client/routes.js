@@ -49,6 +49,10 @@ Router.route('/', {
 Router.route('/user', {
 	name: 'user',
 	template: 'user',
+	layoutTemplate: 'homeTemplate',
+	yieldTemplates: {
+		myFooter: {to: 'footer'},
+	},
 });
 
 Router.route('/search', {

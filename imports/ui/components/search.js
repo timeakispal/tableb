@@ -16,7 +16,7 @@ if (Meteor.isClient) {
             self.autorun(function() {
                 getBox();
                 var handle = Meteor.subscribe('places', Session.get('box'));
-                
+
                 if (handle.ready()) {
                     var places = Restaurants.find().fetch();
                     var infowindow = null;
@@ -86,9 +86,52 @@ if (Meteor.isClient) {
     });
 
 	Template.search.events({
+		'change #location': function(evt) {
+			var location = $(evt.target).val();
+		},
+		'change #when': function(evt, t) {
+			var when = $(evt.target).val();
+			Session.set("setDate", when);
+			t.find('#arrival_hour').value = "";
+			t.find('#leaving_hour').value = "";
+		},
+		'change #people': function(evt) {
+			var people = $(evt.target).val();
+			// Session.set("persons", people);
+		},
+		'change #arrival_hour': function(evt, t) {
+			var arrival_hour = $(evt.target).val();
+			Session.set("setHour", arrival_hour);
+			t.find('#leaving_hour').value = "";
+		},
+		'change #leaving_hour': function(evt) {
+			var leaving_hour = $(evt.target).val();
+		},
+
+		'submit #search-form' : function (e,t)
+		{
+			e.preventDefault();
+			var location = t.find('#location').value;
+			var when = t.find('#when').value;
+			var people = t.find('#people').value;
+			var arrival_hour = t.find('#arrival_hour').value;
+			var leaving_hour = t.find('#leaving_hour').value;
+			Session.set("searchLocation", location);
+			Session.set("reservationDate", when);
+			Session.set("persons", people);
+			Session.set("reservationTime", arrival_hour);
+			Session.set("timeOfLeave", leaving_hour);
+
+			if (location !== "" && undefined != location) {
+				Router.go('search', {}, {query: 'location='+location});
+			} else {
+				Router.go('search');
+			}
+		},
+
 		'click #rest-details': function(e, t){
 			e.preventDefault();
-		    
+
 		    var index = $(e.currentTarget).attr("name");
 		    Session.set('selectedRestaurant', markers[index]._id);
 			Router.go('restaurant', {}, {query: 'name='+markers[index].name});
@@ -101,7 +144,7 @@ if (Meteor.isClient) {
 		},
 		'click #reserve': function(e, t) {
 		    e.preventDefault();
-		    
+
 		    var restId = $(e.currentTarget).attr("restId");
 			var res_hour = this.hour;
 		    var tableid = this.tableid;
@@ -162,9 +205,169 @@ if (Meteor.isClient) {
 	});
 
 	Template.search.helpers({
+		'currentDate': function() {
+			var today = new Date();
+			return moment(today).format('YYYY-MM-DD');
+		},
+
+		'maximumDate': function() {
+			var today = moment();
+			var maximumDate = moment(today).add(14, 'day');
+			return moment(maximumDate).format('YYYY-MM-DD');
+		},
+
+		'selectedClass': function() {
+			var restId = this.name;
+			var searchLocation = Session.get('searchLocation');
+			if (restId == searchLocation) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedDate': function() {
+			var date_res = Session.get("setDate");
+
+			if (date_res !== undefined && date_res !== "") {
+				return date_res;
+			}
+			return "";
+		},
+
+		'selectedClassPeople': function() {
+			var restId = this.value;
+			var searchPersons = Session.get('persons');
+			if (restId == searchPersons) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassArrival': function() {
+			var restId = this;
+			var searchArrival = Session.get('reservationTime');
+			if (restId == searchArrival) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'selectedClassLeave': function() {
+			var restId = this;
+			var searchLeave = Session.get('timeOfLeave');
+			if (restId == searchLeave) {
+				return "selected";
+			} else {
+				return "";
+			}
+		},
+
+		'locations': function() {
+			return Locations.find({}, {sort: {name: 1}});
+		},
+
+		'persons': function() {
+			var list = [];
+			list.push({value:1, string: "1 person"});
+			for (var i = 2; i <= 8; i++) {
+				list.push({value: i, string: i + " people"});
+			}
+			list.push({value:"party", string: "Larger group"});
+			return list;
+		},
+
+		'arrival_hours': function() {
+			var list = [];
+			var hour = 8;
+			var min = 30;
+
+			if (Session.get("setDate") == undefined) {
+				return list;
+			}
+
+			var d = new Date();
+			today = moment(d).format('YYYY-MM-DD');
+			if (Session.get("setDate") == today) {
+				hour = d.getHours();
+				min = d.getMinutes();
+			}
+
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			} else {
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
+				} else {
+					list.push(hour + ":30");
+					hour++;
+				}
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			}
+
+			return list;
+		},
+
+		'leaving_hours': function() {
+			var list = [];
+
+			if (Session.get("setHour") == undefined) {
+				return list;
+			}
+
+			var time = Session.get("setHour");
+			var clock = time.split(":");
+			var hour = Number(clock[0]) + 1;
+			var min = clock[1];
+
+			if (hour == 24) {
+				list.push("00:00");
+				return list;
+			}
+
+			list.push(hour + ":" + min);
+
+			if (15 <= min && min <= 45) {
+				hour++;
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			} else {
+				if (min >= 45) {
+					hour++;
+					list.push(hour + ":30");
+					hour++;
+				} else {
+					list.push(hour + ":30");
+					hour++;
+				}
+				for (var i = hour; i < 24; i++) {
+					list.push(i + ":00");
+					list.push(i + ":30");
+				}
+			}
+
+			return list;
+		},
+
+
 		'MapView': function() {
 			return Session.get("Mapview");
 		},
+
+
 		'Restaurants': function() {
 			var location_str = Session.get("searchLocation");
 			var name_asc = Session.get("Name-asc");
@@ -175,38 +378,8 @@ if (Meteor.isClient) {
 			if (location_str == "" || undefined == location_str) {
 				if (name_asc) { return Restaurants.find({}, {sort: {name: 1}});}
 				if (name_desc) { return Restaurants.find({}, {sort: {name: -1}});}
-				if (ratings_desc) { 
+				if (ratings_desc) {
 					return Restaurants.find({}, {sort: {stars_total: -1}});
-					// return Restaurants.find({}, {sort: {name: -1}});
-					// var dist_rest = myReviews.distinct("rest_id");
-					// var dist_rest = [];
-					// myReviews.find({}, {fields: {rest_id: 1} }).map(function(doc) {
-					// 	dist_rest.push(doc.rest_id);
-					// });
-					// dist_rest = _.uniq(dist_rest);
-					
-					// var list_reviews = [];
-					// dist_rest.map(function(doc) {
-					// 	list_reviews.push({id: doc, ratings: 0});
-					// });
-
-					// for (var i = 0; i < dist_rest.length; i++) {
-					// 	var total = 0;
-
-					// 	myReviews.find({"rest_id": dist_rest[i]}).map(function(doc) {
-					// 		for (var j = 0; j < 5; j++) {
-					// 			total += doc.stars[j];
-					// 		}
-
-					// 		list_reviews.map(function(elem) {
-					// 			if (elem.hasOwnProperty('id') && elem.id == dist_rest[i]) {
-					// 		        elem.ratings = total;
-					// 		    }
-					// 		});
-					// 	});
-					// }
-
-					// console.log(list_reviews);
 				}
 				if (expensiveness) { return Restaurants.find({}, {sort: {expensive: 1}});}
 				return Restaurants.find();
@@ -247,7 +420,7 @@ if (Meteor.isClient) {
 			if (result == 0) {
 				return [];
 			}
-			
+
 			var list = [];
 			for (var i = 1; i <= result; i++) {
 				list.push(1);
@@ -273,7 +446,7 @@ if (Meteor.isClient) {
 	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
 	    	return image;
 	  	},
-		
+
 		'Tables' : function() {
 			var list = [];
 			var restId = this._id;
@@ -313,12 +486,12 @@ if (Meteor.isClient) {
 						leave_time = clock[0] * 100;
 					}
 					leave_time += 100;
-					
+
 					if (timeLeave !== undefined && timeLeave !== "") {
 						var clock2 = timeLeave.split(":");
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
-					
+
 					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			} else {
@@ -338,16 +511,16 @@ if (Meteor.isClient) {
 						leave_time = clock[0] * 100;
 					}
 					leave_time += 200;
-					
+
 					if (timeLeave !== undefined && timeLeave !== "") {
 						var clock2 = timeLeave.split(":");
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
-					
+
 					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			}
-			
+
 		},
 	});
 
@@ -382,7 +555,7 @@ if (Meteor.isClient) {
 		var nbpeople_max = String(nbpeople + 2);
 		nbpeople = String(nbpeople);
 		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
-		
+
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
 			// no tables that have reservation on that date
@@ -407,7 +580,7 @@ if (Meteor.isClient) {
 			// no tables that match the description
 			return list;
 		};
-		
+
 		for (var k = 0; k < table.length; k++) {
 			var list_temp = [];
 			time = time_bckup;
@@ -443,16 +616,16 @@ if (Meteor.isClient) {
 						}
 					}
 				}
-			
+
 				leavehour = list_temp[i].end;
-			
+
 			}
 
 			if (time <= leavehour || leavehour <= maxtime) {
 				if (time <= leavehour) {
 					time = leavehour;
 				}
-				
+
 				if (time <= maxtime) {
 					while (time <= 2400 && time <= maxtime) {
 						if (time % 100 == 0) {
@@ -470,15 +643,15 @@ if (Meteor.isClient) {
 
 			if (list.length >= 3) { break; }
 		}
-		
+
 		list.sort(compare_hour);
 		var n = {}, unique_list = [];
-		for(var i = 0; i < list.length; i++) 
+		for(var i = 0; i < list.length; i++)
 		{
-			if (!n[list[i].hour]) 
+			if (!n[list[i].hour])
 			{
-				n[list[i].hour] = true; 
-				unique_list.push(list[i]); 
+				n[list[i].hour] = true;
+				unique_list.push(list[i]);
 			}
 		}
 		return unique_list.slice(0,3);
