@@ -33,18 +33,18 @@
 					</div>
 					<form id="search-form">
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
-						  <select class="form-control border-7-left" name="location" id="location">
-							  <option disabled="disabled" selected="selected" value="">Select your location</option>
-							  {{#each locations}}
-								  <option {{selectedClass}} value="{{name}}">{{name}}</option>
+						  <select required class="form-control border-7-left" name="people" id="people">
+							  <option disabled="disabled" selected="selected" value="">How many people</option>
+							  {{#each persons}}
+								  <option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
 							  {{/each}}
 						  </select>
 						</div>
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
-						  <select required class="form-control" style="border-radius:0px;" name="people" id="people">
-							  <option disabled="disabled" selected="selected" value="">How many people</option>
-							  {{#each persons}}
-								  <option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+						  <select class="form-control" style="border-radius:0px;" name="location" id="location">
+							  <option disabled="disabled" selected="selected" value="">Select your location</option>
+							  {{#each locations}}
+								  <option {{selectedClass}} value="{{name}}">{{name}}</option>
 							  {{/each}}
 						  </select>
 						</div>

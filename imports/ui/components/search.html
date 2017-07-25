@@ -16,42 +16,6 @@
     </div>
     </div>
 </div>
-<!-- <div class="row" style="background-color: #404040">
-	<div class="container padding-35">
-	<div class="col-lg-11">
-    <form>
-        <div class="row">
-            <div class="col-sm-2" style="padding: 0px 0px 0px 15px">
-                <select class="form-control" style="border-radius: 7px 0px 0px 7px;">
-                    <option>Select</option>
-                </select>
-            </div>
-            <div class="col-sm-2" style="padding: 0px">
-                <select class="form-control" style="border-radius:0px;">
-                    <option>Select</option>
-                </select>
-            </div>
-            <div class="col-sm-2" style="padding: 0px">
-                <input class="form-control" type="date" required="required">
-            </div>
-            <div class="col-sm-2" style="padding: 0px">
-                <select class="form-control" style="border-radius:0px;">
-                    <option>Select</option>
-                </select>
-            </div>
-            <div class="col-sm-2" style="padding: 0px">
-                <select class="form-control" style="border-radius: 0px;">
-                    <option>Select</option>
-                </select>
-            </div>
-			<div class="col-sm-2" style="padding-left: 0px">
-				<input type="submit" class="w3-button w3-block color-base4 w3-text-white" style="border-radius: 0px 7px 7px 0px; padding: 9px 16px; " value="SEARCH">
-			</div>
-        </div>
-    </form>
-	</div>
-	</div>
-</div> -->
 
 <form class="w3-hide-medium w3-hide-large search-small w3-border-bottom"  id="search-form">
     <div class="w3-row">
@@ -145,36 +109,75 @@
 <div class="row filters w3-margin-bottom">
     <div class="container smaller-fonts">
         <div class="col-xs-3 col-sm-2 col-md-1 demo1">
-            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo1'>Types <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+            <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo1'>Types <i class="fa fa-angle-down" aria-hidden="true"></i></button>
         </div>
         <div class="col-xs-3 col-sm-2 col-md-1 demo1">
-            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo2'>Facilities <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+            <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo2'>Facilities <i class="fa fa-angle-down" aria-hidden="true"></i></button>
         </div>
         <div class="col-xs-3 col-sm-2 col-md-1 demo1">
-            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo3'>Sort by <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+            <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo3'>Sort by <i class="fa fa-angle-down" aria-hidden="true"></i></button>
         </div>
     </div>
 
-    <div id="Demo1" class="w3-hide container" style="padding-top: 20px; padding-bottom: 15px;">
-        <table>
-            <tr>
-                <td>
-                    <input type="checkbox" name="checkboxG4" id="checkboxG4" class="css-checkbox" /><label for="checkboxG4" class="css-label">Option 1</label>
-                </td>
-                <td>
-                    <input type="checkbox" name="checkboxG5" id="checkboxG5" class="css-checkbox" checked="checked"/><label for="checkboxG5" class="css-label">Option 2</label>
-                </td>
-                <td>
-                    <input type="checkbox" name="checkboxG6" id="checkboxG6" class="css-checkbox" /><label for="checkboxG6" class="css-label">Option 1</label>
-                </td>
-            </tr>
-        </table>
+    <div id="Demo1" class="w3-hide w3-row w3-border-top w3-border-light-grey smaller-fonts">
+        <div class="container" style="padding-top: 20px; padding-bottom: 15px;">
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG4" id="checkboxG4" class="css-checkbox" /><label for="checkboxG4" class="css-label">Restaurant</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG5" id="checkboxG5" class="css-checkbox" /><label for="checkboxG5" class="css-label">Bar</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG6" id="checkboxG6" class="css-checkbox" /><label for="checkboxG6" class="css-label">Bistro</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG7" id="checkboxG7" class="css-checkbox" /><label for="checkboxG7" class="css-label">Pub</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG8" id="checkboxG8" class="css-checkbox" /><label for="checkboxG8" class="css-label">Cafeteria</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="checkboxG9" id="checkboxG9" class="css-checkbox" /><label for="checkboxG9" class="css-label">Coffeehouse</label>
+            </div>
+        </div>
     </div>
-    <div id="Demo2" class="w3-hide w3-container">
-      <p>Lorem ipsum...</p>
+    <div id="Demo2" class="w3-hide w3-row w3-border-top w3-border-light-grey smaller-fonts">
+        <div class="container" style="padding-top: 20px; padding-bottom: 15px;">
+            <div class="col-sm-2">
+                <input type="checkbox" name="wifi" id="wifi" class="css-checkbox" /><label for="wifi" class="css-label">Wifi  <span class="fa fa-wifi"></span></label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="food" id="food" class="css-checkbox" /><label for="food" class="css-label">Food  <span class="fa fa-cutlery"></span></label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="terrace" id="terrace" class="css-checkbox" /><label for="terrace" class="css-label">Terrace  <span class="fa fa-tree"></span></label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="pet-friendly" id="pet-friendly" class="css-checkbox" /><label for="pet-friendly" class="css-label">Pet-friendly  <span class="fa fa-paw"></span></label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="creditcard_accepted" id="creditcard_accepted" class="css-checkbox" /><label for="creditcard_accepted" class="css-label">Credit card accepted <span class="fa fa-credit-card"></span></label>
+            </div>
+            <div class="col-sm-2">
+                <input type="checkbox" name="parking" id="parking" class="css-checkbox" /><label for="parking" class="css-label">Parking <span class="mdi mdi-parking"></span></label>
+            </div>
+        </div>
     </div>
-    <div id="Demo3" class="w3-hide w3-container">
-      <p>Lorem ipsum...</p>
+    <div id="Demo3" class="w3-hide w3-row w3-border-top w3-border-light-grey smaller-fonts">
+        <div class="container" style="padding-top: 20px; padding-bottom: 15px;">
+            <div class="col-sm-3">
+                <input type="checkbox" name="name-asc" id="name-asc" class="css-checkbox" /><label for="name-asc" class="css-label">Name <span class="fa fa-sort-alpha-asc"></span></label>
+            </div>
+            <div class="col-sm-3">
+                <input type="checkbox" name="name-desc" id="name-desc" class="css-checkbox" /><label for="name-desc" class="css-label">Name <span class="fa fa-sort-alpha-desc"></span></label>
+            </div>
+            <div class="col-sm-3">
+                <input type="checkbox" name="ratings" id="ratings" class="css-checkbox" /><label for="ratings" class="css-label">Ratings <span class="fa fa-sort-amount-desc"></span></label>
+            </div>
+            <div class="col-sm-3">
+                <input type="checkbox" name="expensiveness" id="expensiveness" class="css-checkbox" /><label for="expensiveness" class="css-label">Expensiveness <span class="fa fa-sort-amount-asc"></span></label>
+            </div>
+        </div>
     </div>
 </div>
 <!-- <div class="container padding-35" id="header"> -->
@@ -307,7 +310,7 @@
 			<div class="w3-row margin-minus-buttons" style="min-height: 33px">
 				{{#each Tables}}
 				<div class="w3-col s4 button-padding">
-					<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base5">
+					<div id="reserve" name="{{this}}" restId="{{../_id}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base8">
 						{{this.hour}}
 					</div>
 				</div>
@@ -333,7 +336,7 @@
             {{#if parking}}
                 <span class="mdi mdi-parking" title="parking"></span>
             {{else}}
-                <span class="fa fa-parking color-text-icons" title="parking"></span>
+                <span class="mdi mdi-parking color-text-icons" title="parking"></span>
             {{/if}}
             {{#if terrace}}
                 <span class="fa fa-tree" title="terrace"></span>
