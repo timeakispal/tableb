@@ -1,5 +1,5 @@
 <template name="search">
-<div class="row hidden-row" style="background-color: #f5f5f5">
+<div class="row hidden-row w3-border-bottom w3-border-light-grey" style="background-color: #f5f5f5">
     <div class="container" style="padding-top: 7px; padding-bottom: 7px">
     <div class="col-xs-5">
     	<p style="margin: 0px; float:left; padding: 8px 15px 8px 0px;">Search results{{searchLocation}}</p>
@@ -53,7 +53,7 @@
 	</div>
 </div> -->
 
-<form class="w3-hide-medium w3-hide-large search-small"  id="search-form">
+<form class="w3-hide-medium w3-hide-large search-small w3-border-bottom"  id="search-form">
     <div class="w3-row">
         <div class="col-sm-2 padding-8">
             <select class="form-control" style="border-radius:0px;" name="location" id="location">
@@ -97,7 +97,7 @@
     </div>
 </form>
 
-<div class="row filters w3-margin-bottom smaller-fonts">
+<!-- <div class="row filters w3-margin-bottom smaller-fonts">
     <div class="container w3-padding-8">
     <div class="col-md-6">
     	<div class="row">
@@ -140,6 +140,41 @@
         </div>
         </div>
     </div>
+    </div>
+</div> -->
+<div class="row filters w3-margin-bottom">
+    <div class="container smaller-fonts">
+        <div class="col-xs-3 col-sm-2 col-md-1 demo1">
+            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo1'>Types <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-xs-3 col-sm-2 col-md-1 demo1">
+            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo2'>Facilities <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-xs-3 col-sm-2 col-md-1 demo1">
+            <button class="w3-button w3-white w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo3'>Sort by <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        </div>
+    </div>
+
+    <div id="Demo1" class="w3-hide container" style="padding-top: 20px; padding-bottom: 15px;">
+        <table>
+            <tr>
+                <td>
+                    <input type="checkbox" name="checkboxG4" id="checkboxG4" class="css-checkbox" /><label for="checkboxG4" class="css-label">Option 1</label>
+                </td>
+                <td>
+                    <input type="checkbox" name="checkboxG5" id="checkboxG5" class="css-checkbox" checked="checked"/><label for="checkboxG5" class="css-label">Option 2</label>
+                </td>
+                <td>
+                    <input type="checkbox" name="checkboxG6" id="checkboxG6" class="css-checkbox" /><label for="checkboxG6" class="css-label">Option 1</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="Demo2" class="w3-hide w3-container">
+      <p>Lorem ipsum...</p>
+    </div>
+    <div id="Demo3" class="w3-hide w3-container">
+      <p>Lorem ipsum...</p>
     </div>
 </div>
 <!-- <div class="container padding-35" id="header"> -->
@@ -263,7 +298,6 @@
 {{#each Restaurants}}
 <div class="col-sm-4 col-lg-4 col-md-4">
 	<div class="thumbnail">
-		<!-- <img src="http://placehold.it/320x150" alt=""> -->
 		{{#if avatar}}
         <img class="img-responsive" src="{{avatar.url}}" alt="">
         {{else}}

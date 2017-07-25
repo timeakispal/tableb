@@ -159,8 +159,40 @@ a, a:hover {
 	padding-bottom: 8px!important;
 }
 
+/*========Checkbox==============*/
+input[type=checkbox].css-checkbox {
+	position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+	padding-left:30px;
+	height:25px;
+	display:inline-block;
+	line-height:25px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:25px;
+	vertical-align:middle;
+	cursor:pointer;
+
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+	background-position: 0 -25px;
+}
+label.css-label {
+background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_391ce065f36b1460c4845fa9b5173fba.png);
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+/*=============end checkbox==========*/
 
 @media screen and (max-width: 600px) {
+
 .cover-photo {
 	/*background-image: url("../components/background7.jpg");*/
 	background-position: center top;
@@ -356,7 +388,6 @@ input[type="date"], focus {
 		border-radius: 0px 7px 7px 0px;
 	}
 
-
 	/*.padding-20 {
 		padding: 20px 0px;
 	}*/
@@ -381,7 +412,14 @@ input[type="date"], focus {
 
 .filters {
 	background-color: #FBFBFC;
-	border-bottom: 1px solid #eee;
+	border-bottom: 2px solid #eee;
+	padding-top: 0px;
+}
+
+@media screen and (max-width: 767px) and (min-width: 601px) {
+	.filters {
+		padding-top: 65px;
+	}
 }
 
 .color-base-black2 {
@@ -389,15 +427,16 @@ input[type="date"], focus {
 }
 
 @media screen and (max-width: 767px) {
-  .hidden-row {
-    display: none;
-    /*padding-top: 83px;*/
-    /*padding-top: 96px;*/
-  }
+	.hidden-row {
+	display: none;
+	/*padding-top: 83px;*/
+	/*padding-top: 96px;*/
+	}
 
-  .search-small {
-  	padding-top: 65px;
-  }
+	.search-small {
+		padding-top: 65px;
+	}
+
 }
 
 @media screen and (max-width: 992px) {
@@ -440,6 +479,7 @@ input[type="date"], focus {
 		padding-bottom: 65px;
 		padding-left: 30px;
 	}
+
 }
 
 /*sb-admin.css*/

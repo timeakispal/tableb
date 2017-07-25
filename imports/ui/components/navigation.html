@@ -1,54 +1,4 @@
 <template name="myNav">
-<!-- <ul class="w3-navbar w3-white w3-text-grey w3-left-align navbar-border">
-	<div class="container smaller-fonts">
-	<li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-		<a class="w3-padding-large w3-hover-white w3-medium hide-elements" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-	</li>
-	<a class="navbar-brand" rel="home" href="{{pathFor route='home'}}">
-        <img style="max-width:130px; margin-top: -30px;"
-             src="logo.png">
-    </a>
-	<li class="w3-hide-small w3-right"><a href="#" class="w3-padding-large w3-hover-white"><i class="fa fa-file-text"></i> ABOUT</a></li>
-	<li class="w3-hide-small w3-right"><a href="{{pathFor route='search'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-th"></i> SEARCH</a></li>
-	<li class="w3-hide-small w3-right"><a href="{{pathFor route='home'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-home"></i> HOME</a></li>
-
-	{{#if currentUser}}
-		<li class="w3-hide-small"></li>
-
-		<li class="w3-hide-small w3-right">
-		<div class="w3-dropdown-hover">
-			<a class="w3-padding-large hide-elements w3-white w3-text-grey">{{firstName}} <i class="fa fa-user-circle w3-padding-right"></i></a>
-			<div class="w3-dropdown-content w3-border">
-				<a class="w3-medium" href="{{pathFor route='userProfile'}}"> My account</a>
-				<a class="w3-medium" href="{{pathFor route='myReservations'}}"><i class="fa fa-map-marker"></i> My reservations</a>
-				<a class="w3-medium" href="#"><i class="fa fa-heart-o"></i> Favorites</a>
-				<a class="w3-medium logout" href="#"><i class="fa fa-sign-out"></i> Log out</a>
-			</div>
-		</div>
-		</li>
-	{{else}}
-		<li class="w3-hide-small w3-right"><a href="{{pathFor route='user'}}" class="w3-padding-large w3-hover-white"><i class="fa fa-sign-in"></i> LOG IN</a></li>
-	{{/if}}
-	</div>
-	</ul>
-
-	<div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium">
-		<ul class="w3-navbar w3-left-align w3-medium w3-white">
-			<li><a class="w3-padding-large hide-elements" href="{{pathFor route='home'}}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a class="w3-padding-large hide-elements" href="{{pathFor route='search'}}" ><i class="fa fa-th"></i> Search</a></li>
-			<li><a class="w3-padding-large hide-elements" href="#" ><i class="fa fa-file-text"></i> About</a></li>
-
-			{{#if currentUser}}
-				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-map-marker"></i> My reservations</a></li>
-				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-user"></i> My account</a></li>
-				<li><a class="w3-padding-large hide-elements" href="#"><i class="fa fa-heart"></i> Favorites</a></li>
-				<li><a class="w3-padding-large logout hide-elements" href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
-
-			{{else}}
-				<li><a href="{{pathFor route='user'}}" class="w3-padding-large hide-elements"><i class="fa fa-user"></i> Log in</a></li>
-			{{/if}}
-		</ul>
-	</div> -->
 <div class="w3-top">
 	<div class="w3-bar w3-white">
 		<div class="w3-row" style="padding-left:10px; padding-right:5px">
@@ -81,34 +31,6 @@
 						<a class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-3x w3-text-blue" aria-hidden="true"></i></a>
 						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-3x w3-text-blue" aria-hidden="true"></i></a>
 					</div>
-					<!-- <form>
-			            <div class="col-xs-2 w3-hide-small" style="padding: 0px">
-			                <select class="form-control border-7-left">
-			                    <option>Select</option>
-			                </select>
-			            </div>
-			            <div class="col-xs-2 w3-hide-small" style="padding: 0px">
-			                <select class="form-control" style="border-radius:0px;">
-			                    <option>Select</option>
-			                </select>
-			            </div>
-			            <div class="col-xs-2 w3-hide-small" style="padding: 0px">
-			                <input class="form-control" type="date" required="required">
-			            </div>
-			            <div class="col-xs-2 w3-hide-small" style="padding: 0px">
-			                <select class="form-control" style="border-radius:0px;">
-			                    <option>Select</option>
-			                </select>
-			            </div>
-			            <div class="col-xs-2 w3-hide-small" style="padding: 0px">
-			                <select class="form-control" style="border-radius: 0px;">
-			                    <option>Select</option>
-			                </select>
-			            </div>
-						<div class="col-xs-1 w3-hide-small color-base5 border-7-right" style="padding:0px">
-		  				  <button type="submit" class="search-btn w3-button w3-block w3-text-black border-7-right" style="padding: 9px"><i class="fa fa-search" aria-hidden="true"></i></button>
-		  			  	</div>
-					</form> -->
 					<form id="search-form">
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
 						  <select class="form-control border-7-left" name="location" id="location">
@@ -155,50 +77,9 @@
 		</div>
 	</div>
 
-	<!-- <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large">
-	  <a href="#" class="w3-bar-item w3-button">Home</a>
-	<hr>
-	  <a href="#" class="w3-bar-item w3-button">Log In / User</a>
-	<hr>
-		<a href="#" class="w3-bar-item w3-button">About</a>
-		<a href="#" class="w3-bar-item w3-button">Help</a>
-		<br>
-
-	  <form class="w3-hide-medium">
-		  <div class="w3-row">
-			  <div class="col-sm-2" style="padding: 0px">
-				  <select class="form-control" style="border-radius:0px;">
-					  <option>Select</option>
-				  </select>
-			  </div>
-			  <div class="col-sm-2" style="padding: 0px">
-				  <select class="form-control" style="border-radius:0px;">
-					  <option>Select</option>
-				  </select>
-			  </div>
-			  <div class="col-sm-2" style="padding: 0px">
-				  <input class="form-control" type="date" required="required">
-			  </div>
-			  <div class="col-sm-2" style="padding: 0px">
-				  <select class="form-control" style="border-radius:0px;">
-					  <option>Select</option>
-				  </select>
-			  </div>
-			  <div class="col-sm-2" style="padding: 0px">
-				  <select class="form-control" style="border-radius: 0px;">
-					  <option>Select</option>
-				  </select>
-			  </div>
-			  <div class="col-sm-2" style="padding:0px">
-				  <a class="search-btn w3-button w3-block color-base4 w3-text-white" style="border-radius:0px;padding: 10px"><i class="fa fa-search" aria-hidden="true"></i></a>
-			  </div>
-		  </div>
-	  </form>
-	</div> -->
-
 	<div id="navDemo" class="w3-bar-block w3-white w3-text-blue w3-hide w3-hide-large w3-card">
 		<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button hide-elements">Home</a>
-	<hr>
+		<hr>
 		{{#if currentUser}}
 			<a href="{{pathFor route='userProfile'}}" class="w3-bar-item w3-button hide-elements"> My account</a>
 			<a href="{{pathFor route='myReservations'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-map-marker"></i> My reservations</a>
@@ -207,7 +88,7 @@
 		{{else}}
 			<a href="{{pathFor route='user'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-sign-in"></i> Log In</a>
 		{{/if}}
-	<hr>
+		<hr>
 		<a href="#" class="w3-bar-item w3-button hide-elements">About</a>
 		<a href="#" class="w3-bar-item w3-button hide-elements">Help</a>
 		<br>

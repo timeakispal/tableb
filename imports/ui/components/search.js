@@ -86,6 +86,16 @@ if (Meteor.isClient) {
     });
 
 	Template.search.events({
+		'click .demo1' : function(event){
+	    	var id = $(event.target).data('id');
+			var x = document.getElementById(id);
+		    if (x.className.indexOf("w3-show") == -1) {
+		        x.className += " w3-show";
+		    } else {
+		        x.className = x.className.replace(" w3-show", "");
+		    }
+	    },
+
 		'change #location': function(evt) {
 			var location = $(evt.target).val();
 		},
