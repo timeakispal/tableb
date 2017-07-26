@@ -16,33 +16,17 @@ Template.myNav.events({
 	    }
     },
 
-    'click .hide-home' : function(event){
-    	var x = document.getElementById("navDemo");
-	    if (x.className.indexOf("w3-show") != -1) {
-	        x.className = x.className.replace(" w3-show", "");
-	    }
-    },
-
-	'change #location': function(evt) {
-		var location = $(evt.target).val();
-	},
 	'change #when': function(evt, t) {
 		var when = $(evt.target).val();
 		Session.set("setDate", when);
 		t.find('#arrival_hour').value = "";
 		t.find('#leaving_hour').value = "";
 	},
-	'change #people': function(evt) {
-		var people = $(evt.target).val();
-		// Session.set("persons", people);
-	},
+
 	'change #arrival_hour': function(evt, t) {
 		var arrival_hour = $(evt.target).val();
 		Session.set("setHour", arrival_hour);
 		t.find('#leaving_hour').value = "";
-	},
-	'change #leaving_hour': function(evt) {
-		var leaving_hour = $(evt.target).val();
 	},
 
 	'submit #search-form' : function (e,t)
@@ -58,17 +42,16 @@ Template.myNav.events({
 		Session.set("persons", people);
 		Session.set("reservationTime", arrival_hour);
 		Session.set("timeOfLeave", leaving_hour);
-
-		if (location !== "" && undefined != location) {
-			Router.go('search', {}, {query: 'location='+location});
-		} else {
-			Router.go('search');
-		}
 	},
 });
 
 Template.myNav.helpers({
-	firstName: function() {
+
+	'showLocation': function() {
+		return Session.get("showLocationSelect");
+	},
+
+	'firstName': function() {
 	  var usernm = Meteor.user().username;
 	  return usernm[0].toUpperCase() + usernm.slice(1);
 	},

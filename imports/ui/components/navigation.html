@@ -28,8 +28,8 @@
 			<div class="w3-col l9 padding-20">
 		        <div class="w3-row">
 					<div class="col-xs-1" style="padding: 0px">
-						<a class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-3x w3-text-blue" aria-hidden="true"></i></a>
-						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-3x w3-text-blue" aria-hidden="true"></i></a>
+						<a class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
+						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
 					</div>
 					<form id="search-form">
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
@@ -40,6 +40,7 @@
 							  {{/each}}
 						  </select>
 						</div>
+						{{#if showLocation}}
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
 						  <select class="form-control" style="border-radius:0px;" name="location" id="location">
 							  <option disabled="disabled" selected="selected" value="">Select your location</option>
@@ -48,6 +49,7 @@
 							  {{/each}}
 						  </select>
 						</div>
+						{{/if}}
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
 						  <input required class="form-control" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
 						</div>

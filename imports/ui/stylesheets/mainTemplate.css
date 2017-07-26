@@ -189,6 +189,7 @@ input[type=checkbox].css-checkbox + label.css-label {
 input[type=checkbox].css-checkbox:checked + label.css-label {
 	background-position: 0 -15px;
 }
+
 label.css-label {
 background-image:url(checkbox.png);
 background-size: 15px 30px;

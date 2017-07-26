@@ -21,39 +21,36 @@ if (Meteor.isClient) {
 			var restId = Session.get('selectedRestaurant');
 			AmplifiedSession.set('Restaurant', restId);
 		}
+
+		Session.set("showLocationSelect", 0);
 	};
 
 	Template.restaurant.events({
-		'change #when': function(evt, t) {
+		'change #when2': function(evt, t) {
 			var when = $(evt.target).val();
 			Session.set("setDate", when);
-			t.find('#arrival_hour').value = "";
-			t.find('#leaving_hour').value = "";
-		},
-		'change #people': function(evt) {
-			var people = $(evt.target).val();
-			// Session.set("persons", people);
-		},
-		'change #arrival_hour': function(evt, t) {
-			var arrival_hour = $(evt.target).val();
-			Session.set("setHour", arrival_hour);
-			t.find('#leaving_hour').value = "";
-		},
-		'change #leaving_hour': function(evt) {
-			var leaving_hour = $(evt.target).val();
+			t.find('#arrival_hour2').value = "";
+			t.find('#leaving_hour2').value = "";
 		},
 
-		'submit #search-form' : function (e, t) {
+		'change #arrival_hour2': function(evt, t) {
+			var arrival_hour = $(evt.target).val();
+			Session.set("setHour", arrival_hour);
+			t.find('#leaving_hour2').value = "";
+		},
+
+		'submit #search-form2' : function (e, t) {
 			e.preventDefault();
-			var when = t.find('#when').value;
-			var people = t.find('#people').value;
-			var arrival_hour = t.find('#arrival_hour').value;
-			var leaving_hour = t.find('#leaving_hour').value;
+			var when = t.find('#when2').value;
+			var people = t.find('#people2').value;
+			var arrival_hour = t.find('#arrival_hour2').value;
+			var leaving_hour = t.find('#leaving_hour2').value;
 			Session.set("reservationDate", when);
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
 		},
+
 		'click #reserve': function(e, t) {
 		    e.preventDefault();
 		    var res_hour = this.hour;
@@ -224,7 +221,7 @@ if (Meteor.isClient) {
 			if (result == 0) {
 				return [];
 			}
-			
+
 			var list = [];
 			for (var i = 1; i <= result; i++) {
 				list.push(1);
@@ -246,9 +243,14 @@ if (Meteor.isClient) {
 			var restId = AmplifiedSession.get('Restaurant');
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
-			var image_id = image_addr.split("/")[4];
-	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
-	    	return image;
+			if (image_addr !== undefined) {
+				var image_id = image_addr.split("/")[4];
+		    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+		    	return image;
+			} else {
+				return "";
+			}
+
 	  	},
 
 		'ratings_total': function() {
@@ -288,7 +290,7 @@ if (Meteor.isClient) {
 				hour = d.getHours();
 				min = d.getMinutes();
 			}
-			
+
 			if (15 <= min && min <= 45) {
 				hour++;
 				for (var i = hour; i < 24; i++) {
@@ -309,7 +311,7 @@ if (Meteor.isClient) {
 					list.push(i + ":30");
 				}
 			}
-			
+
 			return list;
 		},
 
@@ -331,7 +333,7 @@ if (Meteor.isClient) {
 			}
 
 			list.push(hour + ":" + min);
-			
+
 			if (15 <= min && min <= 45) {
 				hour++;
 				for (var i = hour; i < 24; i++) {
@@ -352,7 +354,7 @@ if (Meteor.isClient) {
 					list.push(i + ":30");
 				}
 			}
-			
+
 			return list;
 		},
 
@@ -394,12 +396,12 @@ if (Meteor.isClient) {
 						leave_time = clock[0] * 100;
 					}
 					leave_time += 200;
-					
+
 					if (timeLeave !== undefined && timeLeave !== "") {
 						var clock2 = timeLeave.split(":");
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
-					
+
 					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			} else {
@@ -419,12 +421,12 @@ if (Meteor.isClient) {
 						leave_time = clock[0] * 100;
 					}
 					leave_time += 200;
-					
+
 					if (timeLeave !== undefined && timeLeave !== "") {
 						var clock2 = timeLeave.split(":");
 						leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 					}
-					
+
 					return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
 				}
 			}
@@ -455,7 +457,7 @@ if (Meteor.isClient) {
 		var nbpeople_max = String(nbpeople + 2);
 		nbpeople = String(nbpeople);
 		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
-		
+
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
 
@@ -483,7 +485,7 @@ if (Meteor.isClient) {
 			// no tables that match the description
 			return list;
 		};
-		
+
 		for (var k = 0; k < table.length; k++) {
 			var list_temp = [];
 			time = time_bckup;
@@ -522,16 +524,16 @@ if (Meteor.isClient) {
 						}
 					}
 				}
-			
+
 				leavehour = list_temp[i].end;
-			
+
 			}
 
 			if (time <= leavehour || leavehour <= maxtime) {
 				if (time <= leavehour) {
 					time = leavehour;
 				}
-				
+
 				if (time <= maxtime) {
 					while (time <= 2400 && time <= maxtime) {
 						if (time % 100 == 0) {
@@ -551,15 +553,15 @@ if (Meteor.isClient) {
 
 			if (list.length >= 3) { break; }
 		}
-		
+
 		list.sort(compare_hour);
 		var n = {}, unique_list = [];
-		for(var i = 0; i < list.length; i++) 
+		for(var i = 0; i < list.length; i++)
 		{
-			if (!n[list[i].hour]) 
+			if (!n[list[i].hour])
 			{
-				n[list[i].hour] = true; 
-				unique_list.push(list[i]); 
+				n[list[i].hour] = true;
+				unique_list.push(list[i]);
 			}
 		}
 		return unique_list.slice(0,3);

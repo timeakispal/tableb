@@ -16,7 +16,7 @@ if (Meteor.isClient) {
 	        Meteor.logout();
 	        Router.go('home');
 	    },
-		
+
 		'click .hide-elements' : function(event){
 	    	var x = document.getElementById("navDemo");
 		    if (x.className.indexOf("w3-show") == -1) {
@@ -26,26 +26,21 @@ if (Meteor.isClient) {
 		    }
 	    },
 
-		'change #location': function(evt) {
-			var location = $(evt.target).val();
-		},
-		'change #when': function(evt, t) {
+		'change #when, change #when2': function(evt, t) {
 			var when = $(evt.target).val();
 			Session.set("setDate", when);
 			t.find('#arrival_hour').value = "";
 			t.find('#leaving_hour').value = "";
+
+			t.find('#arrival_hour2').value = "";
+			t.find('#leaving_hour2').value = "";
 		},
-		'change #people': function(evt) {
-			var people = $(evt.target).val();
-			// Session.set("persons", people);
-		},
-		'change #arrival_hour': function(evt, t) {
+
+		'change #arrival_hour, change #arrival_hour2': function(evt, t) {
 			var arrival_hour = $(evt.target).val();
 			Session.set("setHour", arrival_hour);
 			t.find('#leaving_hour').value = "";
-		},
-		'change #leaving_hour': function(evt) {
-			var leaving_hour = $(evt.target).val();
+			t.find('#leaving_hour2').value = "";
 		},
 
 		'submit #search-form' : function (e,t)
@@ -62,11 +57,24 @@ if (Meteor.isClient) {
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
 
-			if (location !== "" && undefined != location) {
-				Router.go('search', {}, {query: 'location='+location});
-			} else {
-				Router.go('search');
-			}
+			Router.go('search');
+		},
+
+		'submit #search-form2' : function (e,t)
+		{
+			e.preventDefault();
+			var location = t.find('#location2').value;
+			var when = t.find('#when2').value;
+			var people = t.find('#people2').value;
+			var arrival_hour = t.find('#arrival_hour2').value;
+			var leaving_hour = t.find('#leaving_hour2').value;
+			Session.set("searchLocation", location);
+			Session.set("reservationDate", when);
+			Session.set("persons", people);
+			Session.set("reservationTime", arrival_hour);
+			Session.set("timeOfLeave", leaving_hour);
+
+			Router.go('search');
 		},
 
 		'click #restaurant-details': function(){
@@ -287,9 +295,13 @@ if (Meteor.isClient) {
 			var restId = this._id;
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
-			var image_id = image_addr.split("/")[4];
-	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
-	    	return image;
+			if (image_addr !== undefined) {
+				var image_id = image_addr.split("/")[4];
+		    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+		    	return image;
+			} else {
+				return "";
+			}
 	  	},
 	});
 }

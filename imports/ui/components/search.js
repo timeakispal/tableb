@@ -85,6 +85,17 @@ if (Meteor.isClient) {
         }
     });
 
+	Template.search.onRendered(function() {
+		Session.set("showLocationSelect", 1);
+
+		Session.set("Type-restaurant", 1);
+		Session.set("Type-bar", 1);
+		Session.set("Type-bistro", 1);
+		Session.set("Type-pub", 1);
+		Session.set("Type-cafeteria", 1);
+		Session.set("Type-coffeehouse", 1);
+	});
+
 	Template.search.events({
 		'click .demo1' : function(event){
 	    	var id = $(event.target).data('id');
@@ -96,36 +107,31 @@ if (Meteor.isClient) {
 		    }
 	    },
 
-		'change #location': function(evt) {
+		'change #location2': function(evt) {
 			var location = $(evt.target).val();
 		},
-		'change #when': function(evt, t) {
+		'change #when2': function(evt, t) {
 			var when = $(evt.target).val();
 			Session.set("setDate", when);
-			t.find('#arrival_hour').value = "";
-			t.find('#leaving_hour').value = "";
-		},
-		'change #people': function(evt) {
-			var people = $(evt.target).val();
-			// Session.set("persons", people);
-		},
-		'change #arrival_hour': function(evt, t) {
-			var arrival_hour = $(evt.target).val();
-			Session.set("setHour", arrival_hour);
-			t.find('#leaving_hour').value = "";
-		},
-		'change #leaving_hour': function(evt) {
-			var leaving_hour = $(evt.target).val();
+			t.find('#arrival_hour2').value = "";
+			t.find('#leaving_hour2').value = "";
 		},
 
-		'submit #search-form' : function (e,t)
+		'change #arrival_hour2': function(evt, t) {
+			var arrival_hour = $(evt.target).val();
+			Session.set("setHour", arrival_hour);
+			t.find('#leaving_hour2').value = "";
+		},
+
+		'submit #search-form2' : function (e,t)
 		{
+			console.log("submit");
 			e.preventDefault();
-			var location = t.find('#location').value;
-			var when = t.find('#when').value;
-			var people = t.find('#people').value;
-			var arrival_hour = t.find('#arrival_hour').value;
-			var leaving_hour = t.find('#leaving_hour').value;
+			var location = t.find('#location2').value;
+			var when = t.find('#when2').value;
+			var people = t.find('#people2').value;
+			var arrival_hour = t.find('#arrival_hour2').value;
+			var leaving_hour = t.find('#leaving_hour2').value;
 			Session.set("searchLocation", location);
 			Session.set("reservationDate", when);
 			Session.set("persons", people);
@@ -163,6 +169,7 @@ if (Meteor.isClient) {
 			Session.set("resRestaurant", restId);
 		    Modal.show('reservationModal');
 		},
+		//sort-by
 		'change #name-asc': function(evt, t) {
 			var x = evt.target.checked;
 			Session.set('Name-asc', x);
@@ -208,9 +215,65 @@ if (Meteor.isClient) {
 			Session.set('Name-asc', false);
 
 		},
+		// types
+		'change #restaurant': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-restaurant', x);
+		},
+		'change #bar': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-bar', x);
+		},
+		'change #bistro': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-bistro', x);
+		},
+		'change #pub': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-pub', x);
+		},
+		'change #cafeteria': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-cafeteria', x);
+		},
+		'change #coffeehouse': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Type-coffeehouse', x);
+		},
+
 		'change #map-view': function(evt, t) {
 			var x = evt.target.checked;
 			Session.set('Mapview', x);
+		},
+
+		'click .check-all': function(e, t) {
+			t.find('#restaurant').checked = true;
+			Session.set('Type-restaurant', true);
+			t.find('#bar').checked = true;
+			Session.set('Type-bar', true);
+			t.find('#bistro').checked = true;
+			Session.set('Type-bistro', true);
+			t.find('#pub').checked = true;
+			Session.set('Type-pub', true);
+			t.find('#cafeteria').checked = true;
+			Session.set('Type-cafeteria', true);
+			t.find('#coffeehouse').checked = true;
+			Session.set('Type-coffeehouse', true);
+		},
+
+		'click .uncheck-all': function(e, t) {
+			t.find('#restaurant').checked = false;
+			Session.set('Type-restaurant', false);
+			t.find('#bar').checked = false;
+			Session.set('Type-bar', false);
+			t.find('#bistro').checked = false;
+			Session.set('Type-bistro', false);
+			t.find('#pub').checked = false;
+			Session.set('Type-pub', false);
+			t.find('#cafeteria').checked = false;
+			Session.set('Type-cafeteria', false);
+			t.find('#coffeehouse').checked = false;
+			Session.set('Type-coffeehouse', false);
 		},
 	});
 
@@ -372,7 +435,6 @@ if (Meteor.isClient) {
 			return list;
 		},
 
-
 		'MapView': function() {
 			return Session.get("Mapview");
 		},
@@ -385,25 +447,44 @@ if (Meteor.isClient) {
 			var ratings_desc = Session.get("Ratings-desc");
 			var expensiveness = Session.get("Expensiveness");
 
+			var type_restaurant = Session.get("Type-restaurant");
+			var type_bar = Session.get("Type-bar");
+			var type_bistro = Session.get("Type-bistro");
+			var type_pub = Session.get("Type-pub");
+			var type_cafeteria = Session.get("Type-cafeteria");
+			var type_coffeehouse = Session.get("Type-coffeehouse");
+
+			query1 = "restaurant";
+			query2 = "bar";
+			query3 = "bistro";
+			query4 = "pub";
+			query5 = "cafeteria";
+			query6 = "coffeehouse";
+			if (!type_restaurant) { query1 = ""; }
+			if (!type_bar) { query2 = ""; }
+			if (!type_bistro) { query3 = ""; }
+			if (!type_pub) { query4 = ""; }
+			if (!type_cafeteria) { query5 = ""; }
+			if (!type_coffeehouse) { query6 = ""; }
+
 			if (location_str == "" || undefined == location_str) {
-				if (name_asc) { return Restaurants.find({}, {sort: {name: 1}});}
-				if (name_desc) { return Restaurants.find({}, {sort: {name: -1}});}
-				if (ratings_desc) {
-					return Restaurants.find({}, {sort: {stars_total: -1}});
-				}
-				if (expensiveness) { return Restaurants.find({}, {sort: {expensive: 1}});}
-				return Restaurants.find();
+				if (name_asc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: 1}}); }
+				if (name_desc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: -1}}); }
+				if (ratings_desc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {stars_total: -1}}); }
+				if (expensiveness) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {expensive: 1}}); }
+
+				return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }});
 			} else {
-				if (name_asc) { return Restaurants.find({location: location_str}, {sort: {name: 1}});}
-				if (name_desc) { return Restaurants.find({location: location_str}, {sort: {name: -1}});}
-				if (ratings_desc) { return Restaurants.find({}, {sort: {stars_total: -1}});}
-				if (expensiveness) { return Restaurants.find({location: location_str}, {sort: {expensive: 1}});}
-				return Restaurants.find({location: location_str});
+				if (name_asc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: 1}});}
+				if (name_desc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: -1}});}
+				if (ratings_desc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {stars_total: -1}});}
+				if (expensiveness) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {expensive: 1}});}
+				return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }});
 			}
 		},
 		'searchLocation': function() {
 			var location = Session.get("searchLocation");
-			if (location !== "" && undefined != location) {
+			if (location !== "" && undefined !== location) {
 				return " for " + location;
 			} else {
 				return "";
@@ -452,9 +533,13 @@ if (Meteor.isClient) {
 			var restId = this._id;
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
-			var image_id = image_addr.split("/")[4];
-	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
-	    	return image;
+			if (image_addr !== undefined) {
+				var image_id = image_addr.split("/")[4];
+		    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
+		    	return image;
+			} else {
+				return "";
+			}
 	  	},
 
 		'Tables' : function() {

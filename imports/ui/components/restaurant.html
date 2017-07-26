@@ -14,62 +14,44 @@
     </div>
     </div>
 </div>
+
+<form class="w3-hide-medium w3-hide-large search-small w3-border-bottom w3-border-light-grey" id="search-form2">
+    <div class="w3-row">
+        <div class="col-sm-2 padding-8">
+            <select required class="form-control" style="border-radius:0px;" name="people2" id="people2">
+                <option disabled="disabled" selected="selected" value="">How many people</option>
+                {{#each persons}}
+                    <option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <input required class="form-control" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when2" id="when2" value="{{selectedDate}}">
+        </div>
+        <div class="col-sm-2 padding-8">
+            <select class="form-control" style="border-radius:0px;" name="arrival_hour2" id="arrival_hour2">
+                <option disabled="disabled" selected="selected" value="">Arrival</option>
+                {{#each arrival_hours}}
+                    <option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <select class="form-control" style="border-radius: 0px;" name="leaving_hour2" id="leaving_hour2">
+                <option disabled="disabled" selected="selected" value="">Leave</option>
+                <option value="">Don't know</option>
+                {{#each leaving_hours}}
+                    <option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="col-sm-2 padding-8">
+            <button type="submit" class="search-btn w3-button w3-block w3-blue w3-text-white"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</form>
+
 <div class="container w3-padding-32">
-	<!-- <div class="row w3-margin-bottom">
-		<form class="form-horizontal" id="search-form">
-			<div class="col-sm-9">
-				<div class="row">
-					<div class="col-sm-3">
-						<div class="form-group">
-							<div class="col-sm-12">
-								<select required class="w3-input w3-border" name="people" id="people">
-									<option disabled="disabled" selected="selected" value="">How many people</option>
-									{{#each persons}}
-										<option {{selectedClassPeople}} value="{{value}}">{{string}}</option>
-									{{/each}}
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="form-group">
-							<div class="col-sm-12">
-								<input required class="w3-input w3-border" type="date" min="{{currentDate}}" max="{{maximumDate}}" name="when" id="when" value="{{selectedDate}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="form-group">
-							<div class="col-sm-12">
-								<select class="w3-input w3-border" name="arrival_hour" id="arrival_hour">
-									<option disabled="disabled" selected="selected" value="">Arrival</option>
-									{{#each arrival_hours}}
-										<option {{selectedClassArrival}} value="{{this}}">{{this}}</option>
-									{{/each}}
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="form-group">
-							<div class="col-sm-12">
-								<select class="w3-input w3-border" name="leaving_hour" id="leaving_hour">
-									<option disabled="disabled" selected="selected" value="">Leave</option>
-									<option value="">Don't know</option>
-									{{#each leaving_hours}}
-										<option {{selectedClassLeave}} value="{{this}}">{{this}}</option>
-									{{/each}}
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-2">
-				<input type="submit" class="w3-button w3-block color-base6 w3-text-white w3-margin-bottom" value="SEARCH">
-			</div>
-		</form>
-	</div> -->
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="thumbnail">
@@ -153,10 +135,6 @@
 				<hr>
 				<div class="row">
 					<div class="col-md-12">
-						<!-- <span class="glyphicon glyphicon-star"></span>
-						<span class="glyphicon glyphicon-star"></span>
-						<span class="glyphicon glyphicon-star"></span>
-						<span class="glyphicon glyphicon-star"></span> -->
 						{{#each this.stars}}
 							{{#if this}}
 								<span class="glyphicon glyphicon-star"></span>
@@ -180,11 +158,16 @@
 					<h4><b>Phone number: </b></h4><h5>{{phone_nb}}</h5>
 					<h4><b>E-mail address: </b></h4><h5>{{email}}</h5>
 					<h4><b>Expensive:</b></h4><h5>{{expensive}}</h5>
-					<h4><b>Pet-friendly:</b></h4><h5>yes/no</h5>
+					<h4><b>Pet-friendly:</b></h4><h5>
+                        {{#if pet_firendly}}
+                            yes
+                        {{else}}
+                            no
+                        {{/if}}</h5>
 					<br><br>
 					<a class="btn btn-lg btn-info btn-block">Contact</a>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
