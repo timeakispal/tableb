@@ -63,14 +63,28 @@
 <!-- ==========filters========== -->
 <div class="row filters w3-margin-bottom">
     <div class="container smaller-fonts">
-        <div class="col-xs-3 col-sm-2 col-md-1 demo1">
+        <div class="col-xs-2 col-sm-2 col-md-1 demo1">
             <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo1'>Types <i class="fa fa-angle-down" aria-hidden="true"></i></button>
         </div>
         <div class="col-xs-3 col-sm-2 col-md-1 demo1">
             <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo2'>Facilities <i class="fa fa-angle-down" aria-hidden="true"></i></button>
         </div>
-        <div class="col-xs-3 col-sm-2 col-md-1 demo1">
+        <div class="col-xs-2 col-sm-2 col-md-1 demo1">
             <button class="w3-button color-base7 w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-left-align" style="padding-left: 0px" data-id='Demo3'>Sort by <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-xs-3 col-sm-2 col-md-1 padding-8 w3-right">
+            <div class="map-view">
+                {{#if MapView}}
+                    <input type="checkbox" checked id="map-view"/>
+                {{else}}
+                    <input type="checkbox" id="map-view"/>
+                {{/if}}
+                <label for="map-view"></label>
+                <div></div>
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-1 w3-right" style="padding-right: 0px; text-align: right; vertical-align:middle;">
+            <p class="padding-8" style="margin-bottom: 0px">Map view</p>
         </div>
     </div>
 
@@ -96,32 +110,39 @@
                     <input type="checkbox" checked name="coffeehouse" id="coffeehouse" class="css-checkbox" /><label for="coffeehouse" class="css-label">Coffeehouse</label>
                 </div>
             </div>
-            <!-- links -->
+            <!-- Links -->
             <div class="w3-row" style="padding-top: 20px;">
-                <a class="w3-hover-none w3-hover-text-blue check-all" style="padding-left: 15px; cursor: pointer"><i class="fa fa-check"></i> Check all</a>
-                <a class="w3-hover-none w3-hover-text-blue uncheck-all" style="padding-left: 15px; cursor: pointer"><i class="fa fa-times"></i> Uncheck all</a>
+                <a class="w3-hover-none w3-hover-text-blue check-all-types" style="padding-left: 15px; cursor: pointer"><i class="fa fa-check"></i> Check all</a>
+                <a class="w3-hover-none w3-hover-text-blue uncheck-all-types" style="padding-left: 15px; cursor: pointer"><i class="fa fa-times"></i> Uncheck all</a>
             </div>
         </div>
     </div>
     <div id="Demo2" class="w3-hide w3-row w3-border-top w3-border-light-grey smaller-fonts">
         <div class="container" style="padding-top: 20px; padding-bottom: 15px;">
-            <div class="col-sm-2">
-                <input type="checkbox" name="wifi" id="wifi" class="css-checkbox" /><label for="wifi" class="css-label">Wifi  <span class="fa fa-wifi"></span></label>
+            <div class="w3-row">
+                <div class="col-sm-2">
+                    <input type="checkbox" name="wifi" id="wifi" class="css-checkbox" /><label for="wifi" class="css-label">Wifi  <span class="fa fa-wifi"></span></label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" name="food" id="food" class="css-checkbox" /><label for="food" class="css-label">Food  <span class="fa fa-cutlery"></span></label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" name="terrace" id="terrace" class="css-checkbox" /><label for="terrace" class="css-label">Terrace  <span class="fa fa-tree"></span></label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" name="pet-friendly" id="pet-friendly" class="css-checkbox" /><label for="pet-friendly" class="css-label">Pet-friendly  <span class="fa fa-paw"></span></label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" name="creditcard_accepted" id="creditcard_accepted" class="css-checkbox" /><label for="creditcard_accepted" class="css-label">Credit card accepted <span class="fa fa-credit-card"></span></label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" name="parking" id="parking" class="css-checkbox" /><label for="parking" class="css-label">Parking <span class="mdi mdi-parking"></span></label>
+                </div>
             </div>
-            <div class="col-sm-2">
-                <input type="checkbox" name="food" id="food" class="css-checkbox" /><label for="food" class="css-label">Food  <span class="fa fa-cutlery"></span></label>
-            </div>
-            <div class="col-sm-2">
-                <input type="checkbox" name="terrace" id="terrace" class="css-checkbox" /><label for="terrace" class="css-label">Terrace  <span class="fa fa-tree"></span></label>
-            </div>
-            <div class="col-sm-2">
-                <input type="checkbox" name="pet-friendly" id="pet-friendly" class="css-checkbox" /><label for="pet-friendly" class="css-label">Pet-friendly  <span class="fa fa-paw"></span></label>
-            </div>
-            <div class="col-sm-2">
-                <input type="checkbox" name="creditcard_accepted" id="creditcard_accepted" class="css-checkbox" /><label for="creditcard_accepted" class="css-label">Credit card accepted <span class="fa fa-credit-card"></span></label>
-            </div>
-            <div class="col-sm-2">
-                <input type="checkbox" name="parking" id="parking" class="css-checkbox" /><label for="parking" class="css-label">Parking <span class="mdi mdi-parking"></span></label>
+            <!-- Links -->
+            <div class="w3-row" style="padding-top: 20px;">
+                <a class="w3-hover-none w3-hover-text-blue check-all" style="padding-left: 15px; cursor: pointer"><i class="fa fa-check"></i> Check all</a>
+                <a class="w3-hover-none w3-hover-text-blue uncheck-all" style="padding-left: 15px; cursor: pointer"><i class="fa fa-times"></i> Uncheck all</a>
             </div>
         </div>
     </div>
@@ -144,12 +165,14 @@
 </div>
 <!-- =========== -->
 {{#if MapView}}
-    <div class="container">
+    <!-- <div class="container"> -->
     {{> map}}
-    </div>
-{{else}}
+{{/if}}
+    <!-- </div> -->
+<!-- {{else}} -->
     <div class="container">
     {{#each Restaurants}}
+    <!-- {{#if Tables}} -->
     <div class="col-sm-4 col-lg-4 col-md-4">
     	<div class="thumbnail">
     		{{#if avatar}}
@@ -225,19 +248,23 @@
     		</div>
     	</div>
     </div>
+    <!-- {{/if}} -->
     {{/each}}
     </div>
-{{/if}}
+<!-- {{/if}} -->
 </template>
 
 <template name="map">
-	<div class="row">
-        <div class="col-sm-7">
-		    <div class="map">
-		        {{> googleMap name="map" options=mapOptions}}
-		    </div>
-    	</div>
-		<div class="col-sm-5">
+    <div style="height:70%;">
+        {{> googleMap name="map" options=mapOptions}}
+    </div>
+	<!-- <div class="row"> -->
+        <!-- <div style="width: 100%; height: 100%"> -->
+		    <!-- <div class="map"> -->
+		        <!-- {{> googleMap name="map" options=mapOptions}} -->
+		    <!-- </div> -->
+    	<!-- </div> -->
+		<!-- <div class="col-sm-5">
 		    {{#each places}}
 				<div class="thumbnail">
 					<div class="caption">
@@ -250,7 +277,7 @@
 							</div>
 							{{/each}}
 						</div>
-			            <!-- The Modal -->
+
 			            {{> reservationModal}}
 						<h4 class="pull-right">{{expensive}}</h4>
 						<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
@@ -277,6 +304,6 @@
 					</div>
 				</div>
 			{{/each}}
-		</div>
-    </div>
+		</div> -->
+    <!-- </div> -->
 </template>

@@ -27,16 +27,19 @@ Meteor.publish('transactions', function() {
   return myTransactions.find();
 });
 
-Meteor.publish('places', function(box) {
-  var find = {
-      location: {
-          $geoWithin: {
-              $box: box
-          }
-      }
-  };
-
-  return Restaurants.find(find);
+// Meteor.publish('places', function(box) {
+//   var find = {
+//       location: {
+//           $geoWithin: {
+//               $box: box
+//           }
+//       }
+//   };
+//
+//   return Restaurants.find(find);
+// });
+Meteor.publish('markers', function() {
+  return Markers.find();
 });
 
 Meteor.publish("images", function(){ return Images.find(); });
@@ -56,7 +59,7 @@ Meteor.setInterval(function() {
     }
 }, 43200000);
 
-Meteor.startup(function () {  
+Meteor.startup(function () {
     Tables._ensureIndex({ "restaurant_id": 1});
     Tables._ensureIndex({ "number": 1});
     Tables._ensureIndex({ "seats": 1});
@@ -118,7 +121,7 @@ Meteor.methods({
         var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
 		var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
 		var table = Tables.findOne({_id: tableid});
-		
+
         myTransactions.insert(
             { 'table_id': tableid, 'restaurant_id': table.restaurant_id, 'res_date': date, 'arrival_time': arrival_hour, 'persons': persons, 'email': email, 'state': "initial", 'lastModified': new Date() }
         );
@@ -259,6 +262,10 @@ Meteor.methods({
             Restaurants.update({ '_id': rest_id },{ $set: imagesURL});
         }
     },
+
+    'insertMarker' : function(hash) {
+        Markers.insert(hash);
+    }
 
 });
 

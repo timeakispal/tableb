@@ -1,94 +1,157 @@
 import './search.html';
+// Markers = new Mongo.Collection('markers');
 
 if (Meteor.isClient) {
-	var markers = [];
+	// var markers = [];
+	// var marker_pins = {};
+	//
+	// Meteor.startup(function() {
+    //     GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
+    // });
+	//
+    // Template.map.onRendered(function() {
+    //     var self = this;
+    //     var lookup = [];
+	// 	var markers_ = [];
+	//
+    //     GoogleMaps.ready('map', function(map) {
+    //         self.autorun(function() {
+    //             getBox();
+    //             var handle = Meteor.subscribe('places', Session.get('box'));
+	//
+    //             if (handle.ready()) {
+    //                 var places = matchingRestaurants();
+    //                 var infowindow = null;
+    //                 var i = 0;
+    //                 _.each(places, function(place) {
+	// 					var id = place._id;
+    //                     var lat = place.coordinates[0];
+    //                     var lng = place.coordinates[1];
+    //                     var contentString = '<div id="content">'+
+	// 						'<h3>'+ place.name +'</h3>'+
+	// 						'<div id="bodyContent">'+
+	// 						'<p>Short about text</p>'+
+	// 						'<a id="rest-details" class="btn btn-default" name="'+i+'">Reserve >></a>'+
+	// 						'</div>'+
+	// 						'</div>';
+	// 					i++;
+    //                     if (!_.contains(lookup, lat+','+lng)) {
+    //                         var marker = new google.maps.Marker({
+    //                             position: new google.maps.LatLng(lat, lng),
+    //                             map: GoogleMaps.maps.map.instance,
+    //                             title: place.name,
+    //                             id: 1234
+    //                         });
+    //                         marker.addListener('mouseover', function() {
+    //                         	if (infowindow) {
+	// 						        infowindow.close();
+	// 						    }
+	// 						    infowindow = new google.maps.InfoWindow({
+	// 								content: contentString
+	// 							});
+	// 						    infowindow.open(map, marker);
+	// 						});
+	// 						marker_pins[i] = marker;
+	// 						markers_.push(place);
+    //                         lookup.push(lat+','+lng);
+    //                     }
+    //                 });
+	//
+    //                 markers = markers_;
+    //             }
+    //         });
+	//
+    //         google.maps.event.addListener(map.instance, 'dragend', function(e){
+    //             getBox();
+    //         });
+	//
+    //         google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
+    //             getBox();
+    //         });
+    //     });
+    // });
+	//
+	//
+    // Template.map.helpers({
+    //     mapOptions: function() {
+    //         // Initialize the map
+    //         if (GoogleMaps.loaded()) {
+    //             return {
+    //                 // Amsterdam city center coordinates
+    //                 // 46.7834818,23.5464724
+    //                 center: new google.maps.LatLng(46.7644904,23.5855855),
+    //                 zoom: 12
+    //             };
+    //         }
+    //     },
+    //     places: function() {
+    //         return matchingRestaurants();
+    //     }
+    // });
 
-	Meteor.startup(function() {
-        GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
-    });
+	// Meteor.startup(function() {
+	//   GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
+	// });
 
-    Template.map.onRendered(function() {
-        var self = this;
-        var lookup = [];
-		var markers_ = [];
+	Template.map.onCreated(function() {
+		GoogleMaps.ready('map', function(map) {
+		  google.maps.event.addListener(map.instance, 'click', function(event) {
+		    // Markers.insert({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+			Meteor.call('insertMarker', { lat: event.latLng.lat(), lng: event.latLng.lng() });
+		  });
 
-        GoogleMaps.ready('map', function(map) {
-            self.autorun(function() {
-                getBox();
-                var handle = Meteor.subscribe('places', Session.get('box'));
+		  var markers = {};
 
-                if (handle.ready()) {
-                    var places = Restaurants.find().fetch();
-                    var infowindow = null;
-                    var i = 0;
-                    _.each(places, function(place) {
-                        var lat = place.location.coordinates[0];
-                        var lng = place.location.coordinates[1];
-                        var contentString = '<div id="content">'+
-							'<h3>'+ place.name +'</h3>'+
-							'<div id="bodyContent">'+
-							'<p>Short about text</p>'+
-							'<a id="rest-details" class="btn btn-default" name="'+i+'">Reserve >></a>'+
-							'</div>'+
-							'</div>';
-						i++;
-                        if (!_.contains(lookup, lat+','+lng)) {
-                            var marker = new google.maps.Marker({
-                                position: new google.maps.LatLng(lat, lng),
-                                map: GoogleMaps.maps.map.instance,
-                                title: place.name,
-                                id: 1234
-                            });
-                            marker.addListener('mouseover', function() {
-                            	if (infowindow) {
-							        infowindow.close();
-							    }
-							    infowindow = new google.maps.InfoWindow({
-							content: contentString
-						});
-							    infowindow.open(map, marker);
-							});
-							markers_.push(place);
-                            lookup.push(lat+','+lng);
-                        }
-                    });
+		  console.log(Markers.find().fetch());
+		  Markers.find().observe({
+		    added: function (document) {
+		      var marker = new google.maps.Marker({
+		        draggable: true,
+		        animation: google.maps.Animation.DROP,
+		        position: new google.maps.LatLng(document.lat, document.lng),
+		        map: map.instance,
+		        id: document._id
+		      });
 
-                    markers = markers_;
-                }
-            });
+		      google.maps.event.addListener(marker, 'dragend', function(event) {
+		        Markers.update(marker.id, { $set: { lat: event.latLng.lat(), lng: event.latLng.lng() }});
+		      });
 
-            google.maps.event.addListener(map.instance, 'dragend', function(e){
-                getBox();
-            });
+		      markers[document._id] = marker;
+		    },
+		    changed: function (newDocument, oldDocument) {
+		      markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng });
+		    },
+		    removed: function (oldDocument) {
+		      markers[oldDocument._id].setMap(null);
+		      google.maps.event.clearInstanceListeners(markers[oldDocument._id]);
+		      delete markers[oldDocument._id];
+		    }
+		  });
+		});
+		});
 
-            google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
-                getBox();
-            });
-        });
-    });
+		Meteor.startup(function() {
+		GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
+		});
+
+		Template.map.helpers({
+		mapOptions: function() {
+		  if (GoogleMaps.loaded()) {
+		    return {
+		      center: new google.maps.LatLng(-37.8136, 144.9631),
+		      zoom: 8
+		    };
+		  }
+		}
+		});
 
 
-    Template.map.helpers({
-        mapOptions: function() {
-            // Initialize the map
-            if (GoogleMaps.loaded()) {
-                return {
-                    // Amsterdam city center coordinates
-                    // 46.7834818,23.5464724
-                    center: new google.maps.LatLng(46.7644904,23.5855855),
-                    zoom: 12
-                };
-            }
-        },
-        places: function() {
-            return Restaurants.find();
-        }
-    });
 
 	Template.search.onRendered(function() {
 		Session.set("showLocationSelect", 1);
 
-		Session.set("Type-restaurant", 1);
+		Session.set("Type-restaurant", 0);
 		Session.set("Type-bar", 1);
 		Session.set("Type-bistro", 1);
 		Session.set("Type-pub", 1);
@@ -125,7 +188,6 @@ if (Meteor.isClient) {
 
 		'submit #search-form2' : function (e,t)
 		{
-			console.log("submit");
 			e.preventDefault();
 			var location = t.find('#location2').value;
 			var when = t.find('#when2').value;
@@ -246,7 +308,7 @@ if (Meteor.isClient) {
 			Session.set('Mapview', x);
 		},
 
-		'click .check-all': function(e, t) {
+		'click .check-all-types': function(e, t) {
 			t.find('#restaurant').checked = true;
 			Session.set('Type-restaurant', true);
 			t.find('#bar').checked = true;
@@ -261,7 +323,7 @@ if (Meteor.isClient) {
 			Session.set('Type-coffeehouse', true);
 		},
 
-		'click .uncheck-all': function(e, t) {
+		'click .uncheck-all-types': function(e, t) {
 			t.find('#restaurant').checked = false;
 			Session.set('Type-restaurant', false);
 			t.find('#bar').checked = false;
@@ -275,6 +337,63 @@ if (Meteor.isClient) {
 			t.find('#coffeehouse').checked = false;
 			Session.set('Type-coffeehouse', false);
 		},
+
+		// facilities
+		'click .check-all': function(e, t) {
+			t.find('#wifi').checked = true;
+			Session.set('Wifi', true);
+			t.find('#food').checked = true;
+			Session.set('Food', true);
+			t.find('#terrace').checked = true;
+			Session.set('Terrace', true);
+			t.find('#pet-friendly').checked = true;
+			Session.set('Pets', true);
+			t.find('#creditcard_accepted').checked = true;
+			Session.set('Card', true);
+			t.find('#parking').checked = true;
+			Session.set('Parking', true);
+		},
+
+		'click .uncheck-all': function(e, t) {
+			t.find('#wifi').checked = false;
+			Session.set('Wifi', false);
+			t.find('#food').checked = false;
+			Session.set('Food', false);
+			t.find('#terrace').checked = false;
+			Session.set('Terrace', false);
+			t.find('#pet-friendly').checked = false;
+			Session.set('Pets', false);
+			t.find('#creditcard_accepted').checked = false;
+			Session.set('Card', false);
+			t.find('#parking').checked = false;
+			Session.set('Parking', false);
+		},
+
+		'change #wifi': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Wifi', x);
+		},
+		'change #food': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Food', x);
+		},
+		'change #terrace': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Terrace', x);
+		},
+		'change #pet-friendly': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Pets', x);
+		},
+		'change #creditcard_accepted': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Card', x);
+		},
+		'change #parking': function(evt, t) {
+			var x = evt.target.checked;
+			Session.set('Parking', x);
+		},
+
 	});
 
 	Template.search.helpers({
@@ -441,46 +560,61 @@ if (Meteor.isClient) {
 
 
 		'Restaurants': function() {
-			var location_str = Session.get("searchLocation");
-			var name_asc = Session.get("Name-asc");
-			var name_desc = Session.get("Name-desc");
-			var ratings_desc = Session.get("Ratings-desc");
-			var expensiveness = Session.get("Expensiveness");
+			// var location_str = Session.get("searchLocation");
+			// var name_asc = Session.get("Name-asc");
+			// var name_desc = Session.get("Name-desc");
+			// var ratings_desc = Session.get("Ratings-desc");
+			// var expensiveness = Session.get("Expensiveness");
+			//
+			// var wifi = Session.get("Wifi");
+			// var food = Session.get("Food");
+			// var terrace = Session.get("Terrace");
+			// var pets = Session.get("Pets");
+			// var card = Session.get("Card");
+			// var parking = Session.get("Parking");
+			//
+			// // {food: 1, terrace: 1}
+			// var conditions = {};
+			// if (wifi) {conditions["wifi"] = 1;}
+			// if (food) {conditions["food"] = 1;}
+			// if (terrace) {conditions["terrace"] = 1;}
+			// if (pets) {conditions["pet_friendly"] = 1;}
+			// if (card) {conditions["creditcard_accepted"] = 1;}
+			// if (parking) {conditions["parking"] = 1;}
+			//
+			// var type_restaurant = Session.get("Type-restaurant");
+			// var type_bar = Session.get("Type-bar");
+			// var type_bistro = Session.get("Type-bistro");
+			// var type_pub = Session.get("Type-pub");
+			// var type_cafeteria = Session.get("Type-cafeteria");
+			// var type_coffeehouse = Session.get("Type-coffeehouse");
+			//
+			// // "type" : ["pub", "restaurant"]
+			// var types = {};
+			// types["$in"] = [];
+			// if (type_restaurant) { types["$in"].push("restaurant"); }
+			// if (type_bar) { types["$in"].push("bar"); }
+			// if (type_bistro) { types["$in"].push("bistro"); }
+			// if (type_pub) { types["$in"].push("pub"); }
+			// if (type_cafeteria) { types["$in"].push("cafeteria"); }
+			// if (type_coffeehouse) { types["$in"].push("coffeehouse"); }
+			//
+			// conditions["type"] = types;
+			//
+			// // {food: 1, terrace: 1, type: {$in: ["pub"]}}
+			// if (location_str !== "" && undefined !== location_str) {
+			// 	conditions["location"] = location_str;
+			// }
+			//
+			// if (name_asc) { return Restaurants.find(conditions, {sort: {name: 1}}); }
+			// if (name_desc) { return Restaurants.find(conditions, {sort: {name: -1}}); }
+			// if (ratings_desc) { return Restaurants.find(conditions, {sort: {stars_total: -1}}); }
+			// if (expensiveness) { return Restaurants.find(conditions, {sort: {expensive: 1}}); }
+			//
+			// return Restaurants.find(conditions);
 
-			var type_restaurant = Session.get("Type-restaurant");
-			var type_bar = Session.get("Type-bar");
-			var type_bistro = Session.get("Type-bistro");
-			var type_pub = Session.get("Type-pub");
-			var type_cafeteria = Session.get("Type-cafeteria");
-			var type_coffeehouse = Session.get("Type-coffeehouse");
+			return matchingRestaurants();
 
-			query1 = "restaurant";
-			query2 = "bar";
-			query3 = "bistro";
-			query4 = "pub";
-			query5 = "cafeteria";
-			query6 = "coffeehouse";
-			if (!type_restaurant) { query1 = ""; }
-			if (!type_bar) { query2 = ""; }
-			if (!type_bistro) { query3 = ""; }
-			if (!type_pub) { query4 = ""; }
-			if (!type_cafeteria) { query5 = ""; }
-			if (!type_coffeehouse) { query6 = ""; }
-
-			if (location_str == "" || undefined == location_str) {
-				if (name_asc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: 1}}); }
-				if (name_desc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: -1}}); }
-				if (ratings_desc) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {stars_total: -1}}); }
-				if (expensiveness) { return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {expensive: 1}}); }
-
-				return Restaurants.find({type : { $in : [query1, query2, query3, query4, query5, query6] }});
-			} else {
-				if (name_asc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: 1}});}
-				if (name_desc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {name: -1}});}
-				if (ratings_desc) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {stars_total: -1}});}
-				if (expensiveness) { return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }}, {sort: {expensive: 1}});}
-				return Restaurants.find({location: location_str, type : { $in : [query1, query2, query3, query4, query5, query6] }});
-			}
 		},
 		'searchLocation': function() {
 			var location = Session.get("searchLocation");
@@ -625,6 +759,68 @@ if (Meteor.isClient) {
         var sw = bounds.getSouthWest();
         Session.set('box', [[sw.lat(),sw.lng()], [ne.lat(),ne.lng()]]);
     }
+
+	// function clearOverlays() {
+	// 	for (var i = 0; i < markers.length; i++ ) {
+	// 		markers[i].setMap(null);
+	// 	}
+	// 	markers.length = 0;
+	// }
+
+	function matchingRestaurants() {
+		var location_str = Session.get("searchLocation");
+		var name_asc = Session.get("Name-asc");
+		var name_desc = Session.get("Name-desc");
+		var ratings_desc = Session.get("Ratings-desc");
+		var expensiveness = Session.get("Expensiveness");
+
+		var wifi = Session.get("Wifi");
+		var food = Session.get("Food");
+		var terrace = Session.get("Terrace");
+		var pets = Session.get("Pets");
+		var card = Session.get("Card");
+		var parking = Session.get("Parking");
+
+		// {food: 1, terrace: 1}
+		var conditions = {};
+		if (wifi) {conditions["wifi"] = 1;}
+		if (food) {conditions["food"] = 1;}
+		if (terrace) {conditions["terrace"] = 1;}
+		if (pets) {conditions["pet_friendly"] = 1;}
+		if (card) {conditions["creditcard_accepted"] = 1;}
+		if (parking) {conditions["parking"] = 1;}
+
+		var type_restaurant = Session.get("Type-restaurant");
+		var type_bar = Session.get("Type-bar");
+		var type_bistro = Session.get("Type-bistro");
+		var type_pub = Session.get("Type-pub");
+		var type_cafeteria = Session.get("Type-cafeteria");
+		var type_coffeehouse = Session.get("Type-coffeehouse");
+
+		// "type" : ["pub", "restaurant"]
+		var types = {};
+		types["$in"] = [];
+		if (type_restaurant) { types["$in"].push("restaurant"); }
+		if (type_bar) { types["$in"].push("bar"); }
+		if (type_bistro) { types["$in"].push("bistro"); }
+		if (type_pub) { types["$in"].push("pub"); }
+		if (type_cafeteria) { types["$in"].push("cafeteria"); }
+		if (type_coffeehouse) { types["$in"].push("coffeehouse"); }
+
+		conditions["type"] = types;
+
+		// {food: 1, terrace: 1, type: {$in: ["pub"]}}
+		if (location_str !== "" && undefined !== location_str) {
+			conditions["location"] = location_str;
+		}
+
+		if (name_asc) { return Restaurants.find(conditions, {sort: {name: 1}}); }
+		if (name_desc) { return Restaurants.find(conditions, {sort: {name: -1}}); }
+		if (ratings_desc) { return Restaurants.find(conditions, {sort: {stars_total: -1}}); }
+		if (expensiveness) { return Restaurants.find(conditions, {sort: {expensive: 1}}); }
+
+		return Restaurants.find(conditions).fetch();
+	}
 
 	function allHours(restId, res_date, people, hour, min, leave_time) {
 		var list = [];

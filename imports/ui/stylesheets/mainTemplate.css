@@ -415,6 +415,16 @@ input[type="date"], focus {
 	  background-image: url("background7.jpg");
 	  height: 100%;
 	}
+
+	.bgimg-2 {
+		height: 100%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.bgimg-2 {
+		height: 50%;
+	}
 }
 
 .hidden-row {
@@ -777,7 +787,8 @@ ul.alert-dropdown {
 }
 
 .map {
+  height: : 100%;
   width: 100%;
-  max-width: 100%;
-  height: 400px;
+  /*margin: 0px;*/
+  /*height: 400px;*/
 }
