@@ -27,20 +27,45 @@ Meteor.publish('transactions', function() {
   return myTransactions.find();
 });
 
-// Meteor.publish('places', function(box) {
-//   var find = {
-//       location: {
-//           $geoWithin: {
-//               $box: box
-//           }
-//       }
-//   };
-//
-//   return Restaurants.find(find);
-// });
-Meteor.publish('markers', function() {
-  return Markers.find();
+Meteor.publish('places', function(param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12) {
+    var wifi = param1;
+    var food = param2;
+    var terrace = param3;
+    var pets = param4;
+    var card = param5;
+    var parking = param6;
+
+    // {food: 1, terrace: 1}
+    var conditions = {};
+    if (wifi) {conditions["wifi"] = 1;}
+    if (food) {conditions["food"] = 1;}
+    if (terrace) {conditions["terrace"] = 1;}
+    if (pets) {conditions["pet_friendly"] = 1;}
+    if (card) {conditions["creditcard_accepted"] = 1;}
+    if (parking) {conditions["parking"] = 1;}
+
+    var type_restaurant = param7;
+    var type_bar = param8;
+    var type_bistro = param9;
+    var type_pub = param10;
+    var type_cafeteria = param11;
+    var type_coffeehouse = param12;
+
+    // "type" : ["pub", "restaurant"]
+    var types = {};
+    types["$in"] = [];
+    if (type_restaurant) { types["$in"].push("restaurant"); }
+    if (type_bar) { types["$in"].push("bar"); }
+    if (type_bistro) { types["$in"].push("bistro"); }
+    if (type_pub) { types["$in"].push("pub"); }
+    if (type_cafeteria) { types["$in"].push("cafeteria"); }
+    if (type_coffeehouse) { types["$in"].push("coffeehouse"); }
+
+    conditions["type"] = types;
+
+    return Restaurants.find(conditions);
 });
+
 
 Meteor.publish("images", function(){ return Images.find(); });
 
@@ -262,11 +287,6 @@ Meteor.methods({
             Restaurants.update({ '_id': rest_id },{ $set: imagesURL});
         }
     },
-
-    'insertMarker' : function(hash) {
-        Markers.insert(hash);
-    }
-
 });
 
 function cancelTransaction() {

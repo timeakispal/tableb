@@ -167,12 +167,12 @@
 {{#if MapView}}
     <!-- <div class="container"> -->
     {{> map}}
-{{/if}}
+{{else}}
     <!-- </div> -->
 <!-- {{else}} -->
     <div class="container">
     {{#each Restaurants}}
-    <!-- {{#if Tables}} -->
+    {{#if Tables}}
     <div class="col-sm-4 col-lg-4 col-md-4">
     	<div class="thumbnail">
     		{{#if avatar}}
@@ -248,10 +248,10 @@
     		</div>
     	</div>
     </div>
-    <!-- {{/if}} -->
+    {{/if}}
     {{/each}}
     </div>
-<!-- {{/if}} -->
+{{/if}}
 </template>
 
 <template name="map">

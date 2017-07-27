@@ -374,7 +374,7 @@ input[type="date"], focus {
 
 .map-view input[type=checkbox]:checked ~ div
 {
-    background: #f77d64;
+    background: #2196F3;
 }
 
 .map-view input[type=checkbox]:checked ~ label {
