@@ -132,8 +132,7 @@ if (Meteor.isClient) {
 			t.find('#leaving_hour2').value = "";
 		},
 
-		'submit #search-form2' : function (e,t)
-		{
+		'submit #search-form2' : function (e,t) {
 			e.preventDefault();
 			var location = t.find('#location2').value;
 			var when = t.find('#when2').value;
@@ -541,12 +540,16 @@ if (Meteor.isClient) {
 			}
 
 			var list = [];
-			for (var i = 1; i <= result; i++) {
-				list.push(1);
-			}
-			for (var i = ++result; i <= 5; i++) {
-				list.push(0);
-			}
+			var deferred = fullStars(result, list);
+			$.when(deferred).done(function() {
+			// for (var i = 1; i <= result; i++) {
+			// 	list.push(1);
+			// }
+				for (var i = ++result; i <= 5; i++) {
+					list.push(0);
+				}
+			});
+			
 
 			return list;
 		},
@@ -649,14 +652,11 @@ if (Meteor.isClient) {
 
     function deletePins() {
     	var max = Object.keys(marker_pins).length;
-    	// console.log("lenght: " + max);
         for (var j = 0; j < max; j++) {
         	marker_pins[j].setMap(null);
   			google.maps.event.clearInstanceListeners(marker_pins[j]);
   			delete marker_pins[j];
-  			// console.log("deleted: " + j);
         }
-        // console.log(marker_pins);
     }
 
 	function matchingRestaurants() {
@@ -856,5 +856,11 @@ if (Meteor.isClient) {
 			return 1;
 
 		return 0;
+	}
+
+	function fullStars(result, list) {
+		for (var i = 1; i <= result; i++) {
+			list.push(1);
+		}
 	}
 }

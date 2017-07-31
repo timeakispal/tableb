@@ -223,13 +223,13 @@ if (Meteor.isClient) {
 			}
 
 			var list = [];
-			for (var i = 1; i <= result; i++) {
-				list.push(1);
-			}
-			for (var i = ++result; i <= 5; i++) {
-				list.push(0);
-			}
-
+			var deferred = fullStars(result, list);
+			$.when(deferred).done(function() {
+				for (var i = ++result; i <= 5; i++) {
+					list.push(0);
+				}
+			});
+			
 			return list;
 		},
 
@@ -583,5 +583,11 @@ if (Meteor.isClient) {
 			return 1;
 
 		return 0;
+	}
+
+	function fullStars(result, list) {
+		for (var i = 1; i <= result; i++) {
+			list.push(1);
+		}
 	}
 }
