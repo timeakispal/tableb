@@ -66,6 +66,13 @@ Meteor.publish('places', function(param1, param2, param3, param4, param5, param6
     return Restaurants.find(conditions);
 });
 
+Meteor.publish("freeTables", function(people, res_date, time){
+  var nbpeople = Number(people);
+  var nbpeople_max = String(nbpeople + 2);
+  nbpeople = String(nbpeople);
+  return Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]},'reservations.start_time': {$in: [time]}});
+});
+
 
 Meteor.publish("images", function(){ return Images.find(); });
 
