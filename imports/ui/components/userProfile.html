@@ -1,5 +1,5 @@
 <template name="userProfile">
-<div class="container padding-35">
+<div class="container padding-top-nav">
     <h1>Edit Profile</h1>
     <hr>
   <div class="row">
@@ -14,17 +14,17 @@
       <!-- {{/each}} -->
       {{/if}}
       <h6>Upload/Change profile picture...</h6>
-      
+
       <input type="file" name="avatar" class="myFileInput">
-    </div>    
+    </div>
       <div class="col-sm-8 personal-info">
-      {{#if showAlert}} 
+      {{#if showAlert}}
         <div id="alertMessage" class="alert {{alertType}} alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <a class="panel-close close" data-dismiss="alert">×</a>
             {{alertMessage}}
         </div>
       {{/if}}
-        
+
         <form class="form-horizontal" role="form">
           <div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>

@@ -2,19 +2,20 @@
 <div class="w3-top">
 	<div class="w3-bar w3-white">
 		<div class="w3-row" style="padding-left:10px; padding-right:5px">
-			<div class="w3-col l3 w3-right w3-hide-medium w3-hide-small">
+			<div class="w3-col l4 w3-right w3-hide-medium w3-hide-small">
 				<div class="w3-row">
 					<div class="w3-col s12">
 						<div class="w3-small">
 							<a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">Help</a>
 							<a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">About</a>
+							<a href="{{pathFor route='search'}}" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">Search</a>
 							{{#if currentUser}}
 								<div class="w3-dropdown w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right" style="max-height:35px">
 									<button class="dropbtn">{{firstName}} <i class="fa fa-user-circle w3-padding-right"></i></button>
 									<div class="w3-dropdown-content1 w3-text-blue">
 										<a href="{{pathFor route='userProfile'}}"> My account</a>
 										<a href="{{pathFor route='myReservations'}}"><i class="fa fa-map-marker"></i> My reservations</a>
-										<a href="#"><i class="fa fa-heart-o"></i> Favorites</a>
+										<!-- <a href="#"><i class="fa fa-heart-o"></i> Favorites</a> -->
 										<a class="logout" href="#"><i class="fa fa-sign-out"></i> Log out</a>
 									</div>
 								</div>
@@ -25,12 +26,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="w3-col l9 padding-20">
+			<div class="w3-col l8 padding-20">
 		        <div class="w3-row">
 					<div class="col-xs-1" style="padding: 0px">
 						<a class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
 						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
 					</div>
+					{{#if showSearchBar}}
 					<form id="search-form">
 						<div class="col-xs-2 w3-hide-small" style="padding: 0px">
 						  <select required class="form-control border-7-left" name="people" id="people">
@@ -74,6 +76,7 @@
 		  				  <button type="submit" class="search-btn w3-button w3-block border-7-right" style="padding: 9px"><i class="fa fa-search" aria-hidden="true"></i></button>
 		  			  	</div>
 					</form>
+					{{/if}}
 		        </div>
 			</div>
 		</div>
@@ -81,11 +84,12 @@
 
 	<div id="navDemo" class="w3-bar-block w3-white w3-text-blue w3-hide w3-hide-large w3-card">
 		<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button hide-elements">Home</a>
+		<a href="{{pathFor route='search'}}" class="w3-bar-item w3-button hide-elements">Search</a>
 		<hr>
 		{{#if currentUser}}
 			<a href="{{pathFor route='userProfile'}}" class="w3-bar-item w3-button hide-elements"> My account</a>
 			<a href="{{pathFor route='myReservations'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-map-marker"></i> My reservations</a>
-			<a href="#" class="w3-bar-item w3-button hide-elements"><i class="fa fa-heart-o"></i> Favorites</a>
+			<!-- <a href="#" class="w3-bar-item w3-button hide-elements"><i class="fa fa-heart-o"></i> Favorites</a> -->
 			<a href="#" class="w3-bar-item w3-button hide-elements logout"><i class="fa fa-sign-out"></i> Log out</a>
 		{{else}}
 			<a href="{{pathFor route='user'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-sign-in"></i> Log In</a>

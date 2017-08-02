@@ -23,6 +23,7 @@ if (Meteor.isClient) {
 		}
 
 		Session.set("showLocationSelect", 0);
+		Session.set("showSearchBar", 1);
 	};
 
 	Template.restaurant.events({
@@ -229,7 +230,7 @@ if (Meteor.isClient) {
 					list.push(0);
 				}
 			});
-			
+
 			return list;
 		},
 

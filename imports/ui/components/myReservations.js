@@ -1,5 +1,9 @@
 import './myReservations.html';
 
+Template.myReservations.onRendered(function() {
+	Session.set("showSearchBar", 0);
+});
+
 Template.myReservations.helpers({
 	Reservations: function() {
 		var today = moment();
@@ -28,7 +32,7 @@ Template.myReservations.events({
 		var persons = this.persons;
 		var start_time = this.start_time;
 		var end_time = this.end_time;
-		
+
 		var email = Meteor.user().emails[0].address;
 		var userid = Meteor.userId();
 		var userinfo = userInfo.findOne({user_id: userid});

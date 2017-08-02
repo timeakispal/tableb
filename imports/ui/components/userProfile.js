@@ -1,9 +1,10 @@
 import './userProfile.html';
 
 
-Template.userProfile.rendered = function(){
+Template.userProfile.onRendered(function() {
 	Session.set('showAlert', null);
-};
+	Session.set("showSearchBar", 0);
+});
 
 Template.userProfile.helpers({
 	avatar: function () {
@@ -19,7 +20,7 @@ Template.userProfile.helpers({
 		if (Meteor.user() !== undefined) {
 			return Meteor.user().username;
 		}
-		
+
 		return "";
 	},
 	email: function() {
@@ -84,14 +85,14 @@ Template.userProfile.events({
 		Session.set("userName", val);
 	},
 
-	// 'change #avatar-image' : function(evt,t){ 
+	// 'change #avatar-image' : function(evt,t){
 	//     var file = evt.target.files[0]; //assuming 1 file only
 	//     console.log(file);
 	//     if (!file) return;
 
 	//     var reader = new FileReader(); //create a reader according to HTML5 File API
 
-	//     // reader.onload = function(evt){          
+	//     // reader.onload = function(evt){
 	// 		var buffer = new Uint8Array(reader.result) // convert to binary
 	// 		// Meteor.call('saveFile', buffer);
 	// 		Session.set('saveFile', buffer);

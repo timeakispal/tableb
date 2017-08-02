@@ -4,22 +4,22 @@ import './search.html';
 if (Meteor.isClient) {
 	var markers = [];
 	var marker_pins = {};
-	
+
 	Meteor.startup(function() {
         GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
     });
-	
+
     Template.map.onRendered(function() {
         var self = this;
         var lookup = [];
 		var markers_ = [];
-	
+
         GoogleMaps.ready('map', function(map) {
             self.autorun(function() {
                 var handle = Meteor.subscribe('places', Session.get("Wifi"),Session.get("Food"),Session.get("Terrace"),Session.get("Pets"),Session.get("Card"),Session.get("Parking"),Session.get("Type-restaurant"),Session.get("Type-bar"),Session.get("Type-bistro"),Session.get("Type-pub"),Session.get("Type-cafeteria"),Session.get("Type-coffeehouse"));
-                
+
                 var handle2 = Meteor.subscribe('freeTables', Session.get("persons"), Session.get("reservationDate"), Session.get("reservationTime"));
-               
+
                 if (handle.ready() && handle2.ready()) {
                 	var deferred = deletePins();
 					$.when(deferred).done(function() {
@@ -39,7 +39,7 @@ if (Meteor.isClient) {
 									'<a id="rest-details" class="btn btn-default" name="'+i+'">Reserve >></a>'+
 									'</div>'+
 									'</div>';
-								
+
 		                        var marker = new google.maps.Marker({
 		                            position: new google.maps.LatLng(lat, lng),
 		                            map: GoogleMaps.maps.map.instance,
@@ -61,7 +61,7 @@ if (Meteor.isClient) {
 		                        i++;
 		                    }
 	                    });
-		
+
 	                    markers = markers_;
 						// console.log(marker_pins);
 					});
@@ -69,8 +69,8 @@ if (Meteor.isClient) {
             });
         });
     });
-	
-	
+
+
     Template.map.helpers({
         mapOptions: function() {
             // Initialize the map
@@ -93,6 +93,7 @@ if (Meteor.isClient) {
 
 	Template.search.onRendered(function() {
 		Session.set("showLocationSelect", 1);
+		Session.set("showSearchBar", 1);
 
 		Session.set("Type-restaurant", 1);
 		Session.set("Type-bar", 1);
@@ -496,7 +497,7 @@ if (Meteor.isClient) {
 
 
 		'Restaurants': function() {
-			
+
 			return matchingRestaurants();
 
 		},
@@ -537,7 +538,7 @@ if (Meteor.isClient) {
 					list.push(0);
 				}
 			});
-			
+
 
 			return list;
 		},

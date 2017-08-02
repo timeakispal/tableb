@@ -14,7 +14,7 @@
 								<div class="w3-dropdown-content">
 									<a href="{{pathFor route='userProfile'}}"> My account</a>
 									<a href="{{pathFor route='myReservations'}}"><i class="fa fa-map-marker"></i> My reservations</a>
-									<a href="#"><i class="fa fa-heart-o"></i> Favorites</a>
+									<!-- <a href="#"><i class="fa fa-heart-o"></i> Favorites</a> -->
 									<a class="logout" href="#"><i class="fa fa-sign-out"></i> Log out</a>
 								</div>
 							</div>
@@ -42,7 +42,7 @@
 	{{#if currentUser}}
 		<a href="{{pathFor route='userProfile'}}" class="w3-bar-item w3-button hide-elements"> My account</a>
 		<a href="{{pathFor route='myReservations'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-map-marker"></i> My reservations</a>
-		<a href="#" class="w3-bar-item w3-button hide-elements"><i class="fa fa-heart-o"></i> Favorites</a>
+		<!-- <a href="#" class="w3-bar-item w3-button hide-elements"><i class="fa fa-heart-o"></i> Favorites</a> -->
 		<a href="#" class="w3-bar-item w3-button hide-elements logout"><i class="fa fa-sign-out"></i> Log out</a>
 	{{else}}
 		<a href="{{pathFor route='user'}}" class="w3-bar-item w3-button hide-elements"><i class="fa fa-sign-in"></i> Log In</a>

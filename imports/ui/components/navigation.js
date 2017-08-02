@@ -47,6 +47,10 @@ Template.myNav.events({
 
 Template.myNav.helpers({
 
+	'showSearchBar': function() {
+		return Session.get("showSearchBar");
+	},
+
 	'showLocation': function() {
 		return Session.get("showLocationSelect");
 	},

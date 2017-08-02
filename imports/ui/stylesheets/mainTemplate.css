@@ -431,6 +431,10 @@ input[type="date"], focus {
 	padding-top: 85px;
 }
 
+.padding-top-nav {
+	padding-top: 85px;
+}
+
 .filters {
 	background-color: #FBFBFC;
 	border-bottom: 2px solid #eee;
@@ -455,6 +459,10 @@ input[type="date"], focus {
 	}
 
 	.search-small {
+		padding-top: 65px;
+	}
+
+	.padding-top-nav {
 		padding-top: 65px;
 	}
 
