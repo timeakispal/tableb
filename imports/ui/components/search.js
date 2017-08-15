@@ -86,21 +86,37 @@ if (Meteor.isClient) {
         }
     });
 
-	Meteor.startup(function() {
-	  GoogleMaps.load({ key: 'AIzaSyD14UXM1wEKOzqGvFMjQfp2eYxL6t2cJEQ'});
-	});
-
+ //    Template.search.onCreated(function() {
+	//   this.subscribe('tablesPersons', Session.get("persons"));
+	// });
 
 	Template.search.onRendered(function() {
-		Session.set("showLocationSelect", 1);
-		Session.set("showSearchBar", 1);
+		// this.subscribe('tablesPersons', Session.get("persons"));
+		var self = this;
+	    self.autorun(function() {
+			var tablesList = self.subscribe('tablesPersons', Session.get("persons"));
+			if (tablesList.ready()) {
+				Session.set("showLocationSelect", 1);
+				Session.set("showSearchBar", 1);
 
-		Session.set("Type-restaurant", 1);
-		Session.set("Type-bar", 1);
-		Session.set("Type-bistro", 1);
-		Session.set("Type-pub", 1);
-		Session.set("Type-cafeteria", 1);
-		Session.set("Type-coffeehouse", 1);
+				Session.set("Type-restaurant", 1);
+				Session.set("Type-bar", 1);
+				Session.set("Type-bistro", 1);
+				Session.set("Type-pub", 1);
+				Session.set("Type-cafeteria", 1);
+				Session.set("Type-coffeehouse", 1);
+			}
+		});
+
+		// Session.set("showLocationSelect", 1);
+		// Session.set("showSearchBar", 1);
+
+		// Session.set("Type-restaurant", 1);
+		// Session.set("Type-bar", 1);
+		// Session.set("Type-bistro", 1);
+		// Session.set("Type-pub", 1);
+		// Session.set("Type-cafeteria", 1);
+		// Session.set("Type-coffeehouse", 1);
 	});
 
 	Template.search.events({
@@ -142,6 +158,7 @@ if (Meteor.isClient) {
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
+			// this.subscribe('tablesPersons', Session.get("persons"));
 		},
 
 		'click #rest-details': function(e, t){
@@ -566,77 +583,6 @@ if (Meteor.isClient) {
 			// var list = [];
 			var restId = this._id;
 			return freeTables(restId);
-			// var res_date = Session.get("reservationDate");
-			// var time = Session.get("reservationTime");
-			// var people = Session.get("persons");
-			// var leave_time = 2400;
-
-			// var d = new Date();
-			// today = moment(d).format('YYYY-MM-DD');
-			// if (res_date == today) {
-			// 	if (time == undefined || time == "") {
-			// 		var d = new Date();
-			// 		var hour = d.getHours();
-			// 		var min = d.getMinutes();
-			// 		if (0 < min && min <= 30) {
-			// 			leave_time = hour * 100 + 30;
-			// 		} else {
-			// 			if (30 < min) {
-			// 				hour++;
-			// 			}
-			// 			leave_time = hour * 100;
-			// 		}
-			// 		leave_time += 100;
-			// 		return allHours(restId, res_date, people, hour, min, leave_time);
-
-			// 	} else {
-			// 		var clock = time.split(":");
-			// 		var timeLeave = Session.get("timeOfLeave");
-
-			// 		if (0 < clock[1] && clock[1] <= 30) {
-			// 			leave_time = clock[0] * 100 + 30;
-			// 		} else {
-			// 			if (30 < clock[1]) {
-			// 				clock[0]++;
-			// 			}
-			// 			leave_time = clock[0] * 100;
-			// 		}
-			// 		leave_time += 100;
-
-			// 		if (timeLeave !== undefined && timeLeave !== "") {
-			// 			var clock2 = timeLeave.split(":");
-			// 			leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
-			// 		}
-
-			// 		return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
-			// 	}
-			// } else {
-			// 	if (time == undefined || time == "") {
-			// 		return allHours(restId, res_date, people, 9, 0, 11);
-
-			// 	} else {
-			// 		var clock = time.split(":");
-			// 		var timeLeave = Session.get("timeOfLeave");
-
-			// 		if (0 < clock[1] && clock[1] <= 30) {
-			// 			leave_time = clock[0] * 100 + 30;
-			// 		} else {
-			// 			if (30 < clock[1]) {
-			// 				clock[0]++;
-			// 			}
-			// 			leave_time = clock[0] * 100;
-			// 		}
-			// 		leave_time += 200;
-
-			// 		if (timeLeave !== undefined && timeLeave !== "") {
-			// 			var clock2 = timeLeave.split(":");
-			// 			leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
-			// 		}
-
-			// 		return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
-			// 	}
-			// }
-
 		},
 	});
 
@@ -709,7 +655,7 @@ if (Meteor.isClient) {
 		var restId = rest_id;
 		var res_date = Session.get("reservationDate");
 		var time = Session.get("reservationTime");
-		var people = Session.get("persons");
+		// var people = Session.get("persons");
 		var leave_time = 2400;
 
 		var d = new Date();
@@ -727,8 +673,8 @@ if (Meteor.isClient) {
 					}
 					leave_time = hour * 100;
 				}
-				leave_time += 100;
-				return allHours(restId, res_date, people, hour, min, leave_time);
+				leave_time += 200;
+				return allHours(restId, res_date, hour, min, leave_time);
 
 			} else {
 				var clock = time.split(":");
@@ -749,11 +695,11 @@ if (Meteor.isClient) {
 					leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 				}
 
-				return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
+				return allHours(restId, res_date, clock[0], clock[1], leave_time);
 			}
 		} else {
 			if (time == undefined || time == "") {
-				return allHours(restId, res_date, people, 9, 0, 11);
+				return allHours(restId, res_date, 9, 0, 11);
 
 			} else {
 				var clock = time.split(":");
@@ -774,12 +720,12 @@ if (Meteor.isClient) {
 					leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 				}
 
-				return allHours(restId, res_date, people, clock[0], clock[1], leave_time);
+				return allHours(restId, res_date, clock[0], clock[1], leave_time);
 			}
 		}
 	}
 
-	function allHours(restId, res_date, people, hour, min, leave_time) {
+	function allHours(restId, res_date, hour, min, leave_time) {
 		var list = [];
 		var time;
 
@@ -799,10 +745,10 @@ if (Meteor.isClient) {
 		}
 
 		var time_bckup = time;
-		var nbpeople = Number(people);
-		var nbpeople_max = String(nbpeople + 2);
-		nbpeople = String(nbpeople);
-		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
+		// var nbpeople = Number(people);
+		// var nbpeople_max = String(nbpeople + 2);
+		// nbpeople = String(nbpeople);
+		var table = Tables.find({'restaurant_id': restId, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
 		// var table = Restaurants.findOne({'_id': restId, 'tables.seats': {$gte: nbpeople, $lte: nbpeople_max}, 'tables.reservations': { $eq: [] }});
 		// console.log(table.tables);
 		if (table !== undefined && table.length > 0) {
@@ -826,7 +772,7 @@ if (Meteor.isClient) {
 		}
 
 
-		table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		table = Tables.find({'restaurant_id': restId, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description
 			return list;

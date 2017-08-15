@@ -27,11 +27,13 @@ Template.myReservations.helpers({
 
 Template.myReservations.events({
 	'click .reservation': function(e){
-		var table_id = e.currentTarget.id;
+		var table_id = this.id;//e.currentTarget.id;
 		var res_date = this.res_date;
 		var persons = this.persons;
 		var start_time = this.start_time;
 		var end_time = this.end_time;
+		var res_nb = this.res_number;
+		console.log(this.res_number);
 
 		var email = Meteor.user().emails[0].address;
 		var userid = Meteor.userId();
@@ -41,6 +43,6 @@ Template.myReservations.events({
 			phonenb = userinfo.phonenb;
 		}
 
-		Meteor.call('removeReservation', table_id, res_date, persons, email, phonenb, start_time, end_time);
+		Meteor.call('removeReservation', table_id, res_date, persons, email, phonenb, start_time, end_time, res_nb);
 	},
 });

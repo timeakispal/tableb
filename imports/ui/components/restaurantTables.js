@@ -15,10 +15,16 @@ if (Meteor.isClient) {
 	});
 
 	Template.restaurantTables.rendered = function () {
-		if (AmplifiedSession.get('myRestaurant') == undefined || Session.get('theRestaurant') !== undefined) {
+		var self = this;
+		
+		if (AmplifiedSession.get('myRestaurant') !== Session.get('theRestaurant') && Session.get('theRestaurant') !== undefined) {
 			var restId = Session.get('theRestaurant');
 			AmplifiedSession.set('myRestaurant', restId);
 		}
+
+		self.autorun(function() {
+			var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('myRestaurant'));
+		});
 	};
 
 	Template.restaurantTables.helpers({
@@ -33,7 +39,7 @@ if (Meteor.isClient) {
 		},
 		'tables': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
-			return Tables.find({restaurant_id: restId}).fetch();
+			return Tables.find().fetch();
 		},
 		'persons': function() {
 			var list = [];
@@ -72,7 +78,7 @@ if (Meteor.isClient) {
 			var people = t.find('#people').value;
 			people = people.replace(" person", "");
 
-			var tables = Tables.find({restaurant_id: rest_id}).fetch();
+			var tables = Tables.find().fetch();
 			var max = 0;
 			for (var i = 0; i < tables.length; i++) {
 				if (tables[i].number > max) {

@@ -16,15 +16,24 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.restaurant.rendered = function () {
-		if (AmplifiedSession.get('Restaurant') == undefined || Session.get('selectedRestaurant') !== undefined) {
+	Template.restaurant.onRendered(function() {
+		var self = this;
+		
+		if (AmplifiedSession.get('Restaurant') !== Session.get('selectedRestaurant') && Session.get('selectedRestaurant') !== undefined) {
 			var restId = Session.get('selectedRestaurant');
 			AmplifiedSession.set('Restaurant', restId);
 		}
 
-		Session.set("showLocationSelect", 0);
-		Session.set("showSearchBar", 1);
-	};
+		self.autorun(function() {
+			var reviewsList = self.subscribe('reviewsRestaurant', AmplifiedSession.get('Restaurant'));
+			var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
+			if (reviewsList.ready() && tablesList.ready()) {
+
+				Session.set("showLocationSelect", 0);
+				Session.set("showSearchBar", 1);
+			}
+		});
+	});
 
 	Template.restaurant.events({
 		'change #when2': function(evt, t) {
@@ -50,6 +59,7 @@ if (Meteor.isClient) {
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
+			// this.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
 		},
 
 		'click #reserve': function(e, t) {
@@ -197,13 +207,11 @@ if (Meteor.isClient) {
 		},
 
 		reviewsList: function() {
-			var restId = AmplifiedSession.get('Restaurant');
-			return myReviews.find({rest_id: restId}).fetch().reverse();
+			return myReviews.find().fetch().reverse();
 		},
 
 		'ratings': function() {
-			var restId = AmplifiedSession.get('Restaurant');
-			var reviews = myReviews.find({rest_id: restId}).fetch();
+			var reviews = myReviews.find().fetch();
 
 			var star_nb = 0;
 			var rev_nb = 0;
@@ -235,14 +243,13 @@ if (Meteor.isClient) {
 		},
 
 		'nb_reviews': function() {
-			var restId = AmplifiedSession.get('Restaurant');
-			var reviews = myReviews.find({rest_id: restId}).fetch();
+			var reviews = myReviews.find().fetch();
 			return reviews.length;
 		},
 
 		avatar: function () {
 			var restId = AmplifiedSession.get('Restaurant');
-			var restaurant = Restaurants.findOne({_id: restId});
+			var restaurant = Restaurants.findOne();
 			var image_addr = restaurant.header_image;
 			if (image_addr !== undefined) {
 				var image_id = image_addr.split("/")[4];
@@ -255,8 +262,7 @@ if (Meteor.isClient) {
 	  	},
 
 		'ratings_total': function() {
-			var restId = AmplifiedSession.get('Restaurant');
-			var reviews = myReviews.find({rest_id: restId}).fetch();
+			var reviews = myReviews.find().fetch();
 
 			var star_nb = 0;
 			var rev_nb = 0;
@@ -457,7 +463,7 @@ if (Meteor.isClient) {
 		var nbpeople = Number(people.split(" ")[0]);
 		var nbpeople_max = String(nbpeople + 2);
 		nbpeople = String(nbpeople);
-		var table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
+		var table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
 
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
@@ -481,7 +487,7 @@ if (Meteor.isClient) {
 		}
 
 
-		table = Tables.find({'restaurant_id': restId, 'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description
 			return list;

@@ -13,13 +13,19 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.restaurantReservations.rendered = function () {
-		if (AmplifiedSession.get('myRestaurant') == undefined || Session.get('theRestaurant') !== undefined) {
+	Template.restaurantReservations.onRendered(function() {
+		var self = this;
+		
+		if (AmplifiedSession.get('myRestaurant') !== Session.get('theRestaurant') && Session.get('theRestaurant') !== undefined) {
 			var restId = Session.get('theRestaurant');
 			AmplifiedSession.set('myRestaurant', restId);
 		}
 
-	};
+		self.autorun(function() {
+			var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('myRestaurant'));
+		});
+
+	});
 
 	Template.restaurantReservations.helpers({
 		'admin': function() {
@@ -34,7 +40,7 @@ if (Meteor.isClient) {
 
 		'Reservations': function() {
 			var restId = AmplifiedSession.get('myRestaurant');
-			var tables = Tables.find({restaurant_id : restId}, {sort: {number: 1}}).fetch();
+			var tables = Tables.find({}, {sort: {number: 1}}).fetch();
 			return tables;
 		},
 
@@ -151,8 +157,9 @@ if (Meteor.isClient) {
 			var phonenb = this.phonenb;
 			var start_time = this.start_time;
 			var end_time = this.end_time;
+			var res_nb = this.res_number;
 
-			Meteor.call('removeReservation', table_id, res_date, persons, email, phonenb, start_time, end_time);
+			Meteor.call('removeReservation', table_id, res_date, persons, email, phonenb, start_time, end_time, res_nb);
 		},
 
 		'submit #submit-new-reservation': function(e, t) {

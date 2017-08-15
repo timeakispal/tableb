@@ -8,20 +8,36 @@ import '/imports/startup/server';
 Meteor.publish('restaurants', function() {
   return Restaurants.find();
 });
-Meteor.publish('tables', function() {
-  return Tables.find();
+// Meteor.publish('tables', function() {
+//   return Tables.find();
+// });
+Meteor.publish('tablesPersons', function(people) {
+  var nbpeople = Number(people);
+  var nbpeople_max = String(nbpeople + 2);
+  nbpeople = String(nbpeople);
+  return Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}});
 });
+
+Meteor.publish('tablesRestaurant', function(rest_id) {
+  return Tables.find({"restaurant_id" : rest_id});
+});
+
 Meteor.publish('locations', function() {
   return Locations.find();
 });
-Meteor.publish('userinfo', function() {
-  return userInfo.find();
+Meteor.publish('userinfo', function(userId) {
+  return userInfo.find({"user_id" : userId});
 });
+
 Meteor.publish('reviews', function() {
   return myReviews.find();
 });
-Meteor.publish('restAdmins', function() {
-  return restaurantAdmins.find();
+Meteor.publish('reviewsRestaurant', function(rest_id) {
+  return myReviews.find({"rest_id" : rest_id});
+});
+
+Meteor.publish('restAdmins', function(userId) {
+  return restaurantAdmins.find({"admin_id" : userId});
 });
 Meteor.publish('transactions', function() {
   return myTransactions.find();
@@ -150,7 +166,8 @@ Meteor.methods({
 	'insertReservation': function(tableid, persons, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
 		var end = Number(leaving_hour.replace(":", ""));
-        var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour};
+    var rand_nb = Math.floor((Math.random() * 5000) + 1);
+        var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour, "res_number" : rand_nb};
 		var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
 		var table = Tables.findOne({_id: tableid});
 
@@ -280,11 +297,13 @@ Meteor.methods({
         }
     },
 
-    'removeReservation' : function(table_id, res_date, persons, email, phonenb, start_time, end_time) {
+    'removeReservation' : function(table_id, res_date, persons, email, phonenb, start_time, end_time, res_nb) {
         var currentUserId = Meteor.userId();
         if(currentUserId){
             var table = Tables.findOne({_id: table_id});
-            Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_date': res_date, 'email': email, 'phonenb': phonenb, 'start_time': start_time } } });
+            // Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_number' : res_nb, 'res_date': res_date, 'email': email, 'phonenb': phonenb, 'start_time': start_time } } });
+            // console.log(res_nb);
+            Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_number' : res_nb, 'res_date': res_date, 'email': email} } });
         }
     },
 
