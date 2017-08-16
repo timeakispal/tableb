@@ -7,7 +7,7 @@ import '../components/footer.js';
 import '../components/home.js';
 import '../components/user.js';
 import '../components/search.js';
-import '../components/searchEngine.js';
+// import '../components/searchEngine.js';
 import '../components/restaurant.js';
 import '../components/userProfile.js';
 import '../components/reservationModal.js';

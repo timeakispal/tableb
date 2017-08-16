@@ -13,13 +13,14 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.restaurantProfile.rendered = function () {
+	Template.restaurantProfile.onRendered(function() {
 		if (AmplifiedSession.get('myRestaurant') == undefined || Session.get('theRestaurant') !== undefined) {
 			var restId = Session.get('theRestaurant');
 			AmplifiedSession.set('myRestaurant', restId);
 		}
 		Session.set('showAlert', false);
-	};
+	});
+
 	Template.restaurantProfile.helpers({
 		'admin': function() {
 			var userid = Meteor.userId();

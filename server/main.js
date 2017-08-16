@@ -13,6 +13,7 @@ Meteor.publish('restaurants', function() {
 // });
 Meteor.publish('tablesPersons', function(people) {
   var nbpeople = Number(people);
+  if (nbpeople % 2) { nbpeople++; }
   var nbpeople_max = String(nbpeople + 2);
   nbpeople = String(nbpeople);
   return Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}});
@@ -20,6 +21,14 @@ Meteor.publish('tablesPersons', function(people) {
 
 Meteor.publish('tablesRestaurant', function(rest_id) {
   return Tables.find({"restaurant_id" : rest_id});
+});
+
+Meteor.publish('tablesPersonsRestaurant', function(people, rest_id) {
+    var nbpeople = Number(people);
+    if (nbpeople % 2) { nbpeople++; }
+    var nbpeople_max = String(nbpeople + 2);
+    nbpeople = String(nbpeople);
+    return Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, "restaurant_id" : rest_id});
 });
 
 Meteor.publish('locations', function() {

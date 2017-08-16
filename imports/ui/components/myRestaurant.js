@@ -13,7 +13,7 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.myRestaurant.rendered = function () {
+	Template.myRestaurant.onRendered(function() {
 		var userid = Meteor.userId();
 		var restInfo = restaurantAdmins.findOne({admin_id: userid});
 		if (restInfo !== undefined) {
@@ -21,7 +21,7 @@ if (Meteor.isClient) {
 		}
 
 		var self = this;
-		
+
 		if (AmplifiedSession.get('myRestaurant') !== Session.get('theRestaurant') && Session.get('theRestaurant') !== undefined) {
 			var restId = Session.get('theRestaurant');
 			AmplifiedSession.set('myRestaurant', restId);
@@ -32,7 +32,8 @@ if (Meteor.isClient) {
 			var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('myRestaurant'));
 		});
 
-	};
+	});
+
 	Template.myRestaurant.helpers({
 		'admin': function() {
 			var userid = Meteor.userId();
@@ -56,7 +57,7 @@ if (Meteor.isClient) {
 			var tables = Tables.find().fetch();
 
 			var nb = 0;
-			
+
 			for (var i = 0; i < tables.length; i++) {
 				nb += tables[i].reservations.length;
 			}

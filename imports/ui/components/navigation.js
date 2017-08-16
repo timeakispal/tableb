@@ -32,7 +32,10 @@ Template.myNav.events({
 	'submit #search-form' : function (e,t)
 	{
 		e.preventDefault();
-		var location = t.find('#location').value;
+		var location = "";
+		if (t.find('#location') !== null) {
+			location = t.find('#location').value;
+		}
 		var when = t.find('#when').value;
 		var people = t.find('#people').value;
 		var arrival_hour = t.find('#arrival_hour').value;

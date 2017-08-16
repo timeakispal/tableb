@@ -9,7 +9,7 @@ Template.reservationModal.helpers({
 		},
 
 		reservedDate: function() {
-			
+
 			if (Session.get('reservationDate') == undefined || Session.get('reservationDate') == "") {
 				var today = new Date();
 				resDate = moment(today).format('YYYY-MM-DD');
@@ -29,7 +29,7 @@ Template.reservationModal.helpers({
 				var restaurant = Restaurants.findOne({_id: restId});
 				return restaurant.name + ", " + restaurant.location;
 			}
-			
+
 		},
 
 		reservedPersons : function() {
@@ -109,7 +109,7 @@ Template.reservationModal.events({
 		// 	hour += 2;
 		// 	leaving_hour = hour + ":" + min;
 		// }
-		console.log(tableid);
+		// console.log(tableid);
 		resDate = moment(date).format('YYYY-MM-DD');
     	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');

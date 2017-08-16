@@ -771,7 +771,6 @@ if (Meteor.isClient) {
 		// console.log(table.tables);
 		}
 
-
 		table = Tables.find({'restaurant_id': restId, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description

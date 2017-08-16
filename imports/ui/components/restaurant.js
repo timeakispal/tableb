@@ -18,7 +18,7 @@ if (Meteor.isClient) {
 
 	Template.restaurant.onRendered(function() {
 		var self = this;
-		
+
 		if (AmplifiedSession.get('Restaurant') !== Session.get('selectedRestaurant') && Session.get('selectedRestaurant') !== undefined) {
 			var restId = Session.get('selectedRestaurant');
 			AmplifiedSession.set('Restaurant', restId);
@@ -26,7 +26,8 @@ if (Meteor.isClient) {
 
 		self.autorun(function() {
 			var reviewsList = self.subscribe('reviewsRestaurant', AmplifiedSession.get('Restaurant'));
-			var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
+			var tablesList = self.subscribe('tablesPersonsRestaurant', Session.get("persons"), AmplifiedSession.get('Restaurant'));
+			// var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
 			if (reviewsList.ready() && tablesList.ready()) {
 
 				Session.set("showLocationSelect", 0);
@@ -460,10 +461,11 @@ if (Meteor.isClient) {
 		}
 
 		var time_bckup = time;
-		var nbpeople = Number(people.split(" ")[0]);
-		var nbpeople_max = String(nbpeople + 2);
-		nbpeople = String(nbpeople);
-		var table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
+		// var nbpeople = Number(people.split(" ")[0]);
+		// var nbpeople_max = String(nbpeople + 2);
+		// nbpeople = String(nbpeople);
+		var table = Tables.find({'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
+		// var table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
 
 		if (table !== undefined && table.length > 0) {
 			var tableid = table[0]._id;
@@ -487,7 +489,8 @@ if (Meteor.isClient) {
 		}
 
 
-		table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		table = Tables.find({'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		// table = Tables.find({'seats': {$gte: nbpeople, $lte: nbpeople_max}, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description
 			return list;
