@@ -15,5 +15,6 @@ import '../components/reservationModal.js';
 import '../components/myReservations.js';
 // import '../components/myRestaurant.js';
 // import '../components/restaurantProfile.js';
+import '../components/contact.js';
 
 import './mainTemplate.html';

@@ -29,9 +29,9 @@ Router.route('/', {
 	name: 'home',
 	template: 'home',
 	layoutTemplate: 'homeTemplate',
-	yieldTemplates: {
-		myFooter: {to: 'footer'},
-	},
+	// yieldTemplates: {
+	// 	myFooter: {to: 'footer'},
+	// },
 
 	waitOn: function () {
 		Meteor.subscribe('restaurants');
@@ -49,10 +49,19 @@ Router.route('/', {
 Router.route('/user', {
 	name: 'user',
 	template: 'user',
-	layoutTemplate: 'homeTemplate',
-	yieldTemplates: {
-		myFooter: {to: 'footer'},
-	},
+	layoutTemplate: 'mainTemplate',
+	// yieldTemplates: {
+	// 	myFooter: {to: 'footer'},
+	// },
+	onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
+        if(currentUser){
+            this.render("home");
+        } else {
+            this.next();
+        }
+    },
 });
 
 Router.route('/search', {
@@ -69,6 +78,11 @@ Router.route('/restaurant', {
 	waitOn: function () {
 		return Meteor.subscribe('userinfo', Meteor.userId());
 	}
+});
+
+Router.route('/contact', {
+	name: 'contact',
+	template: 'contact',
 });
 
 Router.route('/myRestaurant', {

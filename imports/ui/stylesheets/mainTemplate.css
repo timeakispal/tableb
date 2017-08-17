@@ -13,6 +13,20 @@ a, a:hover {
 	text-decoration: none;
 }
 
+.jumbotron {
+background: #358CCE;
+color: #FFF;
+border-radius: 0px;
+}
+.jumbotron-sm { padding-top: 24px;
+padding-bottom: 24px; }
+.jumbotron small {
+color: #FFF;
+}
+.h1 small {
+font-size: 24px;
+}
+
 .w3-dropdown {
     float: left;
     overflow: hidden;
