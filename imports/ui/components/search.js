@@ -512,6 +512,10 @@ if (Meteor.isClient) {
 			return Session.get("Mapview");
 		},
 
+		'totalRestaurants': function() {
+			var restaurants = matchingRestaurants();
+			return restaurants.length;
+		},
 
 		'Restaurants': function() {
 

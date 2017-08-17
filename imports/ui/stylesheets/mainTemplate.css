@@ -466,6 +466,14 @@ input[type="date"], focus {
 		padding-top: 65px;
 	}
 
+	.center-small {
+		text-align: center;
+	}
+
+	.padding-small {
+		padding-top: 16px;
+	}
+
 }
 
 @media screen and (max-width: 992px) {
