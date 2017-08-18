@@ -14,8 +14,8 @@ a, a:hover {
 }
 
 .jumbotron {
-background: #358CCE;
-color: #FFF;
+/*background: #358CCE;*/
+/*color: #FFF;*/
 border-radius: 0px;
 }
 .jumbotron-sm { padding-top: 24px;
@@ -388,7 +388,7 @@ input[type="date"], focus {
 
 .map-view input[type=checkbox]:checked ~ div
 {
-    background: #2196F3;
+    background: #F3E03B;
 }
 
 .map-view input[type=checkbox]:checked ~ label {
@@ -463,6 +463,14 @@ input[type="date"], focus {
 
 .color-base-black2 {
 	background-color: #292929;
+}
+
+.color-text-black2 {
+	color: #292929;
+}
+
+.color-text-brown {
+	color: #594d45;
 }
 
 @media screen and (max-width: 767px) {

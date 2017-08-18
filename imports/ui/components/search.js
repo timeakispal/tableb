@@ -513,8 +513,7 @@ if (Meteor.isClient) {
 		},
 
 		'totalRestaurants': function() {
-			var restaurants = matchingRestaurants();
-			return restaurants.length;
+			return Session.get("totalRest");
 		},
 
 		'Restaurants': function() {
@@ -651,7 +650,9 @@ if (Meteor.isClient) {
 		if (ratings_desc) { return Restaurants.find(conditions, {sort: {stars_total: -1}}); }
 		if (expensiveness) { return Restaurants.find(conditions, {sort: {expensive: 1}}); }
 
-		return Restaurants.find(conditions).fetch();
+		var restaurants = Restaurants.find(conditions).fetch();
+		Session.set("totalRest", restaurants.length);
+		return restaurants;
 	}
 
 	function freeTables(rest_id) {

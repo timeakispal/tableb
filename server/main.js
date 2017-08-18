@@ -5,12 +5,15 @@ import '/imports/startup/server';
 // Restaurants = new Mongo.Collection('myRestaurants');
 // Tables = new Mongo.Collection('myTables');
 
+process.env.MAIL_URL="smtp://timea.kispal93%40gmail.com:bernike005@smtp.gmail.com:465/";
+
 Meteor.publish('restaurants', function() {
   return Restaurants.find();
 });
-// Meteor.publish('tables', function() {
-//   return Tables.find();
-// });
+
+Meteor.publish('tables', function() {
+  return Tables.find();
+});
 Meteor.publish('tablesPersons', function(people) {
   var nbpeople = Number(people);
   if (nbpeople % 2) { nbpeople++; }
@@ -322,6 +325,14 @@ Meteor.methods({
             Restaurants.update({ '_id': rest_id },{ $set: imagesURL});
         }
     },
+
+
+  // on the server, we create the sendEmail RPC function
+    'sendEmail': function(email, subject_, text_) {
+      // send the email!
+      Email.send({to:email, from:'acemtp@gmail.com', subject: subject_, text: text_});
+      console.log("The email was sent to the address" + email);
+    }
 });
 
 function cancelTransaction() {

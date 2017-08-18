@@ -68,7 +68,7 @@ Router.route('/search', {
 	name: 'search',
 	template: 'search',
 	waitOn: function () {
-		return Meteor.subscribe('reviews');
+		return [Meteor.subscribe('reviews'), Meteor.subscribe('userinfo', Meteor.userId())];
 	}
 });
 
@@ -207,6 +207,6 @@ Router.route('/myReservations', {
         }
     },
     waitOn: function () {
-		return Meteor.subscribe('userinfo', Meteor.userId());
+		return [Meteor.subscribe('userinfo', Meteor.userId()), Meteor.subscribe('tables')];
 	}
 });

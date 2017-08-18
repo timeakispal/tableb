@@ -2,17 +2,17 @@
 <div class="w3-top">
 	<div class="w3-bar w3-white">
 		<div class="w3-row" style="padding-left:10px; padding-right:5px">
-			<div class="w3-col l4 w3-right w3-hide-medium w3-hide-small">
+			<div class="w3-col l4 w3-right w3-hide-medium w3-hide-small color-text-black2">
 				<div class="w3-row">
 					<div class="w3-col s12">
 						<div class="w3-small">
-							<a href="{{pathFor route='contact'}}" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">Contact</a>
-							<a href="#" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">About</a>
-							<a href="{{pathFor route='search'}}" class="w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right">Search</a>
+							<a href="{{pathFor route='contact'}}" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right">Contact</a>
+							<a href="#" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right">About</a>
+							<a href="{{pathFor route='search'}}" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right">Search</a>
 							{{#if currentUser}}
-								<div class="w3-dropdown w3-bar-item w3-button w3-hover-none w3-border-white w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right" style="max-height:35px">
+								<div class="w3-dropdown w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right" style="max-height:35px">
 									<button class="dropbtn">{{firstName}} <i class="fa fa-user-circle w3-padding-right"></i></button>
-									<div class="w3-dropdown-content1 w3-text-blue">
+									<div class="w3-dropdown-content1 color-text-brown">
 										<a href="{{pathFor route='userProfile'}}"> My account</a>
 										<a href="{{pathFor route='myReservations'}}"><i class="fa fa-map-marker"></i> My reservations</a>
 										<!-- <a href="#"><i class="fa fa-heart-o"></i> Favorites</a> -->
@@ -20,7 +20,7 @@
 									</div>
 								</div>
 							{{else}}
-								<a href="{{pathFor route='user'}}" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-blue w3-hover-text-blue w3-right"><i class="fa fa-sign-in"></i> Log In</a>
+								<a href="{{pathFor route='user'}}" class="w3-bar-item w3-button w3-hover-none border-transparent w3-border-bottom w3-hover-border-yellow w3-hover-text-yellow w3-right"><i class="fa fa-sign-in"></i> Log In</a>
 							{{/if}}
 						</div>
 					</div>
@@ -30,7 +30,7 @@
 		        <div class="w3-row">
 					<div class="col-xs-1" style="padding: 0px">
 						<a class="w3-bar-item w3-button w3-hover-none w3-hide-large hide-elements" style="padding: 0px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
-						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-2x w3-text-blue" aria-hidden="true"></i></a>
+						<a href="{{pathFor route='home'}}" class="w3-bar-item w3-button w3-hover-none w3-hide-medium w3-hide-small" style="padding: 0px 0px 0px 5px"><i class="fa fa-cutlery fa-2x color-text" aria-hidden="true"></i></a>
 					</div>
 					{{#if showSearchBar}}
 					<form id="search-form">
@@ -72,7 +72,7 @@
 							  {{/each}}
 						  </select>
 						</div>
-						<div class="col-xs-1 w3-hide-small w3-blue w3-text-white border-7-right" style="padding:0px">
+						<div class="col-xs-1 w3-hide-small color-base5 color-text-black2 border-7-right" style="padding:0px">
 		  				  <button type="submit" class="search-btn w3-button w3-block border-7-right" style="padding: 9px"><i class="fa fa-search" aria-hidden="true"></i></button>
 		  			  	</div>
 					</form>

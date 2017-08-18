@@ -67,10 +67,9 @@ Template.reservationModal.helpers({
 		},
 		phonenb: function() {
 			var userid = Meteor.userId();
-			var userinfo = userInfo.findOne({user_id: userid});
+			var userinfo = userInfo.findOne();
 			if (userinfo !== undefined) {
 				return userinfo.phonenb;
-				console.log("phone" + serinfo.phonenb);
 			}
 			return "";
 		}
@@ -110,8 +109,14 @@ Template.reservationModal.events({
 		// 	leaving_hour = hour + ":" + min;
 		// }
 		// console.log(tableid);
+		var restId = Session.get('resRestaurant');
+		var restaurant = Restaurants.findOne({_id: restId});
+		var res_text = "Your reservation was made for " + persons + " people at " + restaurant.name + "!\n\nThe reservation starts from: " + arrival_hour + " on " + moment(date).format('MMMM Do YYYY') + ".\nYou should arrive 30 minutes earlier!\n\n";
+		res_text = res_text + "Your contact details: " + email + ", " + phonenb + "\n\nThank you! Have a wonderful time!";
+
 		resDate = moment(date).format('YYYY-MM-DD');
     	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour);
+		Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');
     	Modal.hide('insertReservationModal');
 	},
