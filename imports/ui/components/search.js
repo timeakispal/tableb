@@ -98,6 +98,7 @@ if (Meteor.isClient) {
 			if (tablesList.ready()) {
 				Session.set("showLocationSelect", 1);
 				Session.set("showSearchBar", 1);
+				Session.set('showResAlert', false);
 
 				Session.set("Type-restaurant", 1);
 				Session.set("Type-bar", 1);
@@ -149,6 +150,7 @@ if (Meteor.isClient) {
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
+			Session.set('showResAlert', false);
 			// this.subscribe('tablesPersons', Session.get("persons"));
 		},
 
@@ -168,13 +170,14 @@ if (Meteor.isClient) {
 		'click #reserve': function(e, t) {
 		    e.preventDefault();
 
-		    var restId = $(e.currentTarget).attr("restId");
+		    var restId = $(e.currentTarget).attr("restid");
 			var res_hour = this.hour;
 		    var tableid = this.tableid;
 			Session.set("reservationHour", String(res_hour));
 			Session.set("reservationTable", tableid);
 			Session.set("resRestaurant", restId);
 		    Modal.show('reservationModal');
+		    Session.set('showResAlert', false);
 		},
 		//sort-by
 		'change #name-asc': function(evt, t) {
@@ -342,6 +345,17 @@ if (Meteor.isClient) {
 	});
 
 	Template.search.helpers({
+
+		'resMessage': function() {
+           return Session.get('resMessage');
+		},
+		'showResAlert': function() {
+		   return Session.get('showResAlert');
+		},
+		'alertTypeRes': function() {
+		   return Session.get('alertTypeRes');
+		},
+
 		'currentDate': function() {
 			var today = new Date();
 			return moment(today).format('YYYY-MM-DD');

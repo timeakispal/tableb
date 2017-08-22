@@ -115,8 +115,21 @@ Template.reservationModal.events({
 		res_text = res_text + "Your contact details: " + email + ", " + phonenb + "\n\nThank you! Have a wonderful time!";
 
 		resDate = moment(date).format('YYYY-MM-DD');
-    	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour);
-		Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
+    	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour, function(error, result){
+		  // var theIdYouWant = result;
+		  console.log(result);
+		  Session.set('showResAlert', true);
+		  if (result == "ok") {
+		  	Session.set('resMessage', 'The reservation was successful!');
+			Session.set('alertTypeRes', 'alert-success');
+			
+		  } else {
+			Session.set('resMessage', 'Something went wrong! The table must have been taken :(');
+			Session.set('alertTypeRes', 'alert-warning');
+		  }
+		  
+		});
+		// Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');
     	Modal.hide('insertReservationModal');
 	},

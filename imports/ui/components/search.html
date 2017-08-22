@@ -104,7 +104,7 @@
                     <input type="checkbox" checked name="pub" id="pub" class="css-checkbox" /><label for="pub" class="css-label">Pub <span class="fa fa-beer"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="pizzeria" id="pizzeria" class="css-checkbox" /><label for="pizzeria" class="css-label">Pizzeria <span class="fa fa-birthday-cake"></span></label>
+                    <input type="checkbox" checked name="pizzeria" id="pizzeria" class="css-checkbox" /><label for="pizzeria" class="css-label">Pizzeria <span class="mdi mdi-pizza"></span></label>
                 </div>
                 <div class="col-sm-2">
                     <input type="checkbox" checked name="coffeehouse" id="coffeehouse" class="css-checkbox" /><label for="coffeehouse" class="css-label">Coffeehouse <span class="fa fa-coffee"></span></label>
@@ -171,6 +171,14 @@
     <!-- </div> -->
 <!-- {{else}} -->
     <div class="container">
+
+    {{#if showResAlert}} 
+    <div id="alertMessage" class="alert {{alertTypeRes}} alert-dismissable">
+        <a class="panel-close close" data-dismiss="alert">×</a> 
+        {{resMessage}}
+    </div>
+    {{/if}}
+
     {{#each Restaurants}}
     {{#if Tables}}
     <div class="col-sm-4 col-lg-4 col-md-4">

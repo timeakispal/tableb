@@ -45,6 +45,7 @@ Template.myNav.events({
 		Session.set("persons", people);
 		Session.set("reservationTime", arrival_hour);
 		Session.set("timeOfLeave", leaving_hour);
+		Session.set('showResAlert', false);
 	},
 });
 
