@@ -16,7 +16,7 @@ if (Meteor.isClient) {
 
         GoogleMaps.ready('map', function(map) {
             self.autorun(function() {
-                var handle = Meteor.subscribe('places', Session.get("Wifi"),Session.get("Food"),Session.get("Terrace"),Session.get("Pets"),Session.get("Card"),Session.get("Parking"),Session.get("Type-restaurant"),Session.get("Type-bar"),Session.get("Type-bistro"),Session.get("Type-pub"),Session.get("Type-cafeteria"),Session.get("Type-coffeehouse"));
+                var handle = Meteor.subscribe('places', Session.get("Wifi"),Session.get("Food"),Session.get("Terrace"),Session.get("Pets"),Session.get("Card"),Session.get("Parking"),Session.get("Type-restaurant"),Session.get("Type-bar"),Session.get("Type-bistro"),Session.get("Type-pub"),Session.get("Type-pizzeria"),Session.get("Type-coffeehouse"));
 
                 var handle2 = Meteor.subscribe('freeTables', Session.get("persons"), Session.get("reservationDate"), Session.get("reservationTime"));
 
@@ -103,20 +103,11 @@ if (Meteor.isClient) {
 				Session.set("Type-bar", 1);
 				Session.set("Type-bistro", 1);
 				Session.set("Type-pub", 1);
-				Session.set("Type-cafeteria", 1);
+				Session.set("Type-pizzeria", 1);
 				Session.set("Type-coffeehouse", 1);
 			}
 		});
 
-		// Session.set("showLocationSelect", 1);
-		// Session.set("showSearchBar", 1);
-
-		// Session.set("Type-restaurant", 1);
-		// Session.set("Type-bar", 1);
-		// Session.set("Type-bistro", 1);
-		// Session.set("Type-pub", 1);
-		// Session.set("Type-cafeteria", 1);
-		// Session.set("Type-coffeehouse", 1);
 	});
 
 	Template.search.events({
@@ -248,9 +239,9 @@ if (Meteor.isClient) {
 			var x = evt.target.checked;
 			Session.set('Type-pub', x);
 		},
-		'change #cafeteria': function(evt, t) {
+		'change #pizzeria': function(evt, t) {
 			var x = evt.target.checked;
-			Session.set('Type-cafeteria', x);
+			Session.set('Type-pizzeria', x);
 		},
 		'change #coffeehouse': function(evt, t) {
 			var x = evt.target.checked;
@@ -271,8 +262,8 @@ if (Meteor.isClient) {
 			Session.set('Type-bistro', true);
 			t.find('#pub').checked = true;
 			Session.set('Type-pub', true);
-			t.find('#cafeteria').checked = true;
-			Session.set('Type-cafeteria', true);
+			t.find('#pizzeria').checked = true;
+			Session.set('Type-pizzeria', true);
 			t.find('#coffeehouse').checked = true;
 			Session.set('Type-coffeehouse', true);
 		},
@@ -286,8 +277,8 @@ if (Meteor.isClient) {
 			Session.set('Type-bistro', false);
 			t.find('#pub').checked = false;
 			Session.set('Type-pub', false);
-			t.find('#cafeteria').checked = false;
-			Session.set('Type-cafeteria', false);
+			t.find('#pizzeria').checked = false;
+			Session.set('Type-pizzeria', false);
 			t.find('#coffeehouse').checked = false;
 			Session.set('Type-coffeehouse', false);
 		},
@@ -409,6 +400,40 @@ if (Meteor.isClient) {
 			} else {
 				return "";
 			}
+		},
+
+		'type': function() {
+			var restaurant = this;
+			return restaurant.type[0];
+		},
+
+		'type_icon': function() {
+			var restaurant = this;
+			var icon;
+			switch(restaurant.type[0]) {
+			    case "restaurant":
+			        icon = "fa fa-cutlery";
+			        break;
+			    case "bar":
+			        icon = "mdi mdi-martini";
+			        break;
+				case "pub":
+			        icon = "fa fa-beer";
+			        break;
+				case "bistro":
+			        icon = "fa fa-bold";
+			        break;
+				case "pizzeria":
+			        icon = "mdi mdi-pizza";
+			        break;
+				case "coffeehouse":
+					icon = "fa fa-coffee";
+					break;
+			    default:
+			        icon = "";
+			}
+			return icon;
+
 		},
 
 		'locations': function() {
@@ -625,7 +650,7 @@ if (Meteor.isClient) {
 		var type_bar = Session.get("Type-bar");
 		var type_bistro = Session.get("Type-bistro");
 		var type_pub = Session.get("Type-pub");
-		var type_cafeteria = Session.get("Type-cafeteria");
+		var type_pizzeria = Session.get("Type-pizzeria");
 		var type_coffeehouse = Session.get("Type-coffeehouse");
 
 		// "type" : ["pub", "restaurant"]
@@ -635,7 +660,7 @@ if (Meteor.isClient) {
 		if (type_bar) { types["$in"].push("bar"); }
 		if (type_bistro) { types["$in"].push("bistro"); }
 		if (type_pub) { types["$in"].push("pub"); }
-		if (type_cafeteria) { types["$in"].push("cafeteria"); }
+		if (type_pizzeria) { types["$in"].push("pizzeria"); }
 		if (type_coffeehouse) { types["$in"].push("coffeehouse"); }
 
 		conditions["type"] = types;

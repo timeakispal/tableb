@@ -6,6 +6,8 @@ import '/imports/startup/server';
 // Tables = new Mongo.Collection('myTables');
 
 process.env.MAIL_URL="smtp://timea.kispal93%40gmail.com:bernike005@smtp.gmail.com:465/";
+process.env.MONGO_URL="mongodb://localhost:27017,localhost:27018,localhost:27019/repset1?replicaSet=myReplSet";
+process.env.MONGO_OPLOG_URL="mongodb://localhost:27017,localhost:27018,localhost:27019/local?replicaSet=myReplSet";
 
 Meteor.publish('restaurants', function() {
   return Restaurants.find();
@@ -76,7 +78,7 @@ Meteor.publish('places', function(param1, param2, param3, param4, param5, param6
     var type_bar = param8;
     var type_bistro = param9;
     var type_pub = param10;
-    var type_cafeteria = param11;
+    var type_pizzeria = param11;
     var type_coffeehouse = param12;
 
     // "type" : ["pub", "restaurant"]
@@ -86,7 +88,7 @@ Meteor.publish('places', function(param1, param2, param3, param4, param5, param6
     if (type_bar) { types["$in"].push("bar"); }
     if (type_bistro) { types["$in"].push("bistro"); }
     if (type_pub) { types["$in"].push("pub"); }
-    if (type_cafeteria) { types["$in"].push("cafeteria"); }
+    if (type_pizzeria) { types["$in"].push("pizzeria"); }
     if (type_coffeehouse) { types["$in"].push("coffeehouse"); }
 
     conditions["type"] = types;

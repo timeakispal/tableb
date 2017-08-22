@@ -92,22 +92,22 @@
         <div class="container" style="padding-top: 20px; padding-bottom: 15px;">
             <div class="w3-row">
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="restaurant" id="restaurant" class="css-checkbox" /><label for="restaurant" class="css-label">Restaurant</label>
+                    <input type="checkbox" checked name="restaurant" id="restaurant" class="css-checkbox" /><label for="restaurant" class="css-label">Restaurant <span class="fa fa-cutlery"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="bar" id="bar" class="css-checkbox" /><label for="bar" class="css-label">Bar</label>
+                    <input type="checkbox" checked name="bar" id="bar" class="css-checkbox" /><label for="bar" class="css-label">Bar <span class="fa fa-glass"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="bistro" id="bistro" class="css-checkbox" /><label for="bistro" class="css-label">Bistro</label>
+                    <input type="checkbox" checked name="bistro" id="bistro" class="css-checkbox" /><label for="bistro" class="css-label">Bistro <span class="fa fa-bold"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="pub" id="pub" class="css-checkbox" /><label for="pub" class="css-label">Pub</label>
+                    <input type="checkbox" checked name="pub" id="pub" class="css-checkbox" /><label for="pub" class="css-label">Pub <span class="fa fa-beer"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="cafeteria" id="cafeteria" class="css-checkbox" /><label for="cafeteria" class="css-label">Cafeteria</label>
+                    <input type="checkbox" checked name="pizzeria" id="pizzeria" class="css-checkbox" /><label for="pizzeria" class="css-label">Pizzeria <span class="fa fa-birthday-cake"></span></label>
                 </div>
                 <div class="col-sm-2">
-                    <input type="checkbox" checked name="coffeehouse" id="coffeehouse" class="css-checkbox" /><label for="coffeehouse" class="css-label">Coffeehouse</label>
+                    <input type="checkbox" checked name="coffeehouse" id="coffeehouse" class="css-checkbox" /><label for="coffeehouse" class="css-label">Coffeehouse <span class="fa fa-coffee"></span></label>
                 </div>
             </div>
             <!-- Links -->
@@ -193,7 +193,9 @@
                 <!-- The Modal -->
                 {{> reservationModal}}
     			<h4 class="pull-right">{{expensive}}</h4>
-    			<h4><a id="restaurant-details" style="cursor:default">{{name}}</a>
+    			<h4>
+                    <a id="restaurant-details" style="cursor:pointer">{{name}}</a>
+                    <span class="{{type_icon}}" title="{{type}}"></span>
     			</h4>
     			<p>{{about}}</p>
     			<a id="restaurant-details" class="btn btn-default">Reserve >></a>

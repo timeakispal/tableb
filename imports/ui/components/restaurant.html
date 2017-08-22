@@ -73,7 +73,43 @@
                     <!-- The Modal -->
                     {{> reservationModal}}
 
-					<h1><b>{{name}}</b></h1>
+					<div class="w3-row">
+                        <div class="w3-col s6"><h1><b>{{name}}</b></h1></div>
+                        <div class="w3-col s6" style="text-align:right">
+                            <h4>
+                            {{#if wifi}}
+                                <span class="fa fa-wifi" title="wifi"></span>
+                            {{else}}
+                                <span class="fa fa-wifi color-text-icons" title="wifi"></span>
+                            {{/if}}
+                            {{#if food}}
+                                <span class="fa fa-cutlery" title="food"></span>
+                            {{else}}
+                                <span class="fa fa-cutlery color-text-icons" title="food"></span>
+                            {{/if}}
+                            {{#if parking}}
+                                <span class="mdi mdi-parking" title="parking"></span>
+                            {{else}}
+                                <span class="mdi mdi-parking color-text-icons" title="parking"></span>
+                            {{/if}}
+                            {{#if terrace}}
+                                <span class="fa fa-tree" title="terrace"></span>
+                            {{else}}
+                                <span class="fa fa-tree color-text-icons" title="terrace"></span>
+                            {{/if}}
+                            {{#if pet_friendly}}
+                                <span class="fa fa-paw" title="pet-friendly"></span>
+                            {{else}}
+                                <span class="fa fa-paw color-text-icons" title="pet-friendly"></span>
+                            {{/if}}
+                            {{#if creditcard_accepted}}
+                                <span class="fa fa-credit-card" title="credit card accepted"></span>
+                            {{else}}
+                                <span class="fa fa-credit-card color-text-icons" title="credit card accepted"></span>
+                            {{/if}}
+                            </h4>
+                        </div>
+                    </div>
 					<hr>
 					<p>{{about}}</p>
 					<p>See more snippets like these online store reviews at <a target="_blank" href="http://bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
@@ -153,20 +189,16 @@
 		<div class="col-sm-4">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<h4><b>Opening hours: </b></h4><h5>Monday - Saturday</h5><h5>10:00 - 24:00</h5>
+					<h4><b>Opening hours: </b></h4><h5>Monday - Saturday</h5><h5>{{opening}} - {{closing}}</h5>
 					<h4><b>Location: </b></h4><h5>{{location}}</h5>
 					<h4><b>Phone number: </b></h4><h5>{{phone_nb}}</h5>
 					<h4><b>E-mail address: </b></h4><h5>{{email}}</h5>
 					<h4><b>Expensive:</b></h4><h5>{{expensive}}</h5>
-					<h4><b>Pet-friendly:</b></h4><h5>
-                        {{#if pet_firendly}}
-                            yes
-                        {{else}}
-                            no
-                        {{/if}}</h5>
 					<br><br>
-					<a class="btn btn-lg btn-info btn-block">Contact</a>
+					<a id="contact-restaurant" class="btn btn-lg btn-info btn-block">Contact</a>
 				</div>
+                <!-- The Modal -->
+                {{> contactModal}}
 
 			</div>
 		</div>

@@ -73,6 +73,14 @@ if (Meteor.isClient) {
 			Session.set("resRestaurant", resti);
 		    Modal.show('reservationModal');
 		},
+
+		'click #contact-restaurant': function(e, t) {
+		    e.preventDefault();
+			var resti = AmplifiedSession.get('Restaurant');
+			Session.set("resRestaurant", resti);
+		    Modal.show('contactModal');
+		},
+
 		'click #star-1': function(e, t) {
 		    e.preventDefault();
 		    var list = [];
