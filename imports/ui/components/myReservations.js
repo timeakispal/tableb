@@ -15,7 +15,10 @@ Template.myReservations.helpers({
 		for (var i = 0; i < tables.length; i++) {
 			for (var j = 0; j < tables[i].reservations.length; j++) {
 				if (tables[i].reservations[j].email == email) {
-					tables[i].reservations[j].restaurant_name = tables[i].restaurant_name;
+					var restId = tables[i].restaurant_id;
+					var restaurant = Restaurants.findOne({_id: restId});
+					// tables[i].reservations[j].restaurant_name = tables[i].restaurant_name;
+					tables[i].reservations[j].restaurant_name = restaurant.name;
 					tables[i].reservations[j].id = tables[i]._id;
 					list.push(tables[i].reservations[j]);
 				}

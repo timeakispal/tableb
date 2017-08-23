@@ -32,6 +32,7 @@ if (Meteor.isClient) {
 
 				Session.set("showLocationSelect", 0);
 				Session.set("showSearchBar", 1);
+				Session.set('showResAlert', false);
 			}
 		});
 	});
@@ -60,6 +61,7 @@ if (Meteor.isClient) {
 			Session.set("persons", people);
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
+			Session.set('showResAlert', false);
 			// this.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
 		},
 
@@ -72,6 +74,7 @@ if (Meteor.isClient) {
 			var resti = AmplifiedSession.get('Restaurant');
 			Session.set("resRestaurant", resti);
 		    Modal.show('reservationModal');
+			Session.set('showResAlert', false);
 		},
 
 		'click #contact-restaurant': function(e, t) {
@@ -150,6 +153,16 @@ if (Meteor.isClient) {
 	});
 
 	Template.restaurant.helpers({
+
+		'resMessage': function() {
+           return Session.get('resMessage');
+		},
+		'showResAlert': function() {
+		   return Session.get('showResAlert');
+		},
+		'alertTypeRes': function() {
+		   return Session.get('alertTypeRes');
+		},
 
 		RestaurantView: function() {
 			var restId = AmplifiedSession.get('Restaurant');

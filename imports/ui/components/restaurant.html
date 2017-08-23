@@ -52,6 +52,14 @@
 </form>
 
 <div class="container w3-padding-32">
+
+    {{#if showResAlert}}
+    <div id="alertMessage" class="alert {{alertTypeRes}} alert-dismissable">
+        <a class="panel-close close" data-dismiss="alert">×</a>
+        {{resMessage}}
+    </div>
+    {{/if}}
+    
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="thumbnail">

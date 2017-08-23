@@ -207,6 +207,6 @@ Router.route('/myReservations', {
         }
     },
     waitOn: function () {
-		return [Meteor.subscribe('userinfo', Meteor.userId()), Meteor.subscribe('tables')];
+		return [Meteor.subscribe('userinfo', Meteor.userId()), Meteor.subscribe('tables'), Meteor.subscribe('restaurants')];
 	}
 });
