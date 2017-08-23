@@ -695,139 +695,69 @@ if (Meteor.isClient) {
 	}
 
 	function freeTables(rest_id) {
-		// var list = [];
 		var restId = rest_id;
 		var res_date = Session.get("reservationDate");
 		var time = Session.get("reservationTime");
-		// var people = Session.get("persons");
-		var leave_time = 2400;
+		var timeLeave = Session.get("timeOfLeave");
+
+		time = Number(time.replace(":", ""));
+		if (timeLeave == undefined || timeLeave == "") {
+			timeLeave = time + 200;
+		} else {
+			timeLeave = Number(timeLeave.replace(":", ""));
+		}
+
+		var restaurant = Restaurants.findOne({_id: restId});
+		if (timeLeave > Number(restaurant.closing.replace(":", "")) || time < Number(restaurant.opening.replace(":", ""))) {
+			return [];
+		}
 
 		var d = new Date();
 		today = moment(d).format('YYYY-MM-DD');
 		if (res_date == today) {
 			if (time == undefined || time == "") {
-			// 	var d = new Date();
-			// 	var hour = d.getHours();
-			// 	var min = d.getMinutes();
-			// 	if (0 < min && min <= 30) {
-			// 		leave_time = hour * 100 + 30;
-			// 	} else {
-			// 		if (30 < min) {
-			// 			hour++;
-			// 		}
-			// 		leave_time = hour * 100;
-			// 	}
-			// 	leave_time += 200;
 				console.log("time not defined!");
-			// 	return allHours(restId, res_date, hour, min, leave_time);
-			//
 			}
-			// else {
-				var clock = time.split(":");
-				var timeLeave = Session.get("timeOfLeave");
 
-				// if (0 < clock[1] && clock[1] <= 30) {
-				// 	leave_time = clock[0] * 100 + 30;
-				// } else {
-				// 	if (30 < clock[1]) {
-				// 		clock[0]++;
-				// 	}
-				// 	leave_time = clock[0] * 100;
-				// }
-				// leave_time += 100;
+			console.log("time: " + time + " leave_time: " + timeLeave);
+			return allHours(restId, res_date, time, timeLeave);
 
-				leave_time = Number(clock[0]) * 100 + 200 + Number(clock[1]);
-
-				if (timeLeave !== undefined && timeLeave !== "") {
-					var clock2 = timeLeave.split(":");
-					leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
-				}
-
-				console.log("time: " + clock + " leave_time: " + leave_time);
-				return allHours(restId, res_date, clock[0], clock[1], leave_time);
-			// }
 		} else {
 			if (time == undefined || time == "") {
-				// return allHours(restId, res_date, 9, 0, 11);
 				console.log("time not defined!");
 			}
-			// else {
-				var clock = time.split(":");
-				var timeLeave = Session.get("timeOfLeave");
-
-				// if (0 < clock[1] && clock[1] <= 30) {
-				// 	leave_time = clock[0] * 100 + 30;
-				// } else {
-				// 	if (30 < clock[1]) {
-				// 		clock[0]++;
-				// 	}
-				// 	leave_time = clock[0] * 100;
-				// }
-				// leave_time += 200;
-
-				leave_time = Number(clock[0]) * 100 + 200 + Number(clock[1]);
-
-				if (timeLeave !== undefined && timeLeave !== "") {
-					// var clock2 = timeLeave.split(":");
-					// leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
-					console.log("time: " + Number(time.replace(":", "")) + " leave_time: " + Number(timeLeave.replace(":", "")));
-					return allHours(restId, res_date, Number(time.replace(":", "")), Number(timeLeave.replace(":", "")));
-				}
-
-				console.log("time: " + Number(time.replace(":", "")) + " leave_time: " + (Number(time.replace(":", "")) + 200));
-
-				return allHours(restId, res_date, Number(time.replace(":", "")), Number(time.replace(":", "")) + 200);
-			// }
+			
+			console.log("time: " + time + " leave_time: " + timeLeave);
+			return allHours(restId, res_date, time, timeLeave);
 		}
 	}
 
-	function allHours(restId, res_date, hour, min, leave_time) {
+	function allHours(restId, res_date, arrival_time, leave_time) {
 		var list = [];
-		var time;
-
-		if (leave_time % 100 == 0) {
-			Session.set("leavingHour", Math.floor(leave_time/100) + ":00");
-		} else {
-			Session.set("leavingHour", Math.floor(leave_time/100) + ":30");
-		}
-
-		// if (0 < min && min <= 30) {
-		// 	time = hour * 100 + 30;
-		// } else {
-		// 	if (30 < min) {
-		// 		hour++;
-		// 	}
-		// 	time = hour * 100;
-		// }
-
-		var time_bckup = time;
-		// var nbpeople = Number(people);
-		// var nbpeople_max = String(nbpeople + 2);
-		// nbpeople = String(nbpeople);
+		var time_bckup = arrival_time;
+		
 		var table = Tables.find({'restaurant_id': restId, 'reservations.res_date': {$nin: [res_date]}}, {sort: {seats: 1}}).fetch();
-		// var table = Restaurants.findOne({'_id': restId, 'tables.seats': {$gte: nbpeople, $lte: nbpeople_max}, 'tables.reservations': { $eq: [] }});
-		// console.log(table.tables);
 		if (table !== undefined && table.length > 0) {
 		// there is min 1 table that has no reservations
 			var tableid = table[0]._id;
 			// no tables that have reservation on that date
 			while (list.length < 3) {
-				if (time % 100 == 0) {
-					var inputhour = Math.floor(time/100) + ":00";
+				if (arrival_time % 100 == 0) {
+					var inputhour = Math.floor(arrival_time/100) + ":00";
 					list.push({tableid:tableid, hour:inputhour});
-					time += 30;
+					arrival_time += 30;
 				} else {
-					var inputhour = Math.floor(time/100) + ":30";
+					var inputhour = Math.floor(arrival_time/100) + ":30";
 					list.push({tableid:tableid, hour:inputhour});
-					time += 70;
+					arrival_time += 70;
 				}
 			}
 
 			return list;
-		// console.log(table.tables);
 		}
 
-		table = Tables.find({'restaurant_id': restId, 'reservations.res_date': {$in: [res_date]}}, {sort: {seats: 1}}).fetch();
+		// csak olyan asztal maradt, ami tartalmazza mar ezt a foglalasi datumot
+		table = Tables.find({'restaurant_id': restId}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description
 			return list;
@@ -835,7 +765,7 @@ if (Meteor.isClient) {
 
 		for (var k = 0; k < table.length; k++) {
 			var list_temp = [];
-			time = time_bckup;
+			arrival_time = time_bckup;
 			var tableid = table[k]._id;
 			var reservations = table[k].reservations;
 			for (var i = 0; i < reservations.length; i++) {
@@ -845,26 +775,26 @@ if (Meteor.isClient) {
 			}
 
 			list_temp.sort(compare);
-			var maxtime = time + 100;
-			if (time >= 2300) {
-				maxtime = 2330;
+			var maxtime = arrival_time + 200;
+			if (arrival_time >= 2300 || arrival_time < 900) {
+				maxtime = 2400;
 			}
 
 			var leavehour = 0;
 			for (var i = 0; i < list_temp.length; i++) {
 				if (maxtime <= list_temp[i].start && maxtime >= leavehour) {
-					if (leavehour >= time && leavehour <= maxtime) {
-						time = leavehour;
+					if (leavehour >= arrival_time && leavehour <= maxtime) {
+						arrival_time = leavehour;
 					}
-					while (time <=  leave_time && leave_time <= list_temp[i].start && time <= maxtime) {
-						if (time % 100 == 0) {
-							var inputhour = Math.floor(time/100) + ":00";
+					while (arrival_time <=  leave_time && leave_time <= list_temp[i].start && arrival_time <= maxtime) {
+						if (arrival_time % 100 == 0) {
+							var inputhour = Math.floor(arrival_time/100) + ":00";
 							list.push({tableid:tableid, hour:inputhour});
-							time += 30;
+							arrival_time += 30;
 						} else {
-							var inputhour = Math.floor(time/100) + ":30";
+							var inputhour = Math.floor(arrival_time/100) + ":30";
 							list.push({tableid:tableid, hour:inputhour});
-							time += 70;
+							arrival_time += 70;
 						}
 					}
 				}
@@ -873,21 +803,21 @@ if (Meteor.isClient) {
 
 			}
 
-			if (time <= leavehour || leavehour <= maxtime) {
-				if (time <= leavehour) {
-					time = leavehour;
+			if (arrival_time <= leavehour || leavehour <= maxtime) {
+				if (arrival_time <= leavehour) {
+					arrival_time = leavehour;
 				}
 
-				if (time <= maxtime) {
-					while (time <= 2400 && time <= maxtime) {
-						if (time % 100 == 0) {
-							var inputhour = Math.floor(time/100) + ":00";
+				if (arrival_time <= maxtime) {
+					while (arrival_time <= 2400 && arrival_time <= maxtime) {
+						if (arrival_time % 100 == 0) {
+							var inputhour = Math.floor(arrival_time/100) + ":00";
 							list.push({tableid:tableid, hour:inputhour});
-							time += 30;
+							arrival_time += 30;
 						} else {
-							var inputhour = Math.floor(time/100) + ":30";
+							var inputhour = Math.floor(arrival_time/100) + ":30";
 							list.push({tableid:tableid, hour:inputhour});
-							time += 70;
+							arrival_time += 70;
 						}
 					}
 				}
