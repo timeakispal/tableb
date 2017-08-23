@@ -1,14 +1,15 @@
 import './home.html';
 
-Template.home.onRendered(function() {
-	Session.set('searchLocation', "");
-	Session.set('setDate', "");
-	Session.set('persons', "");
-	Session.set('reservationTime', "");
-	Session.set('timeOfLeave', "");
-});
-
 if (Meteor.isClient) {
+
+	Template.home.onRendered(function() {
+
+		Session.set('searchLocation', "");
+		Session.set('setDate', moment(new Date()).format('YYYY-MM-DD'));
+		Session.set('persons', 2);
+		Session.set('reservationTime', arrivalHours(moment(new Date()).format('YYYY-MM-DD'))[0]);
+		Session.set('timeOfLeave', "");
+	});
 
 	Template.home.events({
 		'click .logout': function(event){
@@ -29,10 +30,11 @@ if (Meteor.isClient) {
 		'change #when, change #when2': function(evt, t) {
 			var when = $(evt.target).val();
 			Session.set("setDate", when);
-			t.find('#arrival_hour').value = "";
+			Session.set("setHour", arrivalHours(when)[0]);
+			t.find('#arrival_hour').value = arrivalHours(when)[0];
 			t.find('#leaving_hour').value = "";
 
-			t.find('#arrival_hour2').value = "";
+			t.find('#arrival_hour2').value = arrivalHours(when)[0];
 			t.find('#leaving_hour2').value = "";
 		},
 
@@ -166,43 +168,7 @@ if (Meteor.isClient) {
 		},
 
 		'arrival_hours': function() {
-			var list = [];
-			var hour = 8;
-			var min = 30;
-
-			if (Session.get("setDate") == undefined) {
-				return list;
-			}
-
-			var d = new Date();
-			today = moment(d).format('YYYY-MM-DD');
-			if (Session.get("setDate") == today) {
-				hour = d.getHours();
-				min = d.getMinutes();
-			}
-
-			if (15 <= min && min <= 45) {
-				hour++;
-				for (var i = hour; i < 24; i++) {
-					list.push(i + ":00");
-					list.push(i + ":30");
-				}
-			} else {
-				if (min >= 45) {
-					hour++;
-					list.push(hour + ":30");
-					hour++;
-				} else {
-					list.push(hour + ":30");
-					hour++;
-				}
-				for (var i = hour; i < 24; i++) {
-					list.push(i + ":00");
-					list.push(i + ":30");
-				}
-			}
-
-			return list;
+			return arrivalHours(Session.get("setDate"));
 		},
 
 		'leaving_hours': function() {
@@ -304,4 +270,40 @@ if (Meteor.isClient) {
 			}
 	  	},
 	});
+
+	function arrivalHours(date) {
+		var list = [];
+		var hour = 8;
+		var min = 30;
+		var d = new Date();
+		today = moment(d).format('YYYY-MM-DD');
+
+		if (date == today) {
+			hour = d.getHours();
+			min = d.getMinutes();
+		}
+
+		if (15 <= min && min <= 45) {
+			hour++;
+			for (var i = hour; i < 24; i++) {
+				list.push(i + ":00");
+				list.push(i + ":30");
+			}
+		} else {
+			if (min >= 45) {
+				hour++;
+				list.push(hour + ":30");
+				hour++;
+			} else {
+				list.push(hour + ":30");
+				hour++;
+			}
+			for (var i = hour; i < 24; i++) {
+				list.push(i + ":00");
+				list.push(i + ":30");
+			}
+		}
+
+		return list;
+	}
 }
