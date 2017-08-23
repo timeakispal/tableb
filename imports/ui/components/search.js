@@ -706,66 +706,78 @@ if (Meteor.isClient) {
 		today = moment(d).format('YYYY-MM-DD');
 		if (res_date == today) {
 			if (time == undefined || time == "") {
-				var d = new Date();
-				var hour = d.getHours();
-				var min = d.getMinutes();
-				if (0 < min && min <= 30) {
-					leave_time = hour * 100 + 30;
-				} else {
-					if (30 < min) {
-						hour++;
-					}
-					leave_time = hour * 100;
-				}
-				leave_time += 200;
-				return allHours(restId, res_date, hour, min, leave_time);
-
-			} else {
+			// 	var d = new Date();
+			// 	var hour = d.getHours();
+			// 	var min = d.getMinutes();
+			// 	if (0 < min && min <= 30) {
+			// 		leave_time = hour * 100 + 30;
+			// 	} else {
+			// 		if (30 < min) {
+			// 			hour++;
+			// 		}
+			// 		leave_time = hour * 100;
+			// 	}
+			// 	leave_time += 200;
+				console.log("time not defined!");
+			// 	return allHours(restId, res_date, hour, min, leave_time);
+			//
+			}
+			// else {
 				var clock = time.split(":");
 				var timeLeave = Session.get("timeOfLeave");
 
-				if (0 < clock[1] && clock[1] <= 30) {
-					leave_time = clock[0] * 100 + 30;
-				} else {
-					if (30 < clock[1]) {
-						clock[0]++;
-					}
-					leave_time = clock[0] * 100;
-				}
-				leave_time += 100;
+				// if (0 < clock[1] && clock[1] <= 30) {
+				// 	leave_time = clock[0] * 100 + 30;
+				// } else {
+				// 	if (30 < clock[1]) {
+				// 		clock[0]++;
+				// 	}
+				// 	leave_time = clock[0] * 100;
+				// }
+				// leave_time += 100;
+
+				leave_time = Number(clock[0]) * 100 + 200 + Number(clock[1]);
 
 				if (timeLeave !== undefined && timeLeave !== "") {
 					var clock2 = timeLeave.split(":");
 					leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
 				}
 
+				console.log("time: " + clock + " leave_time: " + leave_time);
 				return allHours(restId, res_date, clock[0], clock[1], leave_time);
-			}
+			// }
 		} else {
 			if (time == undefined || time == "") {
-				return allHours(restId, res_date, 9, 0, 11);
-
-			} else {
+				// return allHours(restId, res_date, 9, 0, 11);
+				console.log("time not defined!");
+			}
+			// else {
 				var clock = time.split(":");
 				var timeLeave = Session.get("timeOfLeave");
 
-				if (0 < clock[1] && clock[1] <= 30) {
-					leave_time = clock[0] * 100 + 30;
-				} else {
-					if (30 < clock[1]) {
-						clock[0]++;
-					}
-					leave_time = clock[0] * 100;
-				}
-				leave_time += 200;
+				// if (0 < clock[1] && clock[1] <= 30) {
+				// 	leave_time = clock[0] * 100 + 30;
+				// } else {
+				// 	if (30 < clock[1]) {
+				// 		clock[0]++;
+				// 	}
+				// 	leave_time = clock[0] * 100;
+				// }
+				// leave_time += 200;
+
+				leave_time = Number(clock[0]) * 100 + 200 + Number(clock[1]);
 
 				if (timeLeave !== undefined && timeLeave !== "") {
-					var clock2 = timeLeave.split(":");
-					leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
+					// var clock2 = timeLeave.split(":");
+					// leave_time = Number(clock2[0]) * 100 + Number(clock2[1]);
+					console.log("time: " + Number(time.replace(":", "")) + " leave_time: " + Number(timeLeave.replace(":", "")));
+					return allHours(restId, res_date, Number(time.replace(":", "")), Number(timeLeave.replace(":", "")));
 				}
 
-				return allHours(restId, res_date, clock[0], clock[1], leave_time);
-			}
+				console.log("time: " + Number(time.replace(":", "")) + " leave_time: " + (Number(time.replace(":", "")) + 200));
+
+				return allHours(restId, res_date, Number(time.replace(":", "")), Number(time.replace(":", "")) + 200);
+			// }
 		}
 	}
 
@@ -779,14 +791,14 @@ if (Meteor.isClient) {
 			Session.set("leavingHour", Math.floor(leave_time/100) + ":30");
 		}
 
-		if (0 < min && min <= 30) {
-			time = hour * 100 + 30;
-		} else {
-			if (30 < min) {
-				hour++;
-			}
-			time = hour * 100;
-		}
+		// if (0 < min && min <= 30) {
+		// 	time = hour * 100 + 30;
+		// } else {
+		// 	if (30 < min) {
+		// 		hour++;
+		// 	}
+		// 	time = hour * 100;
+		// }
 
 		var time_bckup = time;
 		// var nbpeople = Number(people);
