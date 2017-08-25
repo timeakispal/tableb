@@ -2,7 +2,7 @@
 <div class="modal fade" id="insertReservationModal" name="insertReservationModal">
     <div class="modal-dialog">
       <div class="modal-content">
-        
+
         <div class="modal-header">
           <h4 class="modal-title">Table reservation for {{reservedHour}} on {{reservedDate}}</h4>
         </div>
@@ -18,13 +18,13 @@
                 <h6>{{reservedPersons}}</h6>
                 <hr>
               </div>
-              {{#if LeaveSet}}
+              <!-- {{#if LeaveSet}} -->
               <div class="form-group">
                 <label for="InputLeave">Time of leave</label>
                 <h6>{{reservedLeave}}</h6>
                 <hr>
               </div>
-              {{/if}}
+              <!-- {{/if}} -->
               <div class="form-group">
                 <label for="input-email">Email address</label>
                 <input required type="email" class="form-control" name="input-email" id="input-email" aria-describedby="emailHelp" placeholder="Enter email" value="{{email}}">
@@ -35,7 +35,7 @@
                 <input required type="text" class="form-control" name="input-phone" id="input-phone" placeholder="Phone number" value="{{phonenb}}">
               </div>
           </div>
-          
+
           <div class="modal-footer">
             <!-- <button type="button" class="btn btn-primary btn-lg">Reserve</button> -->
             <input type="submit" class="btn btn-primary btn-lg" value="Reserve">

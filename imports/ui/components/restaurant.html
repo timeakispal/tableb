@@ -59,7 +59,7 @@
         {{resMessage}}
     </div>
     {{/if}}
-    
+
 	<div class="row">
 		<div class="col-sm-8">
 			<div class="thumbnail">
@@ -70,13 +70,20 @@
 		        {{/if}}
 				<div class="caption-full">
     				<div class="w3-row w3-padding-16 margin-minus-buttons">
-    					{{#each freeTables}}
-    					<div class="w3-col s4 button-padding">
-    						<div id="reserve" name="{{this}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base8">
-    							{{this.hour}}
-    						</div>
-    					</div>
-    					{{/each}}
+                        {{#if freeTables}}
+        					{{#each freeTables}}
+        					<div class="w3-col s4 button-padding">
+        						<div id="reserve" name="{{this}}" data-toggle="modal" class="w3-button w3-block w3-round w3-small w3-text-white color-base8">
+        							{{this.hour}}
+        						</div>
+        					</div>
+        					{{/each}}
+                        {{else}}
+                            <div id="sorryMessage" class="alert alert-warning alert-dismissable">
+                                <a class="panel-close close" data-dismiss="alert">×</a>
+                                There are no more available tables at the requested hour! :(
+                            </div>
+                        {{/if}}
     				</div>
                     <!-- The Modal -->
                     {{> reservationModal}}

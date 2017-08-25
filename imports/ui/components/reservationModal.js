@@ -46,6 +46,10 @@ Template.reservationModal.helpers({
 		},
 
 		reservedLeave : function() {
+			if (Session.get("timeOfLeave") == undefined || Session.get("timeOfLeave") == "") {
+				var leave = Number(Session.get('reservationHour').replace(":", "")) + 200;
+				return Math.floor(leave/100) + ":" + ('0' + leave%100).slice(-2);;
+			}
 			return Session.get("timeOfLeave");
 		},
 
@@ -95,20 +99,16 @@ Template.reservationModal.events({
 		if (phonenb == undefined || phonenb == "") {
 			phonenb = $('#input-phone').val();
 		}
-		// console.log("email:" + Session.get("inputEmail"));
-		// console.log("phone:" + Session.get("inputPhone"));
 		var tableid = Session.get("reservationTable");
 		var date = Session.get("reservationDate");
 		var arrival_hour = Session.get("reservationHour");
-		var leaving_hour = Session.get("leavingHour");
+		var leaving_hour = Session.get("timeOfLeave");
+		if (leaving_hour == undefined || leaving_hour == "") {
+			leaving_hour = Number(arrival_hour.replace(":", "")) + 200;
+		} else {
+			leaving_hour = Number(leaving_hour.replace(":", ""));
+		}
 		var persons = Session.get("persons");
-		// if (leaving_hour == undefined || leaving_hour == "") {
-		// 	var hour = Number(arrival_hour.split(":")[0]);
-		// 	var min = String(arrival_hour.split(":")[1]);
-		// 	hour += 2;
-		// 	leaving_hour = hour + ":" + min;
-		// }
-		// console.log(tableid);
 		var restId = Session.get('resRestaurant');
 		var restaurant = Restaurants.findOne({_id: restId});
 		var res_text = "Your reservation was made for " + persons + " people at " + restaurant.name + "!\n\nThe reservation starts from: " + arrival_hour + " on " + moment(date).format('MMMM Do YYYY') + ".\nYou should arrive 30 minutes earlier!\n\n";
@@ -122,12 +122,12 @@ Template.reservationModal.events({
 		  if (result == "ok") {
 		  	Session.set('resMessage', 'The reservation was successful!');
 			Session.set('alertTypeRes', 'alert-success');
-			
+
 		  } else {
 			Session.set('resMessage', 'Something went wrong! The table must have been taken :(');
 			Session.set('alertTypeRes', 'alert-warning');
 		  }
-		  
+
 		});
 		// Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');

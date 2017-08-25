@@ -44,19 +44,9 @@ if (Meteor.isClient) {
 			AmplifiedSession.set('reservationTime', Session.get('reservationTime'));
 		}
 
-		if (Session.get('reservationTime') == undefined && AmplifiedSession.get('reservationTime') == undefined) {
-			AmplifiedSession.set('reservationTime',  );
-		}
-
 		if (Session.get('reservationTime') == undefined && AmplifiedSession.get('reservationTime') !== undefined) {
 			Session.set('reservationTime', AmplifiedSession.get('reservationTime'));
 		}
-		console.log(AmplifiedSession.get('persons'));
-		console.log(Session.get('persons'));
-		console.log(AmplifiedSession.get('reservationTime'));
-		console.log(Session.get('reservationTime'));
-		console.log(AmplifiedSession.get('reservationDate'));
-		console.log(Session.get('reservationDate'));
 
 	});
 

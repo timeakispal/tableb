@@ -179,117 +179,117 @@ Meteor.methods({
 
 	'insertReservation': function(tableid, persons, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
-    var end = Number(leaving_hour.replace(":", ""));
-    var rand_nb = Math.floor((Math.random() * 5000) + 1);
-    var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : end, "start_time" : arrival_hour, "end_time" : leaving_hour, "res_number" : rand_nb};
-    var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
-    var table = Tables.findOne({_id: tableid});
+        var end = Math.floor(leaving_hour/100) + ":" + ('0' + leaving_hour%100).slice(-2);
+        var rand_nb = Math.floor((Math.random() * 5000) + 1);
+        var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : leaving_hour, "start_time" : arrival_hour, "end_time" : end, "res_number" : rand_nb};
+        // var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
+        var table = Tables.findOne({_id: tableid});
 
-    var response = "ok";
-    myTransactions.insert(
-        { 
-        'table_id': tableid, 'restaurant_id': table.restaurant_id, 
-        'res_date': date, 'arrival_time': arrival_hour, 'persons': persons, 
-        'email': email, 'state': "initial", 'lastModified': new Date() 
-        }, 
-        function(err, insertedId) {
-        if (insertedId == "" || insertedId == undefined) {
-          return "no";
-        }
-    });
+        var response = "ok";
+        myTransactions.insert(
+            {
+            'table_id': tableid, 'restaurant_id': table.restaurant_id,
+            'res_date': date, 'arrival_time': arrival_hour, 'persons': persons,
+            'email': email, 'state': "initial", 'lastModified': new Date()
+            },
+            function(err, insertedId) {
+            if (insertedId == "" || insertedId == undefined) {
+              return "no";
+            }
+        });
 
-    var t = myTransactions.findOne( 
-      { 
-        'state': "initial", 'table_id': tableid, 'res_date': date, 
-        'arrival_time': arrival_hour, 'persons': persons 
-      });
-      if (t == "" || t == undefined) {
-        return "no";
-      }
-
-      myTransactions.update(
-          { '_id': t._id, state: "initial" },
+        var t = myTransactions.findOne(
           {
-            $set: { 'state': "pending" },
-            $currentDate: { 'lastModified': true }
-          },
-          {upsert: false, multi: false}, 
-          function(err, updated) {
-          if (updated !== 1) {
-            myTransactions.update(
-               { _id: t._id, state: "initial" },
-               {
-                 $set: { state: "canceling" },
-                 $currentDate: { lastModified: true }
-               }
-            );
-            cancelTransaction();
+            'state': "initial", 'table_id': tableid, 'res_date': date,
+            'arrival_time': arrival_hour, 'persons': persons
+          });
+          if (t == "" || t == undefined) {
             return "no";
           }
-      });
 
-    Tables.update(
-        { '_id': t.table_id, 'pendingTransactions': { $ne: t._id } },
-        { $push: { 'pendingTransactions': t._id, 'reservations': reservation } },
-        {upsert: false, multi: false}, 
-        function(err, updated) {
-        if (updated !== 1) {
-          return "no";
-        }
-    });
-
-    myTransactions.update(
-       { '_id': t._id, state: "pending" },
-       {
-         $set: { 'state': "applied" },
-         $currentDate: { 'lastModified': true }
-       }, 
-        function(err, updated) {
-        if (updated !== 1) {
           myTransactions.update(
-               { _id: t._id, state: "pending" },
-               {
-                 $set: { state: "canceling" },
-                 $currentDate: { lastModified: true }
-               }
-            );
-            cancelTransaction();
-          return "no";
-        }
-    });
+              { '_id': t._id, state: "initial" },
+              {
+                $set: { 'state': "pending" },
+                $currentDate: { 'lastModified': true }
+              },
+              {upsert: false, multi: false},
+              function(err, updated) {
+              if (updated !== 1) {
+                myTransactions.update(
+                   { _id: t._id, state: "initial" },
+                   {
+                     $set: { state: "canceling" },
+                     $currentDate: { lastModified: true }
+                   }
+                );
+                cancelTransaction();
+                return "no";
+              }
+          });
+
+        Tables.update(
+            { '_id': t.table_id, 'pendingTransactions': { $ne: t._id } },
+            { $push: { 'pendingTransactions': t._id, 'reservations': reservation } },
+            {upsert: false, multi: false},
+            function(err, updated) {
+            if (updated !== 1) {
+              return "no";
+            }
+        });
+
+        myTransactions.update(
+           { '_id': t._id, state: "pending" },
+           {
+             $set: { 'state': "applied" },
+             $currentDate: { 'lastModified': true }
+           },
+            function(err, updated) {
+            if (updated !== 1) {
+              myTransactions.update(
+                   { _id: t._id, state: "pending" },
+                   {
+                     $set: { state: "canceling" },
+                     $currentDate: { lastModified: true }
+                   }
+                );
+                cancelTransaction();
+              return "no";
+            }
+        });
 
 
-    Tables.update(
-       { '_id': t.table_id, 'pendingTransactions': t._id },
-       { $pull: { 'pendingTransactions': t._id } }, 
-        function(err, updated) {
-        if (updated !== 1) {
-          return "no";
-        }
-    });
+        Tables.update(
+           { '_id': t.table_id, 'pendingTransactions': t._id },
+           { $pull: { 'pendingTransactions': t._id } },
+            function(err, updated) {
+            if (updated !== 1) {
+              return "no";
+            }
+        });
 
-    myTransactions.update(
-       { '_id': t._id, 'state': "applied" },
-       {
-         $set: { 'state': "done" },
-         $currentDate: { 'lastModified': true }
-       }, 
-        function(err, updated) {
-        if (updated !== 1) {
-          myTransactions.update(
-               { _id: t._id, state: "applied" },
-               {
-                 $set: { state: "canceling" },
-                 $currentDate: { lastModified: true }
-               }
-            );
-            cancelTransaction();
-          return "no";
-        }
-    });
+        myTransactions.update(
+           { '_id': t._id, 'state': "applied" },
+           {
+             $set: { 'state': "done" },
+             $currentDate: { 'lastModified': true }
+           },
+            function(err, updated) {
+            if (updated !== 1) {
+              myTransactions.update(
+                   { _id: t._id, state: "applied" },
+                   {
+                     $set: { state: "canceling" },
+                     $currentDate: { lastModified: true }
+                   }
+                );
+                cancelTransaction();
+              return "no";
+            }
+        });
 
-      console.log("final response: " + response);
-      return response;
+        console.log("final response: " + response);
+        return response;
     },
 
     'insertUserInfo' : function(userid, firstname, lastname, email, phonenb) {
