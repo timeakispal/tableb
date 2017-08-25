@@ -1,5 +1,4 @@
 import './search.html';
-// Markers = new Mongo.Collection('markers');
 
 if (Meteor.isClient) {
 	var markers = [];
@@ -63,7 +62,6 @@ if (Meteor.isClient) {
 	                    });
 
 	                    markers = markers_;
-						// console.log(marker_pins);
 					});
 				}
             });
@@ -86,12 +84,7 @@ if (Meteor.isClient) {
         }
     });
 
- //    Template.search.onCreated(function() {
-	//   this.subscribe('tablesPersons', Session.get("persons"));
-	// });
-
 	Template.search.onRendered(function() {
-		// this.subscribe('tablesPersons', Session.get("persons"));
 		var self = this;
 	    self.autorun(function() {
 			var tablesList = self.subscribe('tablesPersons', Session.get("persons"));
@@ -151,7 +144,6 @@ if (Meteor.isClient) {
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
 			Session.set('showResAlert', false);
-			// this.subscribe('tablesPersons', Session.get("persons"));
 		},
 
 		'click #rest-details': function(e, t){
@@ -622,7 +614,6 @@ if (Meteor.isClient) {
 	  	},
 
 		'Tables' : function() {
-			// var list = [];
 			var restId = this._id;
 			return freeTables(restId);
 		},
@@ -739,7 +730,6 @@ if (Meteor.isClient) {
 		if (table !== undefined && table.length > 0) {
 		// there is min 1 table that has no reservations
 			var tableid = table[0]._id;
-			console.log("belep ide" + tableid);
 			// no tables that have reservation on that date
 			while (list.length < 3) {
 				if (arrival_time % 100 == 0) {
@@ -756,7 +746,6 @@ if (Meteor.isClient) {
 			return list;
 		}
 
-		// csak olyan asztal maradt, ami tartalmazza mar ezt a foglalasi datumot
 		table = Tables.find({'restaurant_id': restId}, {sort: {seats: 1}}).fetch();
 		if (table == undefined || table.length < 1) {
 			// no tables that match the description
@@ -793,40 +782,32 @@ if (Meteor.isClient) {
 				if (leavehour >= arrival_time) {
 					arrival_time = leavehour;
 				}
-				console.log("arrival time:" + arrival_time + " leave_time:" + leave_time);
 				while (arrival_time <= maxtime && leave_time >= (arrival_time + 100)) {
-					console.log(arrival_time + " " + leave_time);
 					if (arrival_time % 100 == 0) {
 						var inputhour = Math.floor(arrival_time/100) + ":00";
 						list.push({tableid:tableid, hour:inputhour});
 						arrival_time += 30;
-						// leave_time += 30;
 					} else {
 						var inputhour = Math.floor(arrival_time/100) + ":30";
 						list.push({tableid:tableid, hour:inputhour});
 						arrival_time += 70;
-						// leave_time += 70;
 					}
 				}
-				console.log("inside:" + leave_time + " " + leave_bckup);
 			}
 
 			if (arrival_time <= leavehour) {
 				arrival_time = leavehour;
 			}
 
-			while (arrival_time <= 2400 && arrival_time <= maxtime && leave_time >= (arrival_time + 100)) { //leave_time <= leave_bckup
-				console.log("2. for loop: " + leave_time + " " + leave_bckup);
+			while (arrival_time <= 2400 && arrival_time <= maxtime && leave_time >= (arrival_time + 100)) {
 				if (arrival_time % 100 == 0) {
 					var inputhour = Math.floor(arrival_time/100) + ":00";
 					list.push({tableid:tableid, hour:inputhour});
 					arrival_time += 30;
-					// leave_time += 30;
 				} else {
 					var inputhour = Math.floor(arrival_time/100) + ":30";
 					list.push({tableid:tableid, hour:inputhour});
 					arrival_time += 70;
-					// leave_time += 70;
 				}
 			}
 

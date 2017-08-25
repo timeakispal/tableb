@@ -1,7 +1,5 @@
 import './restaurant.html';
 
-// Tables = new Mongo.Collection('myTables');
-
 if (Meteor.isClient) {
 
 	// A version of Session that also store the key/value pair to local storage
@@ -27,7 +25,6 @@ if (Meteor.isClient) {
 		self.autorun(function() {
 			var reviewsList = self.subscribe('reviewsRestaurant', AmplifiedSession.get('Restaurant'));
 			var tablesList = self.subscribe('tablesPersonsRestaurant', Session.get("persons"), AmplifiedSession.get('Restaurant'));
-			// var tablesList = self.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
 			if (reviewsList.ready() && tablesList.ready()) {
 
 				Session.set("showLocationSelect", 0);
@@ -62,7 +59,6 @@ if (Meteor.isClient) {
 			Session.set("reservationTime", arrival_hour);
 			Session.set("timeOfLeave", leaving_hour);
 			Session.set('showResAlert', false);
-			// this.subscribe('tablesRestaurant', AmplifiedSession.get('Restaurant'));
 		},
 
 		'click #reserve': function(e, t) {
@@ -487,22 +483,18 @@ if (Meteor.isClient) {
 				if (leavehour >= arrival_time) {
 					arrival_time = leavehour;
 				}
-				console.log("arrival time:" + arrival_time + " leave_time:" + leave_time);
 				while (arrival_time <= maxtime && leave_time >= (arrival_time + 100)) {
 					console.log(arrival_time + " " + leave_time);
 					if (arrival_time % 100 == 0) {
 						var inputhour = Math.floor(arrival_time/100) + ":00";
 						list.push({tableid:tableid, hour:inputhour});
 						arrival_time += 30;
-						// leave_time += 30;
 					} else {
 						var inputhour = Math.floor(arrival_time/100) + ":30";
 						list.push({tableid:tableid, hour:inputhour});
 						arrival_time += 70;
-						// leave_time += 70;
 					}
 				}
-				console.log("inside:" + leave_time + " " + leave_bckup);
 			}
 
 			if (arrival_time <= leavehour) {
@@ -510,17 +502,14 @@ if (Meteor.isClient) {
 			}
 
 			while (arrival_time <= 2400 && arrival_time <= maxtime && leave_time >= (arrival_time + 100)) { //leave_time <= leave_bckup
-				console.log("2. for loop: " + leave_time + " " + leave_bckup);
 				if (arrival_time % 100 == 0) {
 					var inputhour = Math.floor(arrival_time/100) + ":00";
 					list.push({tableid:tableid, hour:inputhour});
 					arrival_time += 30;
-					// leave_time += 30;
 				} else {
 					var inputhour = Math.floor(arrival_time/100) + ":30";
 					list.push({tableid:tableid, hour:inputhour});
 					arrival_time += 70;
-					// leave_time += 70;
 				}
 			}
 
