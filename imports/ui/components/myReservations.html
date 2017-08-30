@@ -10,11 +10,11 @@
                     <th>Persons</th>
                     <th>Time of arrival</th>
                     <th>Time of leave</th>
+                    <th>Confirmation e-mail</th>
                     <th></th>
                 </tr>
             </thead>
 		    {{#each Reservations}}
-				<!-- {{#each reservations}} -->
 	            <tbody>
 	                <tr>
 	                    <td>{{restaurant_name}}</td>
@@ -22,10 +22,10 @@
 	                    <td>{{persons}}</td>
 	                    <td>{{start_time}}</td>
 	                    <td>{{end_time}}</td>
+	                    <td>{{email}}</td>
 	                    <td><a class="reservation btn btn-danger">Delete</a></td>
 	                </tr>
 				</tbody>
-				<!-- {{/each}} -->
 		    {{/each}}
     	</table>
 	</div>

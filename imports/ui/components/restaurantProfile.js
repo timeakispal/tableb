@@ -67,7 +67,6 @@ if (Meteor.isClient) {
 			var restaurant = Restaurants.findOne({_id: restId});
 			var image_addr = restaurant.header_image;
 			var image_id = image_addr.split("/")[4];
-			// console.log(image_id);
 	    	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
 	    	return image;
 	  	},
@@ -100,12 +99,10 @@ if (Meteor.isClient) {
 					if (err){
 					// handle error
 					} else {
-					// handle success depending what you need to do
 						var restId = AmplifiedSession.get('myRestaurant');
 						var imagesURL = {
 						  "header_image": "/cfs/files/images/" + fileObj._id
 						};
-						// Meteor.Restaurants.update(restId, {$set: imagesURL});
 						Meteor.call('updateHeaderImage', restId, imagesURL);
 
 					}

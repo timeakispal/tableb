@@ -38,3 +38,4 @@ cfs:gridfs
 dburles:google-maps
 dapearce:material-icons
 email
+zuuk:stale-session

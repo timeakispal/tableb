@@ -18,12 +18,10 @@
         </ol>
     </div>
 </div>
-<!-- /.row -->
 
 <div class="row">
     <div class="col-lg-7">
         <div class="w3-padding-32">
-            <!-- {{#each images}} -->
             {{#if avatar}}
             <img class="img-responsive" src="{{avatar.url}}" alt="">
             {{else}}
@@ -35,11 +33,6 @@
         </div>
         <form role="form">
         {{#each RestaurantView}}
-        	<!-- <div class="form-group">
-                <label>Name</label>
-                <p class="form-control-static">{{name}}</p>
-            </div> -->
-
             <div class="form-group">
                 <label>Email address</label>
                 <input id="email" class="form-control" placeholder="Enter text" value="{{email}}">
@@ -106,7 +99,6 @@
         </form>
     </div>
 </div>
-<!-- /.row -->
 </div>
 {{else}}
     <div class="alert alert-danger">

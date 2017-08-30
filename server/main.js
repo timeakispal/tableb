@@ -1,9 +1,4 @@
 import '/imports/startup/server';
-// import '/imports/startup/both';
-
-// Locations = new Mongo.Collection('myLocations');
-// Restaurants = new Mongo.Collection('myRestaurants');
-// Tables = new Mongo.Collection('myTables');
 
 // process.env.MAIL_URL="smtp://timea.kispal93%40gmail.com:bernike005@smtp.gmail.com:465/";
 // process.env.MONGO_URL="mongodb://localhost:27017,localhost:27018,localhost:27019/repset1?replicaSet=myReplSet";
@@ -15,6 +10,10 @@ Meteor.publish('restaurants', function() {
 
 Meteor.publish('tables', function() {
   return Tables.find();
+});
+
+Meteor.publish('reservedTables', function(userid) {
+  return Tables.find({'reservations.user_id': userid});
 });
 Meteor.publish('tablesPersons', function(people) {
   var nbpeople = Number(people);
@@ -177,12 +176,15 @@ Meteor.methods({
 		}
 	},
 
-	'insertReservation': function(tableid, persons, email, phonenb, date, arrival_hour, leaving_hour) {
+	'insertReservation': function(tableid, persons, userid, email, phonenb, date, arrival_hour, leaving_hour) {
 		var start = Number(arrival_hour.replace(":", ""));
         var end = Math.floor(leaving_hour/100) + ":" + ('0' + leaving_hour%100).slice(-2);
         var rand_nb = Math.floor((Math.random() * 5000) + 1);
         var reservation = {"res_date": date, "persons": persons, "email" : email, "phonenb" : phonenb, "start" : start, "end" : leaving_hour, "start_time" : arrival_hour, "end_time" : end, "res_number" : rand_nb};
-        // var reservation_table = {"table_id" : tableid, "res_date": date, "email" : email, "phonenb" : phonenb, "start_time" : arrival_hour};
+        if (userid !== 'none' && userid !== null) {
+          reservation['user_id'] = userid;
+        }
+
         var table = Tables.findOne({_id: tableid});
 
         var response = "ok";
@@ -369,8 +371,6 @@ Meteor.methods({
         var currentUserId = Meteor.userId();
         if(currentUserId){
             var table = Tables.findOne({_id: table_id});
-            // Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_number' : res_nb, 'res_date': res_date, 'email': email, 'phonenb': phonenb, 'start_time': start_time } } });
-            // console.log(res_nb);
             Tables.update({ _id: table._id },{ $pull: { 'reservations': { 'res_number' : res_nb, 'res_date': res_date, 'email': email} } });
         }
     },

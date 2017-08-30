@@ -9,15 +9,14 @@ Template.myReservations.helpers({
 		var today = moment();
 		var day_before = moment(today).subtract(1, 'day');
 		moment(day_before).format('YYYY-MM-DD');
-		var email = Meteor.user().emails[0].address
-		var tables = Tables.find({'reservations.email': email}).fetch();
+		var userid = Meteor.userId();
+		var tables = Tables.find().fetch();
 		var list = [];
 		for (var i = 0; i < tables.length; i++) {
 			for (var j = 0; j < tables[i].reservations.length; j++) {
-				if (tables[i].reservations[j].email == email) {
+				if (tables[i].reservations[j].user_id == userid) {
 					var restId = tables[i].restaurant_id;
 					var restaurant = Restaurants.findOne({_id: restId});
-					// tables[i].reservations[j].restaurant_name = tables[i].restaurant_name;
 					tables[i].reservations[j].restaurant_name = restaurant.name;
 					tables[i].reservations[j].id = tables[i]._id;
 					list.push(tables[i].reservations[j]);

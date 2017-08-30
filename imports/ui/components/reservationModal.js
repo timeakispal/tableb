@@ -91,6 +91,12 @@ Template.reservationModal.events({
 	'submit #reserve-form' : function (e,t)
 	{
 		e.preventDefault();
+
+		var userid = Meteor.userId();
+		if (userid == undefined || userid == null) {
+			userid == 'none';
+		}
+
 		var email = Session.get("inputEmail");
 		if (email == undefined || email == "") {
 			email = $('#input-email').val();
@@ -115,8 +121,7 @@ Template.reservationModal.events({
 		res_text = res_text + "Your contact details: " + email + ", " + phonenb + "\n\nThank you! Have a wonderful time!";
 
 		resDate = moment(date).format('YYYY-MM-DD');
-    	Meteor.call('insertReservation', tableid, persons, email, phonenb, date, arrival_hour, leaving_hour, function(error, result){
-		  // var theIdYouWant = result;
+    	Meteor.call('insertReservation', tableid, persons, userid, email, phonenb, date, arrival_hour, leaving_hour, function(error, result){
 		  console.log(result);
 		  Session.set('showResAlert', true);
 		  if (result == "ok") {
@@ -129,7 +134,7 @@ Template.reservationModal.events({
 		  }
 
 		});
-		// Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
+		Meteor.call('sendEmail', email, "Your reservation at " + restaurant.name, res_text);
     	$('#insertReservationModal').modal('hide'); //or  $('#IDModal').modal('toggle');
     	Modal.hide('insertReservationModal');
 	},

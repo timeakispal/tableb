@@ -70,50 +70,6 @@ if (Meteor.isClient) {
 			    chart.draw();
 			}
 		});
-
-		// Session.set('showAlert', false);
-
-		// var container = this.find("#review-chart");
-
-		// // Turn Meteor Collection to simple array of objects.
-		// var restId = AmplifiedSession.get('myRestaurant');
-		// var reviews = myReviews.find({rest_id: restId}).fetch().reverse();
-		// var list = [];
-
-		// var star_nb = 0;
-		// var rev_nb = 0;
-		// for (var i = 0; i < reviews.length; i++) {
-		// 	for (var j = 0; j < reviews[i].stars.length; j++) {
-		// 		if (reviews[i].stars[j] == 1) {
-		// 			star_nb++;
-		// 		}
-		// 	}
-
-		// 	list.push({x: reviews[i].date_inserted, value: star_nb});
-		// 	star_nb = 0;
-
-		// }
-
-		// var data = anychart.data.set(list);
-
-		// // create a chart
-	 //    chart = anychart.column();
-
-	 //    // create a column series and set the data
-	 //    var series = chart.column(data);
-
-	 //    // set the titles of the axes
-	 //    var xAxis = chart.xAxis();
-	 //    xAxis.title("Date of review");
-	 //    var yAxis = chart.yAxis();
-	 //    yAxis.title("Stars");
-
-	 //    var container = this.find("#review-chart");
-	 //    // set the container id
-	 //    chart.container(container);
-
-	 //    // initiate drawing the chart
-	 //    chart.draw();
 	});
 
 	Template.restaurantReviews.helpers({

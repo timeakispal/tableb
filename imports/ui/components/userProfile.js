@@ -10,7 +10,6 @@ Template.userProfile.helpers({
 	avatar: function () {
 		var image_addr = Meteor.user().profile.image;
 		var image_id = image_addr.split("/")[4];
-		// console.log(image_id);
     	var image = Images.findOne({_id: image_id}); // Where Images is an FS.Collection instance
     	return image;
   	},
@@ -84,23 +83,6 @@ Template.userProfile.events({
 		var val = $(evt.target).val();
 		Session.set("userName", val);
 	},
-
-	// 'change #avatar-image' : function(evt,t){
-	//     var file = evt.target.files[0]; //assuming 1 file only
-	//     console.log(file);
-	//     if (!file) return;
-
-	//     var reader = new FileReader(); //create a reader according to HTML5 File API
-
-	//     // reader.onload = function(evt){
-	// 		var buffer = new Uint8Array(reader.result) // convert to binary
-	// 		// Meteor.call('saveFile', buffer);
-	// 		Session.set('saveFile', buffer);
-	// 		console.log("buffer" + buffer);
-	//     // }
-
-	//     // reader.readAsArrayBuffer(file); //read the file as arraybuffer
-	// },
 
 	'change .myFileInput': function(event, template) {
 		FS.Utility.eachFile(event, function(file) {

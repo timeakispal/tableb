@@ -11,14 +11,10 @@ Router.configure({
 		myNav: {to: 'nav'},
 		myFooter: {to: 'footer'},
 	},
-	//the application will wait to load
-	// until we've successfully subscribed to the
 	// publications
 	waitOn: function () {
 		Meteor.subscribe('restaurants');
-		// Meteor.subscribe('tablesPersons', 0);
 		Meteor.subscribe('locations');
-		// Meteor.subscribe('reviews');
 		Meteor.subscribe('transactions');
 		Meteor.subscribe('images');
 	}
@@ -29,33 +25,22 @@ Router.route('/', {
 	name: 'home',
 	template: 'home',
 	layoutTemplate: 'homeTemplate',
-	// yieldTemplates: {
-	// 	myFooter: {to: 'footer'},
-	// },
 
 	waitOn: function () {
 		Meteor.subscribe('restaurants');
-		// Meteor.subscribe('tables');
 		Meteor.subscribe('locations');
 		Meteor.subscribe('reviews');
 		Meteor.subscribe('transactions');
 		Meteor.subscribe('images');
 	}
-	// waitOn: function () {
-	// 	return [ Meteor.subscribe('restaurants'), Meteor.subscribe('reviews')];
-	// }
 });
 
 Router.route('/user', {
 	name: 'user',
 	template: 'user',
 	layoutTemplate: 'mainTemplate',
-	// yieldTemplates: {
-	// 	myFooter: {to: 'footer'},
-	// },
 	onBeforeAction: function(){
         var currentUser = Meteor.userId();
-        // if currentUser benne van a RestaurantAdmins-ban akkor this.next
         if(currentUser){
             this.render("home");
         } else {
@@ -98,7 +83,6 @@ Router.route('/myRestaurant', {
             this.render("user");
         }
     },
-    //subscribe restaurantAdmins
 	waitOn: function () {
 		return Meteor.subscribe('restAdmins', Meteor.userId());
 	}
@@ -137,7 +121,6 @@ Router.route('/restaurantReviews', {
     },
 	waitOn: function () {
 		return Meteor.subscribe('restAdmins', Meteor.userId());
-		// return [Meteor.subscribe('reviews'), Meteor.subscribe('restAdmins', Meteor.userId())];
 	}
 });
 
@@ -156,7 +139,6 @@ Router.route('/restaurantTables', {
     },
 	waitOn: function () {
 		return Meteor.subscribe('restAdmins', Meteor.userId());
-		// return [Meteor.subscribe('tables'), Meteor.subscribe('restAdmins', Meteor.userId())];
 	}
 });
 
@@ -175,7 +157,6 @@ Router.route('/restaurantReservations', {
     },
 	waitOn: function () {
 		return Meteor.subscribe('restAdmins', Meteor.userId());
-		// return [Meteor.subscribe('tables'), Meteor.subscribe('restAdmins', Meteor.userId())];
 	}
 });
 
@@ -207,6 +188,6 @@ Router.route('/myReservations', {
         }
     },
     waitOn: function () {
-		return [Meteor.subscribe('userinfo', Meteor.userId()), Meteor.subscribe('tables'), Meteor.subscribe('restaurants')];
+		return [Meteor.subscribe('userinfo', Meteor.userId()), Meteor.subscribe('reservedTables', Meteor.userId()), Meteor.subscribe('restaurants')];
 	}
 });
