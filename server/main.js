@@ -230,6 +230,22 @@ Meteor.methods({
               }
           });
 
+          var existing = Tables.findOne({_id: t.table_id, $and: [ {"reservations.res_date": date}, { "reservations.start": { $lte: start } }, { "reservations.end": { $gte: leaving_hour } } ]});
+          console.log("EXISTING" + existing);
+          if (existing !== undefined && existing !== "") {
+            console.log("WHAAAT");
+            myTransactions.update(
+                   { _id: t._id, state: "pending" },
+                   {
+                     $set: { state: "canceling" },
+                     $currentDate: { lastModified: true }
+                   }
+                );
+                cancelTransaction();
+                return "no";
+          }
+
+
         Tables.update(
             { '_id': t.table_id, 'pendingTransactions': { $ne: t._id } },
             { $push: { 'pendingTransactions': t._id, 'reservations': reservation } },
